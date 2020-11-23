@@ -1,0 +1,338 @@
+{% extends 'base.html' %}
+
+{% block style %}
+<style>
+.back-in-stock .lSPager.lSpg > li a{
+    background-color: transparent!important;
+    border: 1px solid white;
+}
+.back-in-stock .lSPager.lSpg > li.active a {
+    background-color: white!important;
+    border: 1px solid white;
+}
+.back-in-stock .lSPager.lSpg {
+    bottom:0px;
+}
+</style>
+
+{% endblock style %}
+
+{% block content %}
+<section class="home d-flex align-items-center mb-5">
+    <div class="container">
+        <div class="row align-items-center justify-content-center ez-animate my-auto" data-animation="fadeInUp" style="--animate-duration:2s;">
+            <div class="" data-animation="">
+                <span class="text-white text-center">NEW ARRIVALS & RESTOCKS</span>
+                <h4 class="text-white font-weight-bold text-center mb-4">JUST IN.</h4>
+                <div class="d-flex align-items-center justify-content-center">
+                    <a class="btn btn-primary bg-white rounded-0 text-center text-dark btn-outline-light" href="#" role="button">SHOP NOW</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container" id="index">
+    <div class="row border-bottom mb-5">
+        <div class="col px-3">
+            <p class="text-center font-weight-bold mb-4 h6">ORDERS ARE SHIPPED AS USUAL</p>
+            <p class="mb-4 text-center">Despite challenges presented by COVID-19, our online store is still open, with orders shipped everyday.
+                Our logistics team is taking extraordinary precaution with each order to ensure the safety of our customers and employees.</p>
+            <p class="mb-4 text-center">Thank you for your support of all small businesses like ours. Stay safe, stay healthy.</p>
+        </div>
+    </div>
+
+    <div class="row mb-4 no-gutters best-seller" style="height:auto;">
+        <span>BEST SELLERS</span>
+        <div id="light-slider" class="">
+            <div class="card border-0 bg-transparent">
+                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
+                    <img src="../../static/image/test.jpg" class="card-img-top img-fluid" alt="...">
+                </div> 
+                <div class="card-body mb-0 p-0">
+                    <p class="card-title" style="font-size:10px;font-weight:600;">BLACK <br>N1 CARGO</p>
+                    {% comment %} {% if product.old_price %}<del class="card-text text-danger" style="font-size:1.1em">{{ product.old_price|currency }}</del>{% endif %}<p class="card-text mb-0" style="font-size:1.5em">{{ product.price|currency }}</p>
+                    <a href="{{ product.get_absolute_url }}" class="btn btn-dark btn-lg active rounded-0 text-center d-inline-block" role="button" aria-pressed="true">Read More</a> {% endcomment %}
+                </div>
+            </div>
+            <div class="card border-0 bg-transparent">
+                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
+                    <img src="../../static/image/test2.jpg" class="card-img-top img-fluid" alt="...">
+                </div> 
+                <div class="card-body mb-0 p-0">
+                    <p class="card-title" style="font-size:10px;font-weight:600;">BLACK <br>N1 CARGO</p>
+                    {% comment %} {% if product.old_price %}<del class="card-text text-danger" style="font-size:1.1em">{{ product.old_price|currency }}</del>{% endif %}<p class="card-text mb-0" style="font-size:1.5em">{{ product.price|currency }}</p>
+                    <a href="{{ product.get_absolute_url }}" class="btn btn-dark btn-lg active rounded-0 text-center d-inline-block" role="button" aria-pressed="true">Read More</a> {% endcomment %}
+                </div>
+            </div>
+            <div class="card border-0 bg-transparent">
+                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
+                    <img src="../../static/image/test3.jpg" class="card-img-top img-fluid" alt="...">
+                </div> 
+                <div class="card-body mb-0 p-0">
+                    <p class="card-title" style="font-size:10px;font-weight:600;">BLACK <br>N1 CARGO</p>
+                    {% comment %} {% if product.old_price %}<del class="card-text text-danger" style="font-size:1.1em">{{ product.old_price|currency }}</del>{% endif %}<p class="card-text mb-0" style="font-size:1.5em">{{ product.price|currency }}</p>
+                    <a href="{{ product.get_absolute_url }}" class="btn btn-dark btn-lg active rounded-0 text-center d-inline-block" role="button" aria-pressed="true">Read More</a> {% endcomment %}
+                </div>
+            </div>
+            <div class="card border-0 bg-transparent">
+                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
+                    <img src="../../static/image/test4.jpg" class="card-img-top img-fluid" alt="...">
+                </div> 
+                <div class="card-body mb-0 p-0">
+                    <p class="card-title" style="font-size:10px;font-weight:600;">BLACK <br>N1 CARGO</p>
+                    {% comment %} {% if product.old_price %}<del class="card-text text-danger" style="font-size:1.1em">{{ product.old_price|currency }}</del>{% endif %}<p class="card-text mb-0" style="font-size:1.5em">{{ product.price|currency }}</p>
+                    <a href="{{ product.get_absolute_url }}" class="btn btn-dark btn-lg active rounded-0 text-center d-inline-block" role="button" aria-pressed="true">Read More</a> {% endcomment %}
+                </div>
+            </div>
+            <div class="card border-0 bg-transparent">
+                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
+                    <img src="../../static/image/test5.jpg" class="card-img-top img-fluid" alt="...">
+                </div>
+                <div class="card-body mb-0 p-0">
+                    <p class="card-title" style="font-size:10px;font-weight:600;">BLACK <br>N1 CARGO</p>
+                    {% comment %} {% if product.old_price %}<del class="card-text text-danger" style="font-size:1.1em">{{ product.old_price|currency }}</del>{% endif %}<p class="card-text mb-0" style="font-size:1.5em">{{ product.price|currency }}</p>
+                    <a href="{{ product.get_absolute_url }}" class="btn btn-dark btn-lg active rounded-0 text-center d-inline-block" role="button" aria-pressed="true">Read More</a> {% endcomment %}
+                </div> 
+            </div>
+            <div class="card border-0 bg-transparent">
+                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
+                    <img src="../../static/image/test6.jpg" class="card-img-top img-fluid" alt="...">
+                </div> 
+                <div class="card-body mb-0 p-0">
+                    <p class="card-title" style="font-size:10px;font-weight:600;">BLACK <br>N1 CARGO</p>
+                    {% comment %} {% if product.old_price %}<del class="card-text text-danger" style="font-size:1.1em">{{ product.old_price|currency }}</del>{% endif %}<p class="card-text mb-0" style="font-size:1.5em">{{ product.price|currency }}</p>
+                    <a href="{{ product.get_absolute_url }}" class="btn btn-dark btn-lg active rounded-0 text-center d-inline-block" role="button" aria-pressed="true">Read More</a> {% endcomment %}
+                </div>
+            </div>
+            <div class="card border-0 bg-transparent">
+                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
+                    <img src="../../static/image/test4.webp" class="card-img-top img-fluid" alt="...">
+                </div> 
+                <div class="card-body mb-0 p-0">
+                    <p class="card-title" style="font-size:10px;font-weight:600;">BLACK <br>N1 CARGO</p>
+                    {% comment %} {% if product.old_price %}<del class="card-text text-danger" style="font-size:1.1em">{{ product.old_price|currency }}</del>{% endif %}<p class="card-text mb-0" style="font-size:1.5em">{{ product.price|currency }}</p>
+                    <a href="{{ product.get_absolute_url }}" class="btn btn-dark btn-lg active rounded-0 text-center d-inline-block" role="button" aria-pressed="true">Read More</a> {% endcomment %}
+                </div>
+            </div>
+        </div>
+        <a href="#" class="btn btn-lg px-5 py-3 font-weight-bold rounded-0 text-center mx-auto text-white" style="background-color:#1c1b1b;font-size:11px;" role="button">VIEW ALL</a>
+    </div>
+
+    <div class="row mb-4 d-md-none back-in-stock" style="height:auto;">
+        <div id="back-in-stock-slider">
+            <div class="card border-0 bg-transparent">
+                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
+                    <img src="../../static/image/new2.jpg" class="card-img-top img-fluid" alt="...">
+                </div> 
+                <div class="card-img-overlay d-flex flex-column text-white justify-content-center align-items-center">
+                    <h6 class="card-title mb-4">BACK IN STOCK</h6>
+                    <h5 class="card-title mb-4">C1 CARGO</h5>
+                    <a class="btn btn-primary bg-white btn-outline-white rounded-0 text-center text-dark btn-outline-light" href="#" role="button">SHOP NOW</a>
+                </div>
+            </div>
+            <div class="card border-0 bg-transparent">
+                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
+                    <img src="../../static/image/new1.jpg" class="card-img-top img-fluid" alt="...">
+                </div> 
+                <div class="card-img-overlay d-flex flex-column text-white justify-content-center align-items-center">
+                    <h6 class="card-title mb-4">BACK IN STOCK</h6>
+                    <h5 class="card-title mb-4">C1 CARGO</h5>
+                    <a class="btn btn-primary bg-white btn-outline-white rounded-0 text-center text-dark btn-outline-light" href="#" role="button">SHOP NOW</a>
+                </div>
+            </div>
+            <div class="card border-0 bg-transparent">
+                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
+                    <img src="../../static/image/new3.jpg" class="card-img-top img-fluid" alt="...">
+                </div> 
+                <div class="card-img-overlay d-flex flex-column text-white justify-content-center align-items-center">
+                    <h6 class="card-title mb-4">BACK IN STOCK</h6>
+                    <h5 class="card-title mb-4">C1 CARGO</h5>
+                    <a class="btn btn-primary bg-white btn-outline-white rounded-0 text-center text-dark btn-outline-light" href="#" role="button">SHOP NOW</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row mb-4 d-none d-md-block back-in-stock-md mt-5" style="height:auto;">
+        <div class="card-group">
+            <div class="card col-md-6 col-lg-4 border-0 bg-transparent">
+                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
+                    <img src="../../static/image/new2.jpg" class="card-img-top img-fluid" alt="...">
+                </div> 
+                <div class="card-img-overlay d-flex flex-column text-white m-4 justify-content-end align-items-start">
+                    <h6 class="card-title mb-4">BACK IN STOCK</h6>
+                    <h5 class="card-title mb-4">C1 CARGO</h5>
+                    <a class="btn btn-primary bg-white btn-outline-white rounded-0 text-center text-dark btn-outline-light" href="#" role="button">SHOP NOW</a>
+                </div>
+            </div>
+            <div class="card col-md-6 col-lg-4 border-0 bg-transparent">
+                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
+                    <img src="../../static/image/new1.jpg" class="card-img-top img-fluid" alt="...">
+                </div> 
+                <div class="card-img-overlay d-flex flex-column text-white m-4 justify-content-end align-items-start">
+                    <h6 class="card-title mb-4">BACK IN STOCK</h6>
+                    <h5 class="card-title mb-4">C1 CARGO</h5>
+                    <a class="btn btn-primary bg-white btn-outline-white rounded-0 text-center text-dark btn-outline-light" href="#" role="button">SHOP NOW</a>
+                </div>
+            </div>
+            <div class="card border-0 col-md-6 col-lg-4 bg-transparent">
+                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
+                    <img src="../../static/image/new3.jpg" class="card-img-top img-fluid" alt="...">
+                </div> 
+                <div class="card-img-overlay d-flex flex-column text-white m-4 justify-content-end align-items-start">
+                    <h6 class="card-title mb-4">BACK IN STOCK</h6>
+                    <h5 class="card-title mb-4">C1 CARGO</h5>
+                    <a class="btn btn-primary bg-white btn-outline-white rounded-0 text-center text-dark btn-outline-light" href="#" role="button">SHOP NOW</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row mb-4 no-gutters new-arrivals" style="height:auto;">
+        <span>NEW ARRIVALS</span>
+        <div id="new-arrivals-slider" class="">
+            <div class="card border-0 bg-transparent">
+                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
+                    <img src="../../static/image/test.jpg" class="card-img-top img-fluid" alt="...">
+                </div> 
+                <div class="card-body mb-0 p-0">
+                    <p class="card-title" style="font-size:10px;font-weight:600;">BLACK <br>N1 CARGO</p>
+                    {% comment %} {% if product.old_price %}<del class="card-text text-danger" style="font-size:1.1em">{{ product.old_price|currency }}</del>{% endif %}<p class="card-text mb-0" style="font-size:1.5em">{{ product.price|currency }}</p>
+                    <a href="{{ product.get_absolute_url }}" class="btn btn-dark btn-lg active rounded-0 text-center d-inline-block" role="button" aria-pressed="true">Read More</a> {% endcomment %}
+                </div>
+            </div>
+            <div class="card border-0 bg-transparent">
+                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
+                    <img src="../../static/image/test2.jpg" class="card-img-top img-fluid" alt="...">
+                </div> 
+                <div class="card-body mb-0 p-0">
+                    <p class="card-title" style="font-size:10px;font-weight:600;">BLACK <br>N1 CARGO</p>
+                    {% comment %} {% if product.old_price %}<del class="card-text text-danger" style="font-size:1.1em">{{ product.old_price|currency }}</del>{% endif %}<p class="card-text mb-0" style="font-size:1.5em">{{ product.price|currency }}</p>
+                    <a href="{{ product.get_absolute_url }}" class="btn btn-dark btn-lg active rounded-0 text-center d-inline-block" role="button" aria-pressed="true">Read More</a> {% endcomment %}
+                </div>
+            </div>
+            <div class="card border-0 bg-transparent">
+                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
+                    <img src="../../static/image/test3.jpg" class="card-img-top img-fluid" alt="...">
+                </div> 
+                <div class="card-body mb-0 p-0">
+                    <p class="card-title" style="font-size:10px;font-weight:600;">BLACK <br>N1 CARGO</p>
+                    {% comment %} {% if product.old_price %}<del class="card-text text-danger" style="font-size:1.1em">{{ product.old_price|currency }}</del>{% endif %}<p class="card-text mb-0" style="font-size:1.5em">{{ product.price|currency }}</p>
+                    <a href="{{ product.get_absolute_url }}" class="btn btn-dark btn-lg active rounded-0 text-center d-inline-block" role="button" aria-pressed="true">Read More</a> {% endcomment %}
+                </div>
+            </div>
+            <div class="card border-0 bg-transparent">
+                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
+                    <img src="../../static/image/test4.jpg" class="card-img-top img-fluid" alt="...">
+                </div> 
+                <div class="card-body mb-0 p-0">
+                    <p class="card-title" style="font-size:10px;font-weight:600;">BLACK <br>N1 CARGO</p>
+                    {% comment %} {% if product.old_price %}<del class="card-text text-danger" style="font-size:1.1em">{{ product.old_price|currency }}</del>{% endif %}<p class="card-text mb-0" style="font-size:1.5em">{{ product.price|currency }}</p>
+                    <a href="{{ product.get_absolute_url }}" class="btn btn-dark btn-lg active rounded-0 text-center d-inline-block" role="button" aria-pressed="true">Read More</a> {% endcomment %}
+                </div>
+            </div>
+            <div class="card border-0 bg-transparent">
+                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
+                    <img src="../../static/image/test5.jpg" class="card-img-top img-fluid" alt="...">
+                </div>
+                <div class="card-body mb-0 p-0">
+                    <p class="card-title" style="font-size:10px;font-weight:600;">BLACK <br>N1 CARGO</p>
+                    {% comment %} {% if product.old_price %}<del class="card-text text-danger" style="font-size:1.1em">{{ product.old_price|currency }}</del>{% endif %}<p class="card-text mb-0" style="font-size:1.5em">{{ product.price|currency }}</p>
+                    <a href="{{ product.get_absolute_url }}" class="btn btn-dark btn-lg active rounded-0 text-center d-inline-block" role="button" aria-pressed="true">Read More</a> {% endcomment %}
+                </div> 
+            </div>
+            <div class="card border-0 bg-transparent">
+                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
+                    <img src="../../static/image/test6.jpg" class="card-img-top img-fluid" alt="...">
+                </div> 
+                <div class="card-body mb-0 p-0">
+                    <p class="card-title" style="font-size:10px;font-weight:600;">BLACK <br>N1 CARGO</p>
+                    {% comment %} {% if product.old_price %}<del class="card-text text-danger" style="font-size:1.1em">{{ product.old_price|currency }}</del>{% endif %}<p class="card-text mb-0" style="font-size:1.5em">{{ product.price|currency }}</p>
+                    <a href="{{ product.get_absolute_url }}" class="btn btn-dark btn-lg active rounded-0 text-center d-inline-block" role="button" aria-pressed="true">Read More</a> {% endcomment %}
+                </div>
+            </div>
+            <div class="card border-0 bg-transparent">
+                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
+                    <img src="../../static/image/test4.webp" class="card-img-top img-fluid" alt="...">
+                </div> 
+                <div class="card-body mb-0 p-0">
+                    <p class="card-title" style="font-size:10px;font-weight:600;">BLACK <br>N1 CARGO</p>
+                    {% comment %} {% if product.old_price %}<del class="card-text text-danger" style="font-size:1.1em">{{ product.old_price|currency }}</del>{% endif %}<p class="card-text mb-0" style="font-size:1.5em">{{ product.price|currency }}</p>
+                    <a href="{{ product.get_absolute_url }}" class="btn btn-dark btn-lg active rounded-0 text-center d-inline-block" role="button" aria-pressed="true">Read More</a> {% endcomment %}
+                </div>
+            </div>
+        </div>
+        <a href="#" class="btn btn-lg rounded-0 px-5 py-3 font-weight-bold text-center mx-auto text-white" style="background-color:#1c1b1b;font-size:11px;" role="button">VIEW ALL</a>
+    </div>
+</div>
+{% endblock content %}
+
+{% block javascript %}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#light-slider, #new-arrivals-slider").lightSlider({
+            item: 3,
+            loop: false,
+            slideMove: 2,
+            easing: 'cubic-beizer(0.25, 0, 0.25, 1)',
+            speed: 600,
+            controls: true,
+            responsive: [
+            {
+                breakpoint: 800,
+                settings: {
+                    item: 3,
+                    slideMove: 1,
+                    slideMargin: 6,
+                }
+            },
+            {
+                breakpoint: 576,
+                settings: {
+                    item: 2,
+                    slideMove: 1,
+                    slideMargin: 6,
+                }
+            }],
+            onSliderLoad: function() {
+                $('#light-slider, #new-arrivals-slider').removeClass('cS-hidden');
+            }
+        });
+        $("#back-in-stock-slider").lightSlider({
+            item: 1,
+            loop: false,
+            slideMove: 1,
+            easing: 'cubic-beizer(0.25, 0, 0.25, 1)',
+            speed: 600,
+            controls: false,
+            onSliderLoad: function() {
+                $('#back-in-stock-slider').removeClass('cS-hidden');
+            }
+        });
+        $('.best-seller .lSPager, .new-arrivals .lSPager').addClass('d-none')
+        $('.back-in-stock').addClass('position-relative')
+        $('.back-in-stock .lSPager').addClass('m-0 float-left position-absolute')
+    });
+
+    const index = new Vue({
+        el: '#index',
+        store: store,
+        delimiters: ['[[', ']]'],
+        data (){
+            return {
+                navbarscroll: false,
+            }
+        },
+        computed: {
+        
+        },
+        methods: {
+            ingscroll(){
+                console.log("hi")
+            },
+        }
+
+    });
+</script>
+{% endblock javascript %}

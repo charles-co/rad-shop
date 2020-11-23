@@ -1,0 +1,513 @@
+{% extends 'base.html' %}
+{% load extras %}
+{% load static %}
+
+{% block style %}
+    <style>
+        .add-to-cart:focus, .add-to-cart:active{
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+    </style>
+{% endblock style %}
+{% block content %}
+<div id="trouserapp" class="container">
+    <div class="my-4">
+        <span >{{ title }}</span>
+    </div>
+    <div class="row">
+        <div class="accordion col-12" id="accordionExample">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h2 class="mb-0">
+                        <button class="btn dropdown-toggle" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Filters
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                    <div class="row card-body">
+                        <div class="col-sm-4 col-4">
+                            <div class="form-group">
+                                <label for="colors">Colors</label>
+                                <colors-dropdown
+                                    v-bind:colors="colors"
+                                    v-on:sort="sortTrousers"
+                                ></colors-dropdown>
+                            </div>    
+                        </div>
+                        <div class="col-sm-4 col-4">
+                            <div class="form-group">
+                                <label for="sort">Sort</label>
+                                <select class="form-control" @change="order($event)" id="sort_by">
+                                    <option disabled="disabled" value = "none">Choose option</option>
+                                    <option value='featured'>FEATURED</option>
+                                    <option value='bestseller'>BESTSELLER</option>
+                                    <option value='name' selected="{selected:selectedSort==null}">ALPHABETICALLY, A-Z</option>
+                                    <option value='-name'>ALPHABETICALLY, Z-A</option>
+                                    <option value='price'>PRICE, LOW TO HIGH</option>
+                                    <option value='-price'>PRICE, HIGH TO LOW</option>
+                                    <option value='date'>DATE, OLD TO NEW</option>
+                                    <option value='-date'>DATE, NEW TO OLD</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 col-3">
+                            <div class="row justify-content-center align-self-center" style="color:white;margin-top:30px;">
+                                <a class="btn btn-secondary" id="display_all" @click="reset">Reset</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+    <div class="col-12 my-5 d-flex justify-content-center" v-if="loading">
+        <div class="spinner-border text-dark m-1 text-danger" style="width:30px;height:30px;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+
+    <div class="container-fluid" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy">
+        <transition-group appear tag="div" v-bind:css="false" v-on:before-enter="beforeEnter" v-on:enter="enter" class="row no-gutters">
+            <trouser-card
+                v-if="sortedShouldRender && !loading"
+                v-for="(trouser, index) in sortedTrousers"
+                v-bind:key="trouser.first_variant.id"
+                v-bind:id="trouser.first_variant.id"
+                v-bind:name="trouser.name"
+                v-bind:price="trouser.first_variant.price"
+                {% comment %} v-bind:oldprice="trouser.old_price" {% endcomment %}
+                v-bind:color="trouser.first_variant.color"
+                v-bind:slug="trouser.slug"
+                v-bind:image="trouser.first_variant.first_image.file"
+                v-bind:size="trouser.first_variant.first_meta.size"
+                v-bind:stock="trouser.first_variant.first_meta.stock"
+                v-bind:data-index="index"
+            ></trouser-card>
+        </transition-group>
+        <transition-group name="testing-stuff" v-bind:css="false" v-on:before-enter="beforeEnter" v-on:enter="enter" tag="div" class="row testing no-gutters">
+            <trouser-card
+                v-if="orderShouldRender && !loading"
+                v-for="(trouser, index) in orderTrousers"
+                v-bind:key="trouser.first_variant.id"
+                v-bind:id="trouser.first_variant.id"
+                v-bind:name="trouser.name"
+                v-bind:price="trouser.first_variant.price"
+                {% comment %} v-bind:oldprice="trouser.old_price" {% endcomment %}
+                v-bind:color="trouser.first_variant.color"
+                v-bind:slug="trouser.slug"
+                v-bind:image="trouser.first_variant.first_image.file"
+                v-bind:size="trouser.first_variant.first_meta.size"
+                v-bind:stock="trouser.first_variant.first_meta.stock"
+                v-bind:data-index="index"
+            ></trouser-card>
+        </transition-group>
+        <transition-group name="t" v-bind:css="false" v-on:before-enter="beforeEnter" v-on:enter="enter" tag="div" class="row no-gutters">    
+            <trouser-card
+                v-if="colorSort && !loading"
+                v-for="(trouser, index) in sortedOrderTrousers"
+                v-bind:key="trouser.first_variant.id"
+                v-bind:id="trouser.first_variant.id"
+                v-bind:name="trouser.name"
+                v-bind:price="trouser.first_variant.price"
+                {% comment %} v-bind:oldprice="trouser.old_price" {% endcomment %}
+                v-bind:color="trouser.first_variant.color"
+                v-bind:slug="trouser.slug"
+                v-bind:image="trouser.first_variant.first_image.file"
+                v-bind:size="trouser.first_variant.first_meta.size"
+                v-bind:stock="trouser.first_variant.first_meta.stock"
+                v-bind:data-index="index"
+            ></trouser-card>
+        </transition-group>
+        <div class="d-flex justify-content-center ez-animate-group" style="display:none;" v-if="busy">
+            <div class="m-1 animated rubberBand bg-danger infinite rounded fast" style="height:10px;width:8px;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+            <div class="animated rubberBand m-1 bg-warning infinite rounded fast" style="height:10px;width:8px;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+            <div class="animated rubberBand m-1 bg-success infinite rounded fast" style="height:10px;width:8px;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+</div>         
+{% endblock content %}
+
+{% block javascript %}
+<script src="{% static 'js/vue-infinite-scroll.js' %}"></script>
+<script src="{% static 'js/lodash.min.js' %}"></script>
+<script>
+
+    Vue.component('colors-dropdown', {
+        delimiters: ['[[', ']]'],
+        data: function(){
+            return {
+            }            
+        },
+        props: [
+            "colors",
+            "selectedsort",
+        ],
+        mounted(){
+        },
+        template: `
+                    <select class="form-control" id="colors" @change="$emit('sort', ($event))">
+                        <option selected="true" value="all">All</option>
+                        <option v-for="color in colors" :value="color" :style="{backgroundColor: color}"><p>[[color]]</p></option>
+                    </select>
+                `
+
+    })
+
+    Vue.component('trouser-card', {
+        delimiters: ['[[', ']]'],
+        store: store,
+        props: ["id", 
+                "name", 
+                "slug",  
+                "price", 
+                "oldprice", 
+                "image",
+                "color",
+                "size", 
+                "stock", 
+            ],
+        data: function(){
+            return {
+                showMessage: false,
+                cartItems: {{ request.session.cart|jsonify }},
+                carted: false,
+                url: "{% if sub_category_slug %}{% url 'shop:sub-collection-detail' category_slug sub_category_slug 0 %}".replace(0, this.slug) + "{% else %}{% url 'shop:collection-detail' category_slug 0 %}{% endif %}".replace(0, this.slug),
+            }            
+        },
+        computed: {
+            inCart: function(){
+                for(let i=0; i<=(_.keys(this.cartItems)).length;i++){
+                    if ((_.keys(this.cartItems))[i] == this.id){
+                        return true
+                    }
+                }
+                return false
+            } 
+        },
+        mounted() {
+        },
+        methods: {
+            addToCart(trouser_id, size){
+                let data = {'trouser_id':trouser_id,
+                            'size': size,
+                            'update': false,
+                            'quantity': 1,
+                        };
+                console.log(data);
+                fetch("{% url 'cart:cart-add' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'applications/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }, 
+                    credentials: 'same-origin',
+                    body: JSON.stringify(data)
+                })
+                .then((response) => {
+                    console.log(response)
+                    this.showMessage = true;
+                    this.carted = true;
+                    store.commit('increment', 1)
+                    setTimeout(()=>{
+                        this.showMessage = false
+                    }, 2000)
+                })
+                .catch(function (error){
+                    console.log(error);
+                })
+            },
+        }, 
+        template: `                        
+                    <div id="" class="col-6 col-md-4 col-lg-3">
+                        <a :href=url class="d-inline-block ml-0"> 
+                            <div class="card border-0 bg-transparent">
+                                <img :src="image" class="card-img-top img-fluid" :alt="name">
+                            </div>
+                            <div class="card-body p-0">
+                                <p class="card-title mb-0" style="font-size:10px;font-weight:600;">  
+                                    [[ color ]]
+                                    <br> [[ name ]] <br>
+                                    [[ price ]]  
+                                </p>
+                            </div>
+                        </a>
+                        <div v-if="!inCart && !carted">
+                            <button @click="addToCart(id, size)" class="btn btn-transparent add-to-cart btn-outline-transparent text-danger rounded-0 pl-0">Add to cart <i class="fas fa-cart-plus"></i></button>
+                        </div>
+                        <div v-else>
+                            <span class="text-success">Trouser in cart</span>
+                        </div>
+                        <div class="message position-absolute" style="z-index:1000;">
+                            <transition enter-active-class="animated slideInDown" leave-active-class="animated bounceOut">
+                                <div class="alert alert-success p-1 rounded-0 text-center" role="alert" v-if="showMessage">
+                                    <p class="m-0">Added to cart :)</p>
+                                </div>
+                            </transition>
+                        </div>
+                    </div>                    
+                `
+    })
+
+    const trouserapp = new Vue({
+        delimiters: ['[[', ']]'],
+        el: '#trouserapp',
+        store: store,
+        data (){
+            return {
+                trousers: [],
+                sortedTrousers: [],
+                sortedOrderTrousers: [],  
+                orderTrousers: [],
+                colors: null,
+                next: "{% if sub_category_slug %}{% url 'shop:listing' category_slug sub_category_slug %}{% else %}{% url 'shop:listing' category_slug %}{% endif %}",
+                previous: null,
+                counter: 0,
+                loading: true,
+                busy: false,
+                sortedShouldRender: false,
+                orderShouldRender: false,
+                colorSort: false,
+                selectedColor: "all",
+                selectedSort: null,
+            }
+        },
+        created(){
+            console.log("created")
+
+        },
+        beforeUpdate(){
+            if (this.orderShouldRender && this.sortedShouldRender || this.orderShouldRender && this.colorSort || this.colorSort && this.sortedShouldRender){
+                this.colorSort = this.colorSortfn()
+                this.sortedOrderTrousers = this.sortedOrderTrousersfn()
+                console.log(this.sortedOrderTrousers)
+            }
+        },
+        mounted(){
+            console.log("mounted")
+        },
+        updated(){
+
+        },
+        computed: {
+            get_total_price: function(){
+                return store.state.get_total_price;
+            },
+            has_next: function(){
+                if(this.next !== null){
+                    return true
+                }else{
+                    return false
+                }
+            },
+            has_previous: function(){
+                if(this.previous !== null){
+                    return true
+                }else{
+                    return false
+                }
+            }, 
+        },
+        methods: {
+            sortTrousers(e){
+                this.loading = true
+                let c
+                try {
+                    c = e.target.value
+                }
+                catch(err){
+                    c = e
+                }
+                this.selectedColor = c
+                if(c !== "all"){
+                    let s = _.filter(this.trousers, ({ first_variant }) => first_variant.color === c)
+                    this.sortedTrousers= s
+                }else if (c === "all") {
+                    this.sortedTrousers = this.trousers
+                }
+                this.sortedShouldRender = true
+                setTimeout( function (){
+                    this.loading = false
+                }.bind(this), 1000)
+            },
+            order(e){
+                this.loading = true
+                let c
+                try {
+                    c = e.target.value
+                }
+                catch(err){
+                    c = e
+                }
+                this.selectedSort = c
+                if(c === "-name"){
+                    let s = _.orderBy(this.trousers, ['name'], ['desc'])
+                    this.orderTrousers = s
+                }else if(c === "name") {
+                    let s = _.orderBy(this.trousers, ['name'], ['asc'])
+                    this.orderTrousers = s
+                }else if(c === "-price") {
+                    let s = _.orderBy(this.trousers, ['first_variant.price'], ['desc'])
+                    this.orderTrousers = s
+                }else if(c === "price") {
+                    let s = _.orderBy(this.trousers, ['first_variant.price'], ['asc'])
+                    this.orderTrousers = s
+                }else if(c === "date") {
+                    let s = _.orderBy(this.trousers, ['created'], ['asc'])
+                    this.orderTrousers = s
+                }else if(c === "-date") {
+                    let s = _.orderBy(this.trousers, ['created'], ['desc'])
+                    this.orderTrousers = s
+                }else if(c === "featured") {
+                    let s = _.filter(this.trousers, ({ is_featured }) => is_featured === true)
+                    this.orderTrousers = s
+                }else if(c === "bestseller") {
+                    let s = _.filter(this.trousers, ({ is_bestseller }) => is_bestseller === true)
+                    this.orderTrousers = s
+                }
+                if (c === null){
+                  this.orderShouldRender = false  
+                }else{
+                    this.orderShouldRender = true
+                }
+                setTimeout( function (){
+                    this.loading = false
+                }.bind(this), 1000)
+            },
+            sortTemp(obj){
+                c = this.selectedColor
+                if(c !== "all"){
+                    let s = _.filter(obj, ({ first_variant }) => first_variant.color === c)
+                    this.sortedTrousers= this.sortedTrousers.concat(s)
+                }else if (c === "all") {
+                    this.sortedTrousers= this.sortedTrousers.concat(obj)
+                }
+                this.sortedShouldRender = true
+            },
+            orderTemp(obj){
+                c = this.selectedSort
+                if(c === "-name"){
+                    let s = _.orderBy(obj, ['name'], ['desc'])
+                    this.orderTrousers = this.orderTrousers.concat(s)
+                }else if(c === "name") {
+                    let s = _.orderBy(obj, ['name'], ['asc'])
+                    this.orderTrousers = this.orderTrousers.concat(s)
+                }else if(c === "-price") {
+                    let s = _.orderBy(obj, ['first_variant.price'], ['desc'])
+                    this.orderTrousers = this.orderTrousers.concat(s)
+                }else if(c === "price") {
+                    let s = _.orderBy(obj, ['first_variant.price'], ['asc'])
+                    this.orderTrousers = this.orderTrousers.concat(s)
+                }else if(c === "date") {
+                    let s = _.orderBy(obj, ['created'], ['asc'])
+                    this.orderTrousers = this.orderTrousers.concat(s)
+                }else if(c === "-date") {
+                    let s = _.orderBy(obj, ['created'], ['desc'])
+                    this.orderTrousers = this.orderTrousers.concat(s)
+                }else if(c === "featured") {
+                    let s = _.filter(obj, ({ is_featured }) => is_featured === true)
+                    this.orderTrousers = this.orderTrousers.concat(s)
+                }else if(c === "bestseller") {
+                    let s = _.filter(obj, ({ is_bestseller }) => is_bestseller === true)
+                    this.orderTrousers = this.orderTrousers.concat(s)
+                }
+                if (c === null){
+                    this.orderTrousers = this.orderTrousers.concat(obj)
+                    this.orderShouldRender = false  
+                }
+            },
+            loadMore(){
+                if (this.has_next === true ){
+                    console.log("running ")
+                    this.busy = true;
+                    fetch(this.next, {
+                        method: 'GET',
+                    })
+                    .then((response) => {
+                        return response.json();
+                    })
+                    .then((jsonData) => {
+                        this.trousers = this.trousers.concat(jsonData.results)
+                        this.colors = _.sortedUniq(_.map(this.trousers, 'first_variant.color'))
+                        temp = jsonData.results
+                        this.next = jsonData.next
+                        this.counter += jsonData.count
+                        setTimeout( function(){
+                            this.sortTemp(temp)
+                            this.orderTemp(temp)
+                            if (this.sortedShouldRender && this.sortedTrousers.length === 0 && this.has_next){
+                                console.log("?")
+                                this.loadMore()
+                            }else if (this.orderShouldRender && this.orderTrousers.length === 0 && this.has_next){
+                                console.log("?")
+                                this.loadMore()
+                            }
+                            this.loading = false
+                            this.busy = false
+                        }.bind(this), 2000)
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
+                }
+            },
+            colorSortfn(){
+                if ((this.sortedShouldRender == this.orderShouldRender || this.colorSort == this.orderShouldRender || this.colorSort == this.sortedShouldRender)){
+                    this.sortedShouldRender = false
+                    this.orderShouldRender = false
+                    return true
+                }else{
+                    return false
+                }
+            },
+            sortedOrderTrousersfn(){
+                if (this.colorSort){
+                    let s
+                    temp = _.clone(this.orderTrousers)
+                    if (this.selectedColor !== "all"){
+                        s = _.filter(temp, ({ first_variant }) => first_variant.color === this.selectedColor)
+                    }
+                    else{
+                        s = temp
+                    }
+                    return s
+                }
+                return []
+            },
+            reset(){
+                this.sortedTrousers = []
+                this.sortedOrderTrousers = []  
+                this.orderTrousers = []
+                this.sortedShouldRender = false
+                this.orderShouldRender = false
+                this.colorSort = false
+                this.selectedSort = null
+                this.sortTrousers("all")
+            },
+            beforeEnter: function (el) {
+                el.style.opacity = 0
+            },
+            enter: function(el, done){ 
+                var delay = el.dataset.index * 100
+                setTimeout(function(){
+                    el.style.opacity = 1
+                    el.classList.add("animated", "jackInTheBox")
+
+                    
+                }, delay)
+            
+            },
+        },
+
+        
+    });
+</script>
+{% endblock javascript %}

@@ -1,0 +1,364 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load extras %}
+{% block style %}
+<style>
+    h3 {
+        position: relative;
+        line-height: 1.2em;
+    }
+    h3:before {
+        position: absolute;
+        top: 1.2em;
+        height: 0;
+        width: 25%;
+        content: '';
+        margin-top:5px;
+        margin-buttom:5px;
+        border-top: 2px solid #969ca0;
+    }
+    .swiper-container {
+        
+    }
+    .swiper-button-next:after, .swiper-button-prev:after{
+        font-size: 15px;
+        color: #ddd;
+    }
+    img {
+        image-rendering: -webkit-optimize-contrast;
+    }
+    {% comment %} .animated{
+        animation-fill-mode: none;
+    } {% endcomment %}
+</style>
+{% endblock style %}
+{% block content %}
+<div id="trouserappdetail" class="container">
+    <div class="row no-gutters justify-content-between">
+        <div class="col-12 col-md-5 d-flex justify-content-center align-items-center order-0" style="min-height:400px;">
+            <transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
+                <div class="" v-if="change">
+                    <img :src="mainImage">
+                </div>
+            </transition>
+        </div>
+        <div class="jumbotron py-0 mb-0 px-3 col-12 order-2 order-md-1 col-md-6 mt-3 overflow-auto" style="max-height:400px;">
+            <div class="d-inline-block"><span v-html="description"></span></div>
+        </div>
+        <div class="col-12 col-md-5 px-0 my-2 order-1 m-md-0 order-md-2">
+            <div style="min-height:62px;" v-if="selected_trouser_images_count > 1">
+                <div class="d-flex fadeInLeft flex-wrap" v-bind:class="{animated: !blur}" v-if="selected_trouser_images_count > 1 && !changeText">
+                    <div class="border border-white mr-2" v-for="(img, index) in thumbnails" style="cursor:pointer;" :class="{ 'shadow' : selectedThumbnail === index}" :key="index">
+                        <img :src="img" style="height:60px;width:60px;" @click="changeMainImage(index)">
+                    </div>
+                </div>
+            </div>
+            <div v-if="trousers.length > 1">
+                <p class="mb-0 my-3 font-italic font-weight-bold">Available Colors:</p>
+                <div class="d-flex flex-wrap fadeInLeftBig" v-bind:class="{animated: !blur}">
+                    <div class="border border-dark mr-2" v-for="(img, index) in trousers" style="cursor:pointer;" :class="{ 'shadow' : selectedVariant === index}" :key="index">
+                        <img :src="img.trouser_variant_images[0].thumbnail" @click="change_selected_trouser(index)">
+                    </div>
+                </div>
+            </div>
+            <div class="my-4 font-weight-bold d-block" style="min-height:174px;">
+                <transition enter-active-class="animated fadeIn">
+                    <div v-if="!changeText">
+                        <p> [[ selected_trouser.color ]]</p>
+                        <p class=""> [[ name ]]</p>
+                        <p class="mb-0"> $[[ selected_trouser.price ]]</p>
+                        <small class="text-muted"> VAT not included </small> 
+                        <div class="d-flex flex-wrap my-2">
+                            <button v-for="(size, index) in selected_trouser.trouser_variant_meta" class="btn btn-transparent btn-outline-dark rounded-0 mr-2" :class="{active : currentSize == size.size}"@click="changeSize(index)">
+                                [[ size.size ]]
+                            </button>
+                        </div>
+                    </div>
+                </transition>
+            </div>
+            <button class="btn btn-lg col-12 rounded-0" v-if="!inCart" :class="{'btn-warning': outofstock, 'btn-success': !inCart}" :style="{cursor:cssCursor}" :disabled="outofstock || disabled" v-html="message" @click="addToCart(selected_trouser.id)">
+            </button>
+            <button class="btn btn-lg col-12 btn-danger rounded-0" v-if="inCart" :disabled="disabled" @click="removeFromCart(selected_trouser.id)">
+                Remove from cart <i class="fas fa-trash-alt text-white"></i> ([[ quantity ]])
+            </button>
+        </div>
+        <div
+            class="swiper py-5 mx-0 col-md-6 order-3 order-md-3"
+            v-swiper:swiper="swiperOptions"
+            @click-slide="onSwiperClickSlide"
+            @slide-change-transition-start="onSwiperSlideChangeTransitionStart"
+        >
+            <div class="d-flex justify-content-center">
+                <h4 class="text-uppercase font-weight-light">related Products</h4>
+            </div>
+            <div class="swiper-wrapper">
+                <div class="swiper-slide card bg-transparent border-0" v-for="index in 6" :key="index">
+                    <div class="d-flex bg-transparent align-items-center justify-contents-center overflow-hidden">
+                        <img src="{% static "image/test2.jpg" %}" class="img-fluid img-responsive mx-auto card-img-top" alt="image">
+                    </div>
+                    <div class="card-body py-0">
+                        <h5 class="card-title text-center">C2 Cargo</h5>
+                        <span class="d-flex justify-content-center" style="font-size:10px;font-weight:600;">
+                            <del class="card-text text-danger">1500</del>
+                            <p class="h5 align-text-bottom card-text">&nbsp;2000</p>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-pagination swiper-pagination-bullets"></div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+{% block javascript %}
+<script src="{% static 'js/lodash.min.js' %}"></script>
+<script src="{% static 'js/swiper.min.js' %}"></script>
+<script src="{% static 'js/vue-awesome-swiper.js' %}"></script>
+<script>
+    Vue.use(VueAwesomeSwiper)
+    const trouserappdetail = new Vue({
+        delimiters: ['[[', ']]'],
+        el: '#trouserappdetail',
+        store: store,
+        data (){
+            return {
+                change: true,
+                changeText: false,
+                selectedThumbnail: 0,
+                selectedVariant: 0,
+                name: "",
+                blur: false,
+                trousers: [],
+                selected_trouser: [],
+                similiar_trousers: [],
+                cssCursor: "pointer",
+                disabled: false,
+                inCart: undefined,
+                selected_trouser_images_count: null,
+                description: "",
+                cartItems: {{ request.session.cart|jsonify }},
+                currentSize: "",
+                quantity: undefined,
+                mainImage: null,
+                thumbnails: null,
+                swiperOptions: {
+                    grabCursor: true,
+                    {% comment %} loop: false, {% endcomment %}
+                    autoplay: {
+                        delay: 2000,
+                        disableOnInteraction: false,
+                    },
+                    pagination: {
+                        el: '.swiper-pagination',
+                        dynamicBullets: true,
+                    },
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev'
+                    },
+                    breakpoints: {
+                        1024: {
+                            slidesPerView: 3,
+                        },
+                        768: {
+                            slidesPerView: 2,
+                        },
+                        320: {
+                            slidesPerView: 2,
+                            {% comment %} spaceBetween: 10 {% endcomment %}
+                        },
+                    }
+                }
+            }
+        },
+        created(){
+            console.log("created")
+
+        },
+        mounted(){
+            console.log("mounted");
+            fetch("{% url 'shop:api-detail' slug %}", {
+                    method: 'GET'
+            })
+            .then((response) => {
+                return response.json();
+            })
+            .then((jsonData) => {
+                this.name = jsonData.name
+                this.trousers = jsonData.variant
+                this.selected_trouser = this.trousers[0]
+                this.similiar_trousers = jsonData.similiar_trousers
+                this.description = jsonData.description
+                this.selected_trouser_images_count = this.selected_trouser.trouser_variant_images.length
+                this.currentSize = this.selected_trouser.trouser_variant_meta[0].size
+                this.mainImage = this.selected_trouser.trouser_variant_images[0].file
+                this.thumbnails = _.map(this.selected_trouser.trouser_variant_images, 'thumbnail')
+                setTimeout( function(){
+                   this.blur = true;
+                }.bind(this), 2000);
+
+            })
+            .catch(function (error){
+                console.log(error);
+            })
+        },
+        beforeMount(){
+            console.log("omo")
+
+        },
+        watch: {
+            currentSize: function(){
+                this.inCartMethod()
+            },
+            selectedVariant: function(){
+                this.inCartMethod()
+            }
+        },
+        computed: {
+            outofstock: function(){
+                if(this.selected_trouser.length !== 0){
+                    for(let i=0; i < this.selected_trouser.trouser_variant_meta.length; i++){
+                        if (this.selected_trouser.trouser_variant_meta[i]['size'] === this.currentSize){
+                            if(this.selected_trouser.trouser_variant_meta[i].stock <= 0){
+                                return true
+                            }
+                        }
+                    }
+                    return false
+                }
+                return undefined
+            },
+            message: function(){
+                if(this.outofstock) {
+                    this.cssCursor = "not-allowed"
+                    return "Out of stock"
+                }else if(this.disabled){
+                    this.cssCursor = "not-allowed"
+                    return "<span class='spinner-border spinner-border-sm p-2' role='status' aria-hidden='true'></span> Add to cart <i class='fas fa-cart-plus'></i>"
+                }else{
+                    this.cssCursor = "pointer"
+                    return "Add to cart <i class='fas fa-cart-plus'></i>"
+                }
+            }
+        },
+        methods: {
+            addToCart(trouser_id){
+                this.disabled = true
+                let data = {'trouser_id': trouser_id,
+                            'size': this.currentSize,
+                            'update': false,
+                            'quantity': 1
+                        };
+                fetch("{% url 'cart:cart-add' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'applications/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }, 
+                    credentials: 'same-origin',
+                    body: JSON.stringify(data)
+                })
+                .then((response) => {
+                    store.commit('increment', 1)
+                    if (this.selected_trouser.id in this.cartItems) {
+                        this.cartItems[this.selected_trouser.id]["size"].push(this.currentSize)
+                        this.cartItems[this.selected_trouser.id]["quantity"].push(1)
+                    }else{
+                        this.cartItems[this.selected_trouser.id] = {"size": [this.currentSize], "quantity": [1], "price": this.selected_trouser.price}
+                    }
+                    setTimeout( function(){
+                        this.inCartMethod()
+                        this.disabled = false
+                    }.bind(this), 2000)
+                })
+                .catch(function (error){
+                    console.log(error);
+                })
+            },
+            removeFromCart(trouser_id){
+                this.disabled = true
+                let data = {'trouser_id': trouser_id,
+                            'size': this.currentSize, 
+                            'quantity': parseInt(this.quantity),
+                };
+                store.commit('increment', -parseInt(this.quantity));
+                fetch("{% url 'cart:cart-remove' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'applications/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }, 
+                    credentials: 'same-origin',
+                    body: JSON.stringify(data)
+                })
+                .then((response) => {
+                    index = this.cartItems[trouser_id]['size'].indexOf(this.currentSize)
+                    this.cartItems[trouser_id]['size'].splice(index, 1)
+                    this.cartItems[trouser_id]['quantity'].splice(index, 1)
+                    console.log("removed!")
+                    setTimeout( function(){
+                        this.inCartMethod()
+                        this.disabled = false
+                    }.bind(this), 2000)
+                })
+                .catch(function (error){
+                    console.log(error);
+                })
+            },
+            changeMainImage(key){
+                if (this.selected_trouser.trouser_variant_images[key].file !== this.mainImage){
+                    this.change = false
+                    this.mainImage = this.selected_trouser.trouser_variant_images[key].file
+                    this.selectedThumbnail = key
+                    setTimeout( function(){
+                        this.change = true
+                    }.bind(this), 1000)
+                }
+            },
+            changeSize(index){
+                if (this.selected_trouser.trouser_variant_meta[index].size !== this.currentSize){
+                    this.currentSize = this.selected_trouser.trouser_variant_meta[index].size
+                }
+            },
+            inCartMethod(){
+                if(this.selected_trouser.id in this.cartItems){
+                    size = (_.get(this.cartItems, this.selected_trouser.id))['size']
+                    if (size.includes(this.currentSize)){
+                        this.quantity = (_.get(this.cartItems, this.selected_trouser.id))['quantity'][size.indexOf(this.currentSize)]
+                        this.inCart = true
+                    }else{
+                        this.inCart = false
+                    }
+                }else{
+                    this.inCart = false
+                }
+            },
+            change_selected_trouser(index){
+               if (this.trousers[index] !== this.selected_trouser){
+                    this.change = false
+                    this.changeText = true
+                    this.selected_trouser = this.trousers[index]
+                    this.mainImage = this.selected_trouser.trouser_variant_images[0].file
+                    this.currentSize = this.selected_trouser.trouser_variant_meta[0].size
+                    this.thumbnails = _.map(this.selected_trouser.trouser_variant_images, 'thumbnail')
+                    this.selected_trouser_images_count = this.selected_trouser.trouser_variant_images.length
+                    this.selectedVariant = index
+                    setTimeout( function(){
+                        this.changeText = false
+                        this.change = true
+                    }.bind(this), 1000)
+                } 
+            },
+            onSetTranslate() {
+                {% comment %} console.log('onSetTranslate') {% endcomment %}
+            },
+            onSwiperSlideChangeTransitionStart() {
+                {% comment %} console.log('onSwiperSlideChangeTransitionStart') {% endcomment %}
+            },
+            onSwiperClickSlide(index, reallyIndex) {
+                {% comment %} console.log('Swiper click slide!', reallyIndex, index) {% endcomment %}
+            }
+        }
+    });
+</script>
+{% endblock javascript %}

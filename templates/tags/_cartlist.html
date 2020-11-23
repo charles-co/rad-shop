@@ -1,0 +1,4 @@
+{% load extras %}
+{% for index, trouser in trousers.items %}
+    <li class="list-group-item bg-transparent">{{ forloop.counter }}. {{ trouser.name }} ({{ trouser.size }}) x {{ trouser.quantity }} {{ trouser.total_price|currency }}</li>
+{% endfor %}

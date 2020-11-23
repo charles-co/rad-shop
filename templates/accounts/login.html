@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<div class="container" id="loginapp">
+    <section class="mb-4">
+      <div class="row justify-content-center justify-content-md-end">
+        <div class='col-11 col-md-5'>
+            <transition enter-active-class="animated zoomIn">
+                <div v-if="showlogin">
+                    <h1 v-html="label"></h1>
+                    <p v-if="showlogin">Don't have an account? Then please <button @click="showform" class="btn btn-sm text-info px-0">Sign up</button></p>
+                    <form method="post" action="{% url 'accounts:login' %}" v-if="showlogin">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <input class='btn btn-primary mt-3 w-100 rounded-0 btn-md' name="submit" type="submit" value="Log In"/>
+                        {% if request.GET.next %}
+                        <input name="next" type="hidden" value="{{ request.GET.next }}"/>
+                        {% endif %}
+                    </form>
+                </div>
+            </transition>
+            <transition enter-active-class="animated zoomIn">
+                <div v-if="showsignup">
+                    <h1 v-html="label"></h1>
+                    <p>Already have an account? Then please <button @click="showform" class="btn btn-sm text-info px-0">Login</button></p>
+                    <form method="post" action="{% url 'accounts:signup' %}">
+                        {% csrf_token %}
+                        {{ signupform|crispy }}
+                        <input class='btn btn-primary mt-3 w-100 rounded-0 btn-md' name="submit" type="submit" value="Sign In"/>
+                    </form>
+                </div>
+            </transition>
+        </div>
+      </div>
+    </section>
+</div>
+{% endblock content %}
+
+{% block javascript %}
+<script>
+    const login = new Vue({
+        el: '#loginapp',
+        store: store,
+        delimiters: ['[[', ']]'],
+        data () {
+            return {
+                showlogin: true,
+                showsignup: false,
+            }
+        },
+        computed: {
+            label: function(){
+                if (this.showlogin){
+                    return "Login"
+                }
+                return "Sign Up"
+            }
+        },
+        methods: {
+            showform(){
+                this.showlogin = !this.showlogin
+                this.showsignup = !this.showsignup
+            }
+        }
+    });
+</script>
+{% endblock javascript %}
+
+

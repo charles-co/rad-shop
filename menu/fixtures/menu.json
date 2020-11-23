@@ -1,0 +1,107 @@
+[
+{
+  "model": "menu.menu",
+  "pk": 1,
+  "fields": {
+    "name": "NEW ARRIVALS",
+    "slug": "new-arrivals",
+    "app": "SH",
+    "parent": null,
+    "is_active": true,
+    "lft": 1,
+    "rght": 2,
+    "tree_id": 1,
+    "level": 0
+  }
+},
+{
+  "model": "menu.menu",
+  "pk": 2,
+  "fields": {
+    "name": "BEST SELLERS",
+    "slug": "best-sellers",
+    "app": "SH",
+    "parent": null,
+    "is_active": true,
+    "lft": 1,
+    "rght": 2,
+    "tree_id": 3,
+    "level": 0
+  }
+},
+{
+  "model": "menu.menu",
+  "pk": 3,
+  "fields": {
+    "name": "COLLECTIONS",
+    "slug": "collections",
+    "app": "SH",
+    "parent": null,
+    "is_active": true,
+    "lft": 1,
+    "rght": 8,
+    "tree_id": 2,
+    "level": 0
+  }
+},
+{
+  "model": "menu.menu",
+  "pk": 4,
+  "fields": {
+    "name": "CARGO PANTS",
+    "slug": "cargo-pants",
+    "app": "SH",
+    "parent": 3,
+    "is_active": true,
+    "lft": 2,
+    "rght": 3,
+    "tree_id": 2,
+    "level": 1
+  }
+},
+{
+  "model": "menu.menu",
+  "pk": 5,
+  "fields": {
+    "name": "COTTON CARGO",
+    "slug": "cotton-cargo",
+    "app": "SH",
+    "parent": 3,
+    "is_active": true,
+    "lft": 4,
+    "rght": 5,
+    "tree_id": 2,
+    "level": 1
+  }
+},
+{
+  "model": "menu.menu",
+  "pk": 6,
+  "fields": {
+    "name": "NYLON CARGO",
+    "slug": "nylon-cargo",
+    "app": "SH",
+    "parent": 3,
+    "is_active": true,
+    "lft": 6,
+    "rght": 7,
+    "tree_id": 2,
+    "level": 1
+  }
+},
+{
+  "model": "menu.menu",
+  "pk": 8,
+  "fields": {
+    "name": "BACK IN STOCK",
+    "slug": "back-in-stock",
+    "app": "SH",
+    "parent": null,
+    "is_active": true,
+    "lft": 1,
+    "rght": 2,
+    "tree_id": 4,
+    "level": 0
+  }
+}
+]

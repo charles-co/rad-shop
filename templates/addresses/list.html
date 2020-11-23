@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class='container'>
+  <div class='row'>
+  <div class='col-12'>
+  <h1>Address{% if object_list.count > 1%}es{% endif %}</h1>
+  <hr/>
+  </div>
+  </div>
+  <div class='row no-gutters justify-content-center justify-content-md-start'>
+          {% for obj in object_list %}
+              <div class='col-12 col-md-4 my-3'>
+                  <div class="card">
+                    {% if obj.default %}
+                    <div class="position-absolute rounded-left p-2 ml-auto align-self-end" style="background-color:rgba(255,0,0,0.3);border-top-left-radius:0px !important;">
+                      <p class="font-weight-bold text-danger m-0">Default</p>
+                    </div>
+                    {% endif %}
+                    <div class="d-flex">
+                      <div class="pl-2 py-3 pr-0">
+                        <span><i class="fas text-danger fa-map-marker-alt "></i></span>
+                      </div>
+                      <div class="card-body flex-grow-1">
+                        <h4 class="card-title">{{ obj }}</h4> 
+                        <small>{{ obj.get_address_type_display }}</small><br/>
+                        <br/>
+                        <h5>Address</h5>
+                        {{ obj.get_address|linebreaks }}
+                        
+                        <a href='{{ obj.get_absolute_url }}' class='btn btn-default text-primary'>Edit</a>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+          {% empty %}
+          <div class="col-12 col-md-3 my-3">
+            <h3 class="text-center">No address created</h3>
+          </div>
+          {% endfor %}
+          <div class="w-100"></div>
+          <div class="d-flex mx-auto justify-content-center my-3">
+              <a class="btn btn-primary btn-lg rounded-0" role="button" href='{% url "accounts:address-create" %}'>Create New</a>
+          </div>
+  </div>
+</div>
+{% endblock %}

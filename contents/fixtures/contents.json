@@ -1,0 +1,82 @@
+[
+{
+  "model": "contents.image",
+  "pk": 1,
+  "fields": {
+    "created": "2020-10-25T20:26:48.149Z",
+    "updated": "2020-10-25T20:26:48.149Z",
+    "trouser_variant": 1,
+    "file": "trouser_images/C2 CARGO/95cd2961a91443018dce96ce4af4d848.png"
+  }
+},
+{
+  "model": "contents.image",
+  "pk": 2,
+  "fields": {
+    "created": "2020-10-25T20:26:48.156Z",
+    "updated": "2020-10-25T20:26:48.156Z",
+    "trouser_variant": 1,
+    "file": "trouser_images/C2 CARGO/04855396501341bd97411dfc336516ea.png"
+  }
+},
+{
+  "model": "contents.image",
+  "pk": 3,
+  "fields": {
+    "created": "2020-10-25T20:26:48.161Z",
+    "updated": "2020-10-25T20:26:48.162Z",
+    "trouser_variant": 1,
+    "file": "trouser_images/C2 CARGO/8234b6b9ff554b84a4032d3a8dd9fc85.png"
+  }
+},
+{
+  "model": "contents.image",
+  "pk": 4,
+  "fields": {
+    "created": "2020-10-25T20:26:48.188Z",
+    "updated": "2020-10-25T20:26:48.188Z",
+    "trouser_variant": 2,
+    "file": "trouser_images/C2 CARGO/8de610ff8b774d9c9196c2e443303bba.png"
+  }
+},
+{
+  "model": "contents.image",
+  "pk": 5,
+  "fields": {
+    "created": "2020-10-25T20:26:48.193Z",
+    "updated": "2020-10-25T20:26:48.193Z",
+    "trouser_variant": 2,
+    "file": "trouser_images/C2 CARGO/24eed35cdc8248fc9236532bc9c97336.png"
+  }
+},
+{
+  "model": "contents.image",
+  "pk": 6,
+  "fields": {
+    "created": "2020-10-25T20:26:48.198Z",
+    "updated": "2020-10-25T20:26:48.198Z",
+    "trouser_variant": 2,
+    "file": "trouser_images/C2 CARGO/72cf50c7a0fe43f48042b627dd0acbb2.png"
+  }
+},
+{
+  "model": "contents.image",
+  "pk": 7,
+  "fields": {
+    "created": "2020-10-26T00:06:38.298Z",
+    "updated": "2020-10-26T00:06:38.298Z",
+    "trouser_variant": 3,
+    "file": "trouser_images/C5 CARGO/463138e130744474842b53f463d5003e.png"
+  }
+},
+{
+  "model": "contents.image",
+  "pk": 8,
+  "fields": {
+    "created": "2020-10-31T16:15:53.459Z",
+    "updated": "2020-10-31T16:15:53.459Z",
+    "trouser_variant": 4,
+    "file": "trouser_images/C2 CARGO/84ca46980a97455eb3067e9f5be67b10.png"
+  }
+}
+]

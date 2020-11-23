@@ -1,0 +1,24 @@
+{% if address_qs.exists %}
+        <form method='POST' id="changeaddressform" action='{{ action_url }}'> {% csrf_token %}
+             {% if next_url %}
+            <input type='hidden' name='next' value='{{ next_url }}' />
+            {% endif %}
+            {% if address_type %}
+            <input type='hidden' name='address_type' value='{{ address_type }}' />
+            {% endif %}
+
+            <ul class="list-group list-unstyled">
+                {% for address in address_qs %}
+                <li class="list-group-item">
+                    <label for='address-{{ address.id }}'>
+                    <div class="d-flex align-items-center">
+                        <input id='address-{{ address.id }}' class="mr-2" type='radio' name='shipping_address' value='{{ address.id }}' />
+                        <p class="flex-grow-1 mb-0">{{ address.get_short_address }}</p>
+                    </div>
+                    </label>
+                <li/>
+                {% endfor %}
+            </ul>
+            {% comment %} <button type='submit' class='btn btn-success'>Use Address</button> {% endcomment %}
+        </form>
+{% endif %}

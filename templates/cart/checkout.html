@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+{% load static %}
+{% load extras %}
+{% load crispy_forms_tags %}
+
+{% block style %}
+<style>
+</style>
+{% endblock style %}
+{% block content %}
+<div class="container px-md-0" id="checkoutapp">
+    <div class='row justify-content-center' v-if="!billing_profile">
+        <transition enter-active-class="animated fadeIn">
+            <div class='col-12 col-md-6 my-5' v-if="showlogin">
+                <div class="card border-dark">
+                    <p class='lead card-header bg-dark font-weight-bold'>Login / <button @click="showform" class="btn btn-link text-white pl-0">continue as guest</button></p> 
+                    <div class="card-body text-info">
+                        {% include 'accounts/snippets/form.html' with form=login_form next_url=request.build_absolute_uri %}
+                    </div>
+                </div>
+            </div>
+        </transition>
+        <transition enter-active-class="animated fadeIn">
+            <div class='col-12 col-md-6 my-5' v-if="showguest">
+                <div class="card border-dark">
+                    <p class='lead card-header bg-dark font-weight-bold'>Continue as Guest / <button @click="showform" class="btn btn-link text-white pl-0">login</button></p>
+                    <div class="card-body text-info">
+                        {% url "accounts:guest_register" as guest_register_url %}
+                        {% include 'accounts/snippets/form.html' with form=guest_form next_url=request.build_absolute_uri action_url=guest_register_url %}
+                    </div>
+                </div>
+            </div>
+        </transition>
+    </div>
+    <div class='row no-gutters justify-content-md-between' v-else>
+        <div class='col-12'>
+            <p class='lead font-weight-bolder'>Place Order</p>
+            <hr/>
+        </div>
+        <div class="col-12 col-md-6 col-lg-5">
+            {% if address %}
+            <div class="card border-dark animated fadeIn delay-1s">
+                <h4 class="card-header font-weight-bold">Address</h4>
+                <div class="d-flex">
+                    <div class="pl-2 py-1 pr-0">
+                        <span><i class="fas text-danger fa-map-marker-alt "></i></span>
+                    </div>
+                    <div class="card-body flex-grow-1 py-1">
+                        <div class="font-italic">
+                            {{ address.get_address|linebreaks }}
+                        </div>
+                    </div>
+                    <div class="d-flex card-footer justify-content-start">
+                        {% if request.user.is_authenticated %}
+                        <a href='{{ address.get_absolute_url }}?next={{ request.build_absolute_uri }}' class='text-primary mr-3'>Edit</a>
+                        <button type="button" class="btn btn-transparent btn-link align-text-top p-0 d-flex" data-toggle="modal" data-target="#changeaddress">
+                            <span>Change</span>
+                        </button>
+                        
+                        {% else %}
+                        <button type="button" class="btn btn-transparent btn-link" data-toggle="modal" data-target="#editaddress">
+                            Edit
+                        </button>
+                        
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% else %}
+                <div class>
+                    {% if request.user.is_authenticated %}
+                    <a href="{% url 'accounts:address-create' %}?next={{ request.build_absolute_uri }}">Create new</a>
+                    {% else %}
+                        {% url "cart:checkout_address_create" as checkout_address_create %}
+                        {% include 'addresses/form.html' with form=address_form next_url=request.build_absolute_uri action_url=checkout_address_create address_type='shipping' %}'
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-md-6 offset-lg-6 col-12 my-3 col-lg-5 my-md-0 overflow-auto" style="max-height:223px;">
+            <div class="card border-warning mt-2 text-dark animated fadeIn delay-2s">
+                <h4 class="font-weight-bold card-header">Your Order</h4>
+                <div class="card-body py-0">
+                    <ul class="list-group list-group-flush">
+                        {% cartlist %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 offset-lg-1 col-lg-5">
+            <div class="card border-success my-md-5 animated fadeIn delay-3s">
+                <h4 class="card-header font-weight-bold">Finalize Checkout</h4>
+                <div class="card-body text-success">
+                    <p class="card-text">Cart Total: {{ cart.get_total_price|currency }}</p>
+                    {% if object %}
+                    <p class="card-text">Shipping Total: {{ object.shipping_total|currency }}</p>
+                    <p class="card-text">Order Total: {{ cart.get_total_price|addfloatt:object.shipping_total|currency }}</p>
+                    {% endif %}
+                </div>
+                <form class='card-footer bg-transparent' method='POST' action="">{% csrf_token %}
+                    <button type='submit' {% if not address %}disabled{% endif %} class='btn btn-success btn-md rounded-0'>Pay Now <i class="fas fa-lock"></i></button>
+                </form>
+            </div>
+        </div>
+        <div class="modal fade" id="changeaddress" tabindex="-1" role="dialog" aria-labelledby="changeaddressTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="changeaddressTitle">Change Address</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {% url 'cart:checkout_address_reuse' as checkout_address_reuse %}
+                        {% include 'addresses/prev_addresses.html' with address_qs=address_qs current_address=shipping_address_id next_url=request.build_absolute_uri address_type='shipping' action_url=checkout_address_reuse %}
+                    </div>
+                    <div class="modal-footer d-flex flex-row justify-content-between">
+                        <div class="">
+                            <a href="{% url 'accounts:address-create' %}?next={{ request.build_absolute_uri }}" role="button" class="btn btn-sm btn-success rounded-0">Create New Address</a>
+                        </div>
+                        <div class="">
+                            <button type="button" class="btn btn-secondary btn-sm rounded-0" data-dismiss="modal">Close</button>
+                            <button type="submit" form="changeaddressform" class="btn btn-primary btn-sm rounded-0">Use Address</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="editaddress" tabindex="-1" role="dialog" aria-labelledby="editaddressTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editaddressTitle">Edit Address</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" action="{% url 'cart:guest_address_edit' %}" id="addresseditform">
+                            {% csrf_token %}
+                            {{ address_form|crispy }}
+                            <input type="hidden" name="address-id" value="{{ address.id }}"/>
+                            <input type="hidden" name="next" value="{{ request.build_absolute_uri }}"/>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" form="addresseditform" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascript %}
+<script>
+    const checkout = new Vue({
+        el: '#checkoutapp',
+        store: store,
+        delimiters: ['[[', ']]'],
+        data () {
+            return {
+                billing_profile: {% if billing_profile %}true{% else %}false{% endif %},
+                showlogin: true,
+                showguest: false,
+            }
+        },
+        computed: {
+            label: function(){
+                if (this.showlogin){
+                    return "Login"
+                }
+                return "Sign Up"
+            }
+        },
+        methods: {
+            showform(){
+                this.showlogin = !this.showlogin
+                this.showguest = !this.showguest
+            }
+        },
+        mounted(){
+            console.log("mounted")
+        },
+
+    });
+
+</script>
+
+{% endblock javascript %}

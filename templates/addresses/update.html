@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class='row'>
+    <div class='col-10 mx-auto col-md-6 '>
+        {% if form.instance.address_line_1  %}
+        <h3 class='my-3'>Update Address</h3>
+        {% else %}
+        <h3 class='my-3'>Create Address</h3>
+        {% endif %}
+        <hr>
+      <form method='POST'> 
+        {% csrf_token %}
+        {% if request.GET.next %}
+        <input type='hidden' name='next' value='{{ request.GET.next }}' />
+        {% endif %}
+        {{ form|crispy }}
+        <button type='submit' class='btn btn-primary'>Save Address</button>
+      </form>
+    </div>
+
+</div>
+
+{% endblock %}

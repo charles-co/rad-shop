@@ -1,0 +1,84 @@
+{% load static %}
+{% load extras %}
+
+<nav id="sidebar" class="d-lg-none">
+    <div id="dismiss">
+        <button type="button" id="sidebarCollapsev" class="navbar-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+    <div class="sidebar-header">
+        <h1 class="logo">RAD</h1>
+    </div>
+    <span class="font-weight-bold">
+        {% if request.user.is_authenticated %}
+        <p class="mx-2">Hi, {{ request.user.first_name }}</p>
+        {% else %}
+        <p class="mx-2">Hello</p>
+        {% endif %}
+    </span>
+    <ul class="list-unstyled list-group p-2 list-group-flush">
+        <li class="{% if 'categories/' not in request.path and 'account/' not in request.path  %}active {% endif %}list-group-item menu-list bg-transparent">
+            <a href="/">HOME</a>
+        </li>
+        {% menu %}
+    </ul>
+    <ul class="list-unstyled list-group fixed-bottom list-group-horizontal" id="login">
+        {% if not request.user.is_authenticated %}
+        <li class="{% if 'login/' in request.path  %}active {% endif %}list-group-item flex-fill rounded-0" style="background-color:#6b8872;">
+            <a href="{% url 'accounts:login' %}" class="text-center">LOGIN</a>
+        </li>
+        <li class="{% if 'signup/' in request.path  %}active {% endif %}list-group-item flex-fill rounded-0" style="background-color:#f47e3a;">
+            <a href="{% url 'accounts:signup' %}" class="text-center">SIGN UP</a>
+        </li>
+        {% else %}
+        <li class="{% if 'account/dashboard/' in request.path  %}active {% endif %}list-group-item flex-fill rounded-0" style="background-color:#6b8872;">
+            <a href="{% url 'accounts:account-home' %}" class="text-center">MY ACCOUNT</a>
+        </li>
+        <li class="{% if 'logout/' in request.path  %}active {% endif %}list-group-item flex-fill rounded-0" style="background-color:#f47e3a;">
+            <a href="{% url 'accounts:logout' %}" class="text-center">LOGOUT</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+<nav class="navbar navbar-expand-lg d-lg-none fixed-top navbar-light bg-light navv">
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between w-100 align-items-center">
+            <button type="button" id="sidebarCollapse" class="navbar-btn animated delay-1s slideInLeft">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="logo-logo slow">
+                <a href="/"><img src="{% static 'image/favicon.ico' %}" class="logo-image" /></a>
+            </div>
+            <div id="cartnav" class="animated delay-1s slideInRight"> 
+                <a id="cart" href="{% url 'cart:cart-detail' %}" class="btn btn-light d-inline-block d-lg-none .cart" role="button">
+                    <i class="fas fa-box-open position-relative align-middle text-center" :class="{'badger': numItems > 0}" :data-count="numItems"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+<nav class="navbar navbar-expand-lg fixed-top d-none d-lg-block navbar-dark bg-dark">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="nav navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Page</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Page</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Page</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Page</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
