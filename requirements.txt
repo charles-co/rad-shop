@@ -26,6 +26,6 @@ webcolors==1.11.1
 django-tinymce==3.1.0
 sorl-thumbnail-serializer-field==0.2.1
 djangorestframework-recursive==0.1.2
-celery==4.4.4
+celery==5.0.2
 django-colorfield==0.3.2
 rest-framework-generic-relations==2.0.0
