@@ -21,7 +21,7 @@ whitenoise==5.1.0
 django-celery-beat==2.0.0
 django-admin-honeypot
 django-nested-admin==3.3.2
-django-phonenumber-field==5.0.0
+django-phonenumber-field[phonenumbers]==5.0.0
 webcolors==1.11.1
 django-tinymce==3.1.0
 sorl-thumbnail-serializer-field==0.2.1
