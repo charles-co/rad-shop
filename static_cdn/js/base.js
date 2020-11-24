@@ -14,7 +14,6 @@
 //     setFooterStyle();
 //     window.onresize = setFooterStyle;
 // });
-
 $(window).on("load", function() {
     $(".loader-wrapper").fadeOut("slow");
 });
