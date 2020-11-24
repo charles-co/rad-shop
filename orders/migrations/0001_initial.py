@@ -10,8 +10,10 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('billing', '0001_initial'),
-        ('addresses', '0008_auto_20201116_0837'),
-        ('shop', '0002_auto_20201113_1706'),
+        # ('addresses', '0008_auto_20201116_0837'),
+        ('addresses', '0001_initial'),
+        # ('shop', '0002_auto_20201113_1706'),
+        ('shop', '0001_initial'),
     ]
 
     operations = [
