@@ -6,7 +6,6 @@ from crispy_forms.bootstrap import InlineField
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import (ButtonHolder, Div, Fieldset, Layout,
                                  MultiField, Submit)
-from pagedown.widgets import AdminPagedownWidget
 from tinymce.widgets import TinyMCE
 
 # from crispy_forms.helper import FormHelper
