@@ -66,7 +66,7 @@
                     <div v-if="!changeText">
                         <p> [[ selected_trouser.color ]]</p>
                         <p class=""> [[ name ]]</p>
-                        <p class="mb-0"> $[[ selected_trouser.price ]]</p>
+                        <p class="mb-0"> [[ selected_trouser.price|currency ]]</p>
                         <small class="text-muted"> VAT not included </small> 
                         <div class="d-flex flex-wrap my-2">
                             <button v-for="(size, index) in selected_trouser.trouser_variant_meta" class="btn btn-transparent btn-outline-dark rounded-0 mr-2" :class="{active : currentSize == size.size}"@click="changeSize(index)">
@@ -92,15 +92,15 @@
                 <h4 class="text-uppercase font-weight-light">related Products</h4>
             </div>
             <div class="swiper-wrapper">
-                <div class="swiper-slide card bg-transparent border-0" v-for="index in 6" :key="index">
+                <div class="swiper-slide card bg-transparent border-0" v-for="trouser in similiar_trousers" :key="trouser.id">
                     <div class="d-flex bg-transparent align-items-center justify-contents-center overflow-hidden">
-                        <img src="{% static "image/test2.jpg" %}" class="img-fluid img-responsive mx-auto card-img-top" alt="image">
+                        <a :href="trouser.url"><img :src="trouser.first_variant.first_image.file" class="img-fluid img-responsive mx-auto card-img-top" alt="image"></a>
                     </div>
                     <div class="card-body py-0">
-                        <h5 class="card-title text-center">C2 Cargo</h5>
+                        <h5 class="card-title text-center small">[[ trouser.name ]]</h5>
                         <span class="d-flex justify-content-center" style="font-size:10px;font-weight:600;">
-                            <del class="card-text text-danger">1500</del>
-                            <p class="h5 align-text-bottom card-text">&nbsp;2000</p>
+                            <del class="card-text text-danger" v-if="trouser.first_variant.old_price"></del>
+                            <p class="align-text-bottom card-text font-weight-bolder">&nbsp;[[ trouser.first_variant.price|currency ]]</p>
                         </span>
                     </div>
                 </div>
@@ -115,6 +115,11 @@
 <script src="{% static 'js/swiper.min.js' %}"></script>
 <script src="{% static 'js/vue-awesome-swiper.js' %}"></script>
 <script>
+    const formatter = new Intl.NumberFormat('en-US', {
+                                        style: 'currency',
+                                        currency: 'NGN', 
+                                        minimumFractionDigits: 2
+                                    })
     Vue.use(VueAwesomeSwiper)
     const trouserappdetail = new Vue({
         delimiters: ['[[', ']]'],
@@ -174,6 +179,13 @@
         created(){
             console.log("created")
 
+        },
+        filters: {
+            currency: function(value){
+                if (!value) return ''
+                value = formatter.format(value)
+                return value
+            },
         },
         mounted(){
             console.log("mounted");

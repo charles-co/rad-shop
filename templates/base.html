@@ -45,10 +45,58 @@
             {% block content %}
             {% endblock content %}
             </div>
-            <div class="container-fluid footer test py-3"> 
-                <div class="row justify-content-center">
-                    <div class="col-lg-3">
-                        <div class="d-flex flex-column align-items-center">
+            <footer class="container-fluid footer p-md-5 p-4 text-white-50 py-3"> 
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="d-flex"><img src="{% static 'image/favicon.ico' %}" style="width:40px;height:40px;"><h2 class="footer-heading">Rad</h2></div>
+                        <p>{% lorem 1 b random %}</p>
+                        {% now "Y" as current_year %}
+                        <p>Copyright &copy; {{ current_year }}, Rad.</p>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                        <div class="col-md-6">
+                            <h4 class="footer-heading">Menu -</h4>
+                            <ul class="list-group list-unstyled list-group-flush">
+                                <a href="{% url 'menu:trouser_by_category' 'new-arrivals' %}" class="list-group-item list-group-item-action font-weight-bold links bg-transparent small">NEW ARRIVALS</a>
+                                <a href="{% url 'menu:trouser_by_category' 'collections' %}" class="list-group-item list-group-item-action font-weight-bold links bg-transparent small">COLLECTIONS</a>
+                                <a href="{% url 'menu:trouser_by_category' 'back-in-stock' %}" class="list-group-item list-group-item-action font-weight-bold links bg-transparent small">BACK IN STOCK</a>
+                                <a href="{% url 'menu:trouser_by_category' 'bestsellers' %}" class="list-group-item list-group-item-action font-weight-bold links bg-transparent small">BEST SELLERS</a>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h4 class="footer-heading">Quick Links -</h4>
+                            <ul class="list-group list-unstyled list-group-flush">
+                                <a href="#" class="list-group-item list-group-item-action font-weight-bold links bg-transparent small">ABOUT US</a>
+                                <a href="#" class="list-group-item list-group-item-action font-weight-bold links bg-transparent small">CONTACTS</a>
+                                <a href="#" class="list-group-item list-group-item-action font-weight-bold links bg-transparent small">TERMS & CONDITIONS</a>
+                                <a href="#" class="list-group-item list-group-item-action font-weight-bold links bg-transparent small">PRIVACY POLICY</a>
+                            </ul>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <h4 class="footer-heading">Follow Us</h4>
+                        <ul class="list-group list-unstyled list-group-horizontal border-0 flex-wrap">
+                            <a href="#" target="_blank" class="list-group-item socials list-group-item-action bg-transparent border-0 px-2"><i class="fab fa-instagram shadow-sm disabled" aria-disabled="true"></i></a>
+                            <a href="#" target="_blank" class="list-group-item socials list-group-item-action bg-transparent border-0 px-2"><i class="fab fa-twitter shadow-sm disabled" aria-disabled="true"></i></a>
+                            <a href="#" target="_blank" class="list-group-item socials list-group-item-action bg-transparent border-0 px-2"><i class="fab fa-facebook shadow-sm disabled" aria-disabled="true"></i></a>
+                            <a href="#" target="_blank" class="list-group-item socials list-group-item-action bg-transparent border-0 px-2"><i class="fab fa-whatsapp shadow-sm disabled" aria-disabled="true"></i></a>
+                        </ul>
+                    </div>
+                    <div class="col-md-5 ml-md-auto">
+                        <h4> Newsletter</h4>
+                        <p> A rover wearing a fuzzy suit doesn't alarm the real penguins</p>
+                        <p>
+                            <div class ="input-group">
+                                <input type="text" class="form-control border-right-0" placeholder="Search for...">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-info border-left-0" type="button">
+                                        <i class="fas fa-envelope"></i>
+                                    </button>
+                                </span> 
+                            </div>
+                        {% comment %} <div class="d-flex flex-column align-items-center">
                             <p class="display-4 logo" style="color:#969ca0;">Rad</p>
                             <div class="d-flex justify-content-around mb-3">
                                 <a href="http://www.instagram.com" target="_blank"><i class="fab fa-instagram shadow-sm fa-2x mx-3 disabled" style="color:#969ca0;" aria-disabled="true"></i></a>
@@ -60,10 +108,10 @@
                             <p class="m-0 text-center">Copyright &copy; {{ current_year }}, Rad.</p>
                             <p class="m-0 text-center">ALL RIGHTS RESERVED.</p>  
                             <span><i class="fas fa-code"></i> with <i class="fas fa-heartbeat text-danger"></i>, Charles.</span>
-                        </div>
+                        </div> {% endcomment %}
                     </div>
                 </div>
-            </div>
+            </footer>
             <div class="loader-wrapper">
                 <span class="loader"><span class="loader-inner"></span></span>
             </div>                                

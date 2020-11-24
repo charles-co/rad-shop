@@ -79,10 +79,11 @@ class TrouserVariantTagSerializer(serializers.ModelSerializer):
 
 class TrouserTagSerializer(serializers.ModelSerializer):
     first_variant = serializers.SerializerMethodField()
+    url = serializers.CharField(source='get_absolute_url')
 
     class Meta:
         model = Trouser
-        fields = ("id", "name", "slug", "first_variant")
+        fields = ("id", "name", "slug", "first_variant", "url")
 
     def get_first_variant(self, obj):
         first_variant = TrouserVariant.objects.filter(trouser=obj).earliest('id')

@@ -41,10 +41,10 @@
                             <div class="form-group">
                                 <label for="sort">Sort</label>
                                 <select class="form-control" @change="order($event)" id="sort_by">
-                                    <option disabled="disabled" value = "none">Choose option</option>
+                                    <option disabled="disabled" selected value = "none">Choose option</option>
                                     <option value='featured'>FEATURED</option>
                                     <option value='bestseller'>BESTSELLER</option>
-                                    <option value='name' selected="{selected:selectedSort==null}">ALPHABETICALLY, A-Z</option>
+                                    <option value='name'>ALPHABETICALLY, A-Z</option>
                                     <option value='-name'>ALPHABETICALLY, Z-A</option>
                                     <option value='price'>PRICE, LOW TO HIGH</option>
                                     <option value='-price'>PRICE, HIGH TO LOW</option>
@@ -139,8 +139,13 @@
 {% block javascript %}
 <script src="{% static 'js/vue-infinite-scroll.js' %}"></script>
 <script src="{% static 'js/lodash.min.js' %}"></script>
-<script>
 
+<script>
+    const formatter = new Intl.NumberFormat('en-US', {
+                                        style: 'currency',
+                                        currency: 'NGN', 
+                                        minimumFractionDigits: 2
+                                    })
     Vue.component('colors-dropdown', {
         delimiters: ['[[', ']]'],
         data: function(){
@@ -193,6 +198,13 @@
                 return false
             } 
         },
+        filters: {
+            currency: function(value){
+                if (!value) return ''
+                value = formatter.format(value)
+                return value
+            },
+        },
         mounted() {
         },
         methods: {
@@ -236,7 +248,7 @@
                                 <p class="card-title mb-0" style="font-size:10px;font-weight:600;">  
                                     [[ color ]]
                                     <br> [[ name ]] <br>
-                                    [[ price ]]  
+                                    [[ price|currency ]]  
                                 </p>
                             </div>
                         </a>

@@ -27,6 +27,7 @@ body {
 }
 .logo {
     font-family: 'Faster One', 'Brush Script Mt';
+    color: #D2691E;
 }
 
 #cart .badger:after {
@@ -398,7 +399,20 @@ a.article:hover {
 }
 
 .footer {
-    background-color: #dde5eb;
+    background-color: #1c1b1b;
+}
+
+.list-group-item.socials.list-group-item-action{
+    width: auto;
+    color:#f47e3a;
+}
+
+.list-group-item.links.list-group-item-action{
+    color:#CD5C5C;
+}
+
+.footer-heading{
+    color:#6b8872;;
 }
 
 .loader-wrapper {

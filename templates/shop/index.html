@@ -25,7 +25,7 @@
                 <span class="text-white text-center">NEW ARRIVALS & RESTOCKS</span>
                 <h4 class="text-white font-weight-bold text-center mb-4">JUST IN.</h4>
                 <div class="d-flex align-items-center justify-content-center">
-                    <a class="btn btn-primary bg-white rounded-0 text-center text-dark btn-outline-light" href="#" role="button">SHOP NOW</a>
+                    <a class="btn btn-primary bg-white rounded-0 text-center text-dark btn-outline-light" href="{% url 'menu:trouser_by_category' 'collections' %}" role="button">SHOP NOW</a>
                 </div>
             </div>
         </div>
@@ -116,7 +116,7 @@
                 </div>
             </div>
         </div>
-        <a href="#" class="btn btn-lg px-5 py-3 font-weight-bold rounded-0 text-center mx-auto text-white" style="background-color:#1c1b1b;font-size:11px;" role="button">VIEW ALL</a>
+        <a href="{% url 'menu:trouser_by_category' 'bestsellers' %}" class="btn btn-lg px-5 py-3 font-weight-bold rounded-0 text-center mx-auto text-white" style="background-color:#1c1b1b;font-size:11px;" role="button">VIEW ALL</a>
     </div>
 
     <div class="row mb-4 d-md-none back-in-stock" style="height:auto;">
@@ -128,7 +128,7 @@
                 <div class="card-img-overlay d-flex flex-column text-white justify-content-center align-items-center">
                     <h6 class="card-title mb-4">BACK IN STOCK</h6>
                     <h5 class="card-title mb-4">C1 CARGO</h5>
-                    <a class="btn btn-primary bg-white btn-outline-white rounded-0 text-center text-dark btn-outline-light" href="#" role="button">SHOP NOW</a>
+                    <a class="btn btn-primary bg-white btn-outline-white rounded-0 text-center text-dark btn-outline-light" href="{% url 'menu:trouser_by_category' 'back-in-stock' %}" role="button">SHOP NOW</a>
                 </div>
             </div>
             <div class="card border-0 bg-transparent">
@@ -138,7 +138,7 @@
                 <div class="card-img-overlay d-flex flex-column text-white justify-content-center align-items-center">
                     <h6 class="card-title mb-4">BACK IN STOCK</h6>
                     <h5 class="card-title mb-4">C1 CARGO</h5>
-                    <a class="btn btn-primary bg-white btn-outline-white rounded-0 text-center text-dark btn-outline-light" href="#" role="button">SHOP NOW</a>
+                    <a class="btn btn-primary bg-white btn-outline-white rounded-0 text-center text-dark btn-outline-light" href="{% url 'menu:trouser_by_category' 'back-in-stock' %}" role="button">SHOP NOW</a>
                 </div>
             </div>
             <div class="card border-0 bg-transparent">
@@ -148,7 +148,7 @@
                 <div class="card-img-overlay d-flex flex-column text-white justify-content-center align-items-center">
                     <h6 class="card-title mb-4">BACK IN STOCK</h6>
                     <h5 class="card-title mb-4">C1 CARGO</h5>
-                    <a class="btn btn-primary bg-white btn-outline-white rounded-0 text-center text-dark btn-outline-light" href="#" role="button">SHOP NOW</a>
+                    <a class="btn btn-primary bg-white btn-outline-white rounded-0 text-center text-dark btn-outline-light" href="{% url 'menu:trouser_by_category' 'back-in-stock' %}" role="button">SHOP NOW</a>
                 </div>
             </div>
         </div>
@@ -163,7 +163,7 @@
                 <div class="card-img-overlay d-flex flex-column text-white m-4 justify-content-end align-items-start">
                     <h6 class="card-title mb-4">BACK IN STOCK</h6>
                     <h5 class="card-title mb-4">C1 CARGO</h5>
-                    <a class="btn btn-primary bg-white btn-outline-white rounded-0 text-center text-dark btn-outline-light" href="#" role="button">SHOP NOW</a>
+                    <a class="btn btn-primary bg-white btn-outline-white rounded-0 text-center text-dark btn-outline-light" href="{% url 'shop:listing' 'back-in-stock' %}" role="button">SHOP NOW</a>
                 </div>
             </div>
             <div class="card col-md-6 col-lg-4 border-0 bg-transparent">
@@ -173,7 +173,7 @@
                 <div class="card-img-overlay d-flex flex-column text-white m-4 justify-content-end align-items-start">
                     <h6 class="card-title mb-4">BACK IN STOCK</h6>
                     <h5 class="card-title mb-4">C1 CARGO</h5>
-                    <a class="btn btn-primary bg-white btn-outline-white rounded-0 text-center text-dark btn-outline-light" href="#" role="button">SHOP NOW</a>
+                    <a class="btn btn-primary bg-white btn-outline-white rounded-0 text-center text-dark btn-outline-light" href="{% url 'shop:listing' 'back-in-stock' %}" role="button">SHOP NOW</a>
                 </div>
             </div>
             <div class="card border-0 col-md-6 col-lg-4 bg-transparent">
@@ -183,7 +183,7 @@
                 <div class="card-img-overlay d-flex flex-column text-white m-4 justify-content-end align-items-start">
                     <h6 class="card-title mb-4">BACK IN STOCK</h6>
                     <h5 class="card-title mb-4">C1 CARGO</h5>
-                    <a class="btn btn-primary bg-white btn-outline-white rounded-0 text-center text-dark btn-outline-light" href="#" role="button">SHOP NOW</a>
+                    <a class="btn btn-primary bg-white btn-outline-white rounded-0 text-center text-dark btn-outline-light" href="{% url 'shop:listing' 'back-in-stock' %}" role="button">SHOP NOW</a>
                 </div>
             </div>
 
@@ -263,7 +263,7 @@
                 </div>
             </div>
         </div>
-        <a href="#" class="btn btn-lg rounded-0 px-5 py-3 font-weight-bold text-center mx-auto text-white" style="background-color:#1c1b1b;font-size:11px;" role="button">VIEW ALL</a>
+        <a href="{% url 'shop:listing' 'new-arrivals' %}" class="btn btn-lg rounded-0 px-5 py-3 font-weight-bold text-center mx-auto text-white" style="background-color:#1c1b1b;font-size:11px;" role="button">VIEW ALL</a>
     </div>
 </div>
 {% endblock content %}
