@@ -23,7 +23,7 @@ load_dotenv(find_dotenv())
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = os.environ.get("SECRET_KEY")
 SITE_ID = 1
 AUTH_USER_MODEL = 'accounts.User'
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -32,11 +32,11 @@ AUTH_USER_MODEL = 'accounts.User'
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_HOST_USER     = os.getenv("GMAIL_EMAIL")
-# EMAIL_HOST_PASSWORD = os.getenv("GMAIL_PASSWORD")
+# EMAIL_HOST_USER     = os.environ.get("GMAIL_EMAIL")
+# EMAIL_HOST_PASSWORD = os.environ.get("GMAIL_PASSWORD")
 # EMAIL_PORT = 465
 # EMAIL_USE_SSL = True # Yes for Gmail
-# DEFAULT_FROM_EMAIL = "Rad | Shop os.getenv("GMAIL_EMAIL")"
+# DEFAULT_FROM_EMAIL = "Rad | Shop os.environ.get("GMAIL_EMAIL")"
 # BASE_URL = 'http://192.168.43.184:8000'
 
 LOGIN_URL = 'accounts:login'
@@ -93,6 +93,7 @@ INSTALLED_APPS = [
     'sorl_thumbnail_serializer',
     'tinymce',
     'phonenumber_field',
+    'whitenoise.runserver_nostatic',
 ]
 # PHONENUMBER_DB_FORMAT = 'E164'
 # PHONENUMBER_DEFAULT_REGION = 'NG'

@@ -123,8 +123,7 @@
         <script src="{% static 'js/popper.min.js' %}"></script>
         <script src="{% static 'js/jquery.mCustomScrollbar.concat.min.js' %}"></script>
         <script src="{% static 'js/bootstrap.min.js' %}"></script>
-        <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
-        <script src="{% static 'js/easy-waypoint-animate.js' %}"></script> 
+        {% comment %} <script src="{% static 'js/jquery.waypoints.min.js' %}"></script> {% endcomment %}
         <script src="{% static 'js/lodash.min.js' %}"></script>
         <script src="{% static 'js/vue2.js' %}"></script>
         <script src="{% static 'js/vuex.js' %}"></script>
@@ -185,7 +184,6 @@
                         });
                     }, 6000);
                 });
-                InitWaypointAnimations();
             });
             const store = new Vuex.Store({
                 state: {

@@ -2,16 +2,16 @@ from .base import *
 
 DEBUG = False
 
-BASE_URL = '*'
+BASE_URL = 'rad-simulation.herokuapp.com'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['rad-simulation.herokuapp.com']
 
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER     = os.getenv("GMAIL_EMAIL")
-EMAIL_HOST_PASSWORD = os.getenv("GMAIL_PASSWORD")
+EMAIL_HOST_USER     = os.environ.get("GMAIL_EMAIL")
+EMAIL_HOST_PASSWORD = os.environ.get("GMAIL_PASSWORD")
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True # Yes for Gmail
-DEFAULT_FROM_EMAIL = "Rad | Shop <" + os.getenv("GMAIL_EMAIL")>
+DEFAULT_FROM_EMAIL = "Rad | Shop <" + os.environ.get("GMAIL_EMAIL")>
 
 import dj_database_url
 db_from_env = dj_database_url.config() #postgreSQL Database in heroku
