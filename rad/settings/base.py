@@ -58,7 +58,6 @@ ADMINS = MANAGERS
 # Application definition
 
 INSTALLED_APPS = [
-    'nested_admin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -94,6 +93,7 @@ INSTALLED_APPS = [
     'tinymce',
     'phonenumber_field',
     'whitenoise.runserver_nostatic',
+    'nested_admin',
 ]
 # PHONENUMBER_DB_FORMAT = 'E164'
 # PHONENUMBER_DEFAULT_REGION = 'NG'
