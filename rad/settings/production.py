@@ -14,9 +14,10 @@ EMAIL_USE_SSL = True # Yes for Gmail
 DEFAULT_FROM_EMAIL = "Rad | Shop < " + os.environ.get("GMAIL_EMAIL") + " >"
 
 import dj_database_url
-db_from_env = dj_database_url.config() #postgreSQL Database in heroku
+
+db_from_env = dj_database_url.config(conn_max_age=600) #postgreSQL Database in heroku
 DATABASES['default'].update(db_from_env)
-DATABASES['default']['CONN_MAX_AGE'] = 500
+
 
 STATIC_URL = '/static/'
 
