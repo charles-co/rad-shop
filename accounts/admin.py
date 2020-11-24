@@ -1,11 +1,9 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.models import Group
 
-
-
-from .forms import UserCreationForm, UserChangeForm
+from .forms import UserChangeForm, UserCreationForm
 from .models import EmailActivation, GuestEmail
 
 User = get_user_model()

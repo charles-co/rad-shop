@@ -1,20 +1,21 @@
-from django.shortcuts import render
-
+from django.contrib import messages
 # Create your views here.
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, UpdateView, CreateView
-from django.shortcuts import render, redirect
-from django.utils.http import is_safe_url, url_has_allowed_host_and_scheme
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
-from django.contrib import messages
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-# CRUD create update retrieve delete
+from django.utils.http import is_safe_url, url_has_allowed_host_and_scheme
+from django.views.generic import CreateView, ListView, UpdateView
 
 from billing.models import BillingProfile
+from rad.mixins import NextUrlMixin, RequestFormAttachMixin
+
 from .forms import AddressCheckoutForm, AddressForm
 from .models import Address
-from rad.mixins import NextUrlMixin, RequestFormAttachMixin
+
+# CRUD create update retrieve delete
+
 
 
 

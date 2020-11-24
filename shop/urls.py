@@ -1,6 +1,8 @@
-from django.urls import path, include, re_path
-from django.views.generic.base import View, TemplateView
-from shop.views import HomeView, TrouserListing, TrouserDetail, TrouserDetailAPI
+from django.urls import include, path, re_path
+from django.views.generic.base import TemplateView, View
+
+from shop.views import (HomeView, TrouserDetail, TrouserDetailAPI,
+                        TrouserListing)
 
 app_name = 'shop'
 

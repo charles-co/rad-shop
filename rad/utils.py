@@ -1,11 +1,11 @@
-import uuid
-import datetime 
+import datetime
 import os
 import random
 import string
-from django.utils.text import slugify
-from django.utils import timezone
+import uuid
 
+from django.utils import timezone
+from django.utils.text import slugify
 
 
 def get_last_month_data(today):

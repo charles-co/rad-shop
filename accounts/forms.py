@@ -1,8 +1,10 @@
 from django import forms
-from django.contrib.auth import authenticate, login, get_user_model, password_validation
+from django.contrib.auth import (authenticate, get_user_model, login,
+                                 password_validation)
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.urls import reverse
 from django.utils.safestring import mark_safe
+
 from accounts.models import EmailActivation, GuestEmail
 
 User = get_user_model()

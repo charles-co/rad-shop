@@ -1,15 +1,19 @@
+import json
+from math import ceil
+
 from django import template
-from django.urls import reverse
+from django.conf import settings
 from django.contrib.humanize.templatetags.humanize import intcomma
 from django.core.serializers import serialize
-import json
-from menu.models import Menu
-from math import ceil
+from django.urls import reverse
 from django.utils.safestring import mark_safe
-from cart.cart import Cart
+
 import webcolors
+
 from cart.cart import Cart
+from menu.models import Menu
 from shop.models import TrouserVariant
+
 register = template.Library()
 
 # from django.http import HttpResponseRedirect
@@ -77,6 +81,12 @@ def addfloatt(value, arg):
         except Exception:
             return ''
 
+@register.simple_tag
+def settings(name):
+    print("here")
+    print(getattr(settings, "DEBUG", ""))
+    return getattr(settings, name, "")
+    
 @register.inclusion_tag('tags/_menu.html', takes_context=True)
 def menu(context):
     menus = Menu.objects.filter(is_active=True)

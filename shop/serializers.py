@@ -1,10 +1,12 @@
-from rest_framework import serializers
 from generic_relations.relations import GenericRelatedField
-from .models import Trouser, TrouserMETA, TrouserVariant
-from menu.models import Menu
+from rest_framework import serializers
 from rest_framework_recursive.fields import RecursiveField
-from contents.models import Image
 from sorl_thumbnail_serializer.fields import HyperlinkedSorlImageField
+
+from contents.models import Image
+from menu.models import Menu
+
+from .models import Trouser, TrouserMETA, TrouserVariant
 
 
 class CategorySerializer(serializers.ModelSerializer):

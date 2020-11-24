@@ -1,23 +1,25 @@
-from django.contrib.auth import authenticate, login, get_user_model
+from django.contrib import messages
+from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib import messages
+from django.http import HttpResponse
+from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, FormView, DetailView, View, UpdateView, TemplateView
-from django.views.generic.edit import FormMixin
-from django.http import HttpResponse
-from django.shortcuts import render,redirect
-from django.utils.http import is_safe_url
+from django.utils.encoding import force_text
+from django.utils.http import is_safe_url, urlsafe_base64_decode
 from django.utils.safestring import mark_safe
-from django.shortcuts import render
-from .forms import SignUpForm, ReactivateEmailForm, LoginForm, UserDetailChangeForm, GuestForm
+from django.views.generic import (CreateView, DetailView, FormView,
+                                  TemplateView, UpdateView, View)
+from django.views.generic.edit import FormMixin
+
+from accounts.models import EmailActivation
 from accounts.tasks import EmailVerification
 from accounts.tokens import default_token_generator
-from django.utils.encoding import force_text
-from django.utils.http import urlsafe_base64_decode
-from accounts.models import EmailActivation
 from rad.mixins import NextUrlMixin, RequestFormAttachMixin
+
+from .forms import (GuestForm, LoginForm, ReactivateEmailForm, SignUpForm,
+                    UserDetailChangeForm)
 
 # Create your views here.
 

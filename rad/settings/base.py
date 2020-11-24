@@ -152,6 +152,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'cart.context_processors.cart',
+                'rad.context_processors.debug',
             ],
             'libraries': {
                 'extras': 'templatetags.extras',

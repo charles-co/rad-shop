@@ -1,7 +1,9 @@
 from django.conf.urls import url
 from django.urls import path
-from cart.views import cart_detail, cart_add, cart_remove, checkout_home
-from addresses.views import checkout_address_create_view, checkout_address_reuse_view, guestaddressedit
+
+from addresses.views import (checkout_address_create_view,
+                             checkout_address_reuse_view, guestaddressedit)
+from cart.views import cart_add, cart_detail, cart_remove, checkout_home
 
 app_name='cart'
 urlpatterns = [

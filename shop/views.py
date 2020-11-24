@@ -1,17 +1,21 @@
-from django.shortcuts import render
-from shop.models import Trouser, TrouserVariant
-from menu.models import Menu
-from django.views.generic.list import ListView
-from django.views.generic.detail import DetailView
-from django.views.generic.base import TemplateView
-from cart.forms import CartAddProductForm
-import webcolors
 # Create your views here.
-from django.http import JsonResponse, HttpResponse
-from contents.models import Image
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render
+from django.views.generic.base import TemplateView
+from django.views.generic.detail import DetailView
+from django.views.generic.list import ListView
+
+import webcolors
 from rest_framework.generics import ListAPIView, RetrieveAPIView
-from .serializers import TrouserSerializer, TrouserDetailSerializer
+
+from cart.forms import CartAddProductForm
+from contents.models import Image
+from menu.models import Menu
+from shop.models import Trouser, TrouserVariant
+
 from .pagination import StandardResultsSetPagination
+from .serializers import TrouserDetailSerializer, TrouserSerializer
+
 
 class HomeView(TemplateView):
     template_name = "shop/index.html"

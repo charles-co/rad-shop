@@ -1,5 +1,5 @@
-{% load extras %}
 {% load static %}
+{% load extras %}
 <!DOCTYPE html>
 <html>
 
@@ -11,13 +11,22 @@
             <meta name="keywords" content="" />
             <meta name="description" content="" />
             <link rel='shortcut icon' href="{% static 'image/favicon.ico' %}">
-            <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">  
-            <link rel="stylesheet" href="{% static 'css/jquery.mCustomScrollbar.min.css' %}">  
-            <link rel="stylesheet" href="{% static 'css/base.css' %}">
-            <link rel="stylesheet" href="{% static 'css/swiper.min.css' %}">
+            {% if debug %}
+            <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"> 
             <link rel="stylesheet" href="{% static 'css/animate/animate.css' %}">
-            <link rel="stylesheet" href="{% static 'css/all.min.css' %}">  
-            <link rel="stylesheet" href="{% static 'css/lightslider.css' %}">  
+            <link rel="stylesheet" href="{% static 'css/all.min.css' %}"> 
+            <link rel="stylesheet" href="{% static 'css/lightslider.css' %}">
+            <link rel="stylesheet" href="{% static 'css/swiper.min.css' %}">
+            <link rel="stylesheet" href="{% static 'css/jquery.mCustomScrollbar.min.css' %}">  
+            {% else %}
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightslider/1.1.6/css/lightslider.min.css" integrity="sha512-yJHCxhu8pTR7P2UgXFrHvLMniOAL5ET1f5Cj+/dzl+JIlGTh5Cz+IeklcXzMavKvXP8vXqKMQyZjscjf3ZDfGA==" crossorigin="anonymous" />
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/5.4.5/css/swiper.min.css" integrity="sha512-uCQmAoax6aJTxC03VlH0uCEtE0iLi83TW1Qh6VezEZ5Y17rTrIE+8irz4H4ehM7Fbfbm8rb30OkxVkuwhXxrRg==" crossorigin="anonymous" />
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css" integrity="sha512-6qkvBbDyl5TDJtNJiC8foyEVuB6gxMBkrKy67XpqnIDxyvLLPJzmTjAj1dRJfNdmXWqD10VbJoeN4pOQqDwvRA==" crossorigin="anonymous" />
+            {% endif %}
+            <link rel="stylesheet" href="{% static 'css/base.css' %}">
             {% block style %}{% endblock style %}
     </head>
 
@@ -76,7 +85,7 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <h4 class="footer-heading">Follow Us</h4>
+                        <h4 class="footer-heading">Connect With Us <i class="fas fa-link"></i></h4>
                         <ul class="list-group list-unstyled list-group-horizontal border-0 flex-wrap">
                             <a href="#" target="_blank" class="list-group-item socials list-group-item-action bg-transparent border-0 px-2"><i class="fab fa-instagram shadow-sm disabled" aria-disabled="true"></i></a>
                             <a href="#" target="_blank" class="list-group-item socials list-group-item-action bg-transparent border-0 px-2"><i class="fab fa-twitter shadow-sm disabled" aria-disabled="true"></i></a>
@@ -116,9 +125,9 @@
                 <span class="loader"><span class="loader-inner"></span></span>
             </div>                                
         </div>
-
-        <script src="{% static 'js/jquery.js' %}"></script>
         <script src="{% static 'js/base.js' %}"></script>
+        {% if debug %}
+        <script src="{% static 'js/jquery.js' %}"></script>
         <script src="{% static 'js/lightslider.js' %}"></script>
         <script src="{% static 'js/popper.min.js' %}"></script>
         <script src="{% static 'js/jquery.mCustomScrollbar.concat.min.js' %}"></script>
@@ -127,6 +136,16 @@
         <script src="{% static 'js/lodash.min.js' %}"></script>
         <script src="{% static 'js/vue2.js' %}"></script>
         <script src="{% static 'js/vuex.js' %}"></script>
+        {% else %}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vuex/3.5.1/vuex.min.js" integrity="sha512-n/iV5SyKXzLRbRczKU75fMgHO0A1DWJSWbK5llLNAqdcoxtUK3NfgfszYpjhvcEqS6nEXwu7gQ5bIkx6z8/lrA==" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lightslider/1.1.6/js/lightslider.min.js" integrity="sha512-Gfrxsz93rxFuB7KSYlln3wFqBaXUc1jtt3dGCp+2jTb563qYvnUBM/GP2ZUtRC27STN/zUamFtVFAIsRFoT6/w==" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.5.4/umd/popper.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js" integrity="sha512-Yk47FuYNtuINE1w+t/KT4BQ7JaycTCcrvlSvdK/jry6Kcxqg5vN7/svVWCxZykVzzJHaxXk5T9jnFemZHSYgnw==" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js" integrity="sha512-90vH1Z83AJY9DmlWa8WkjkV79yfS2n2Oxhsi2dZbIv0nC4E6m5AbH8Nh156kkM7JePmqD6tcZsfad1ueoaovww==" crossorigin="anonymous"></script>
+        {% endif %}
         <script type="text/javascript">
             $(window).scroll(function() {
                 if ($(document).scrollTop() > 80) {

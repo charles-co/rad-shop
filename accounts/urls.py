@@ -1,13 +1,12 @@
-from django.urls import path, include, re_path
-from django.views.generic.base import View, TemplateView
-from accounts.views import SignUpView, AccountEmailActivateView, LoginView, AccountHomeView, UserDetailUpdateView, GuestRegisterView
-from addresses.views import (
-    AddressCreateView,
-    AddressListView,
-    AddressUpdateView,
-    )
 from django.contrib.auth.views import LogoutView
+from django.urls import include, path, re_path
+from django.views.generic.base import TemplateView, View
 
+from accounts.views import (AccountEmailActivateView, AccountHomeView,
+                            GuestRegisterView, LoginView, SignUpView,
+                            UserDetailUpdateView)
+from addresses.views import (AddressCreateView, AddressListView,
+                             AddressUpdateView)
 
 app_name = 'accounts'
 

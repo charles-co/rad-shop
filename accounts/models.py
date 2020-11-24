@@ -1,18 +1,18 @@
-from django.db import models
+from datetime import timedelta
+
 from django.conf import settings
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
-from django.utils.translation import ugettext_lazy as _
-from django.utils import timezone
 from django.contrib.sites.shortcuts import get_current_site
-from datetime import timedelta
-from django.conf import settings
-from django.urls import reverse
-from django.db.models import Q
 from django.core.mail import send_mail
+from django.db import models
+from django.db.models import Q
 from django.template.loader import get_template
+from django.urls import reverse
+from django.utils import timezone
 from django.utils.encoding import force_bytes, force_text
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.utils.translation import ugettext_lazy as _
 
 from accounts.tokens import default_token_generator
 

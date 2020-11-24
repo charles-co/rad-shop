@@ -1,20 +1,24 @@
-from django.shortcuts import render
 import json
 from decimal import Decimal
-from templatetags.extras import currency
-# Create your views here.
-from django.shortcuts import render, redirect, get_object_or_404
-from django.views.decorators.http import require_POST
-from shop.models import Trouser, TrouserVariant
-from .cart import Cart
-from sorl.thumbnail import get_thumbnail
+
 from django.http import JsonResponse
-from .forms import CartAddProductForm
-from accounts.forms import LoginForm, GuestForm
+# Create your views here.
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
+
+from sorl.thumbnail import get_thumbnail
+
+from accounts.forms import GuestForm, LoginForm
 from addresses.forms import AddressCheckoutForm
-from orders.models import Order, OrderItem
-from billing.models import BillingProfile
 from addresses.models import Address
+from billing.models import BillingProfile
+from orders.models import Order, OrderItem
+from shop.models import Trouser, TrouserVariant
+from templatetags.extras import currency
+
+from .cart import Cart
+from .forms import CartAddProductForm
+
 
 class DecimalEncoder(json.JSONEncoder):
     def default(self, obj):

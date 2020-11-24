@@ -1,8 +1,9 @@
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 
-from rad.utils import unique_slug_generator
 from menu.models import Menu
+from rad.utils import unique_slug_generator
+
 
 @receiver(pre_save, sender=Menu)
 def menu_pre_save_receiver(sender, instance, **kwargs):

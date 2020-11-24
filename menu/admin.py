@@ -1,7 +1,10 @@
 from django.contrib import admin
+
+from mptt.admin import DraggableMPTTAdmin
+
 # from products.forms import ProductBodyForm
 from menu.models import Menu
-from mptt.admin import DraggableMPTTAdmin
+
 # from django.contrib.contenttypes.admin import GenericStackedInline, GenericTabularInline
 
 # Register your models here.

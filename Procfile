@@ -1,1 +1,1 @@
-web: gunicorn rad.wsgi
+web: gunicorn rad.wsgi --log-file -

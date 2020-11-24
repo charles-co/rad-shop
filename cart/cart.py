@@ -1,8 +1,10 @@
 import json
-from decimal import Decimal
-from django.conf import settings
-from shop.models import Trouser, TrouserVariant
 from collections import OrderedDict
+from decimal import Decimal
+
+from django.conf import settings
+
+from shop.models import Trouser, TrouserVariant
 
 
 class DecimalEncoder(json.JSONEncoder):

@@ -1,8 +1,10 @@
+from django.core.validators import RegexValidator
 from django.db import models
 from django.urls import reverse
-from billing.models import BillingProfile
+
 from phonenumber_field.modelfields import PhoneNumberField
-from django.core.validators import RegexValidator
+
+from billing.models import BillingProfile
 
 ADDRESS_TYPES = (
     ('billing', 'Billing address'),

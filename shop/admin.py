@@ -1,9 +1,14 @@
 from django.contrib import admin
+
+from nested_admin import (NestedGenericStackedInline, NestedInlineModelAdmin,
+                          NestedModelAdmin, NestedStackedInline,
+                          NestedTabularInline)
+from sorl.thumbnail.admin import AdminImageMixin
+
+from contents.models import Image
 from shop.forms import TrouserForm
 from shop.models import Trouser, TrouserMETA, TrouserVariant
-from contents.models import Image
-from sorl.thumbnail.admin import AdminImageMixin
-from nested_admin import NestedStackedInline, NestedTabularInline, NestedModelAdmin, NestedGenericStackedInline, NestedInlineModelAdmin
+
 # from django.contrib.contenttypes.admin import GenericStackedInline, GenericTabularInline
 
 # Register your models here.

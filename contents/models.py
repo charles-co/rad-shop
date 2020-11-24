@@ -1,12 +1,16 @@
+from django.contrib.contenttypes.fields import (GenericForeignKey,
+                                                GenericRelation)
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.template.loader import render_to_string
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
-from colorfield.fields import ColorField
-from shop.models import Trouser, TrouserVariant
-from rad.utils import images_directory_path
-from sorl.thumbnail import ImageField
+
 import webcolors
+from colorfield.fields import ColorField
+from sorl.thumbnail import ImageField
+
+from rad.utils import images_directory_path
+from shop.models import Trouser, TrouserVariant
+
 # Create your models here.
 
 class ItemBase(models.Model):

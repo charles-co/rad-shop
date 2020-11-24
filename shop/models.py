@@ -1,21 +1,22 @@
-from django.db import models
-from django.urls import reverse
-from django.utils.safestring import mark_safe
 from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.db import models
 from django.template.loader import render_to_string
+from django.urls import reverse
 # from django.contrib.contenttypes.fields import GenericRelation
 from django.utils.safestring import mark_safe
-from django.core.exceptions import ValidationError
-from menu.models import Menu
-from mptt.models import MPTTModel, TreeForeignKey
+
+import webcolors
 from colorfield.fields import ColorField
-from tinymce.models import HTMLField
+from mptt.models import MPTTModel, TreeForeignKey
 # from .utils import images_directory_path
 # from .fields import OrderField
 # from mptt.models import MPTTModel, TreeForeignKey
 from taggit.managers import TaggableManager
-from colorfield.fields import ColorField
-import webcolors
+from tinymce.models import HTMLField
+
+from menu.models import Menu
+
 # Create your models here.
 
 

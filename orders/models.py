@@ -1,9 +1,10 @@
-import math
 import datetime
+import math
+
 from django.conf import settings
 from django.db import models
-from django.db.models import Count, Sum, Avg
-from django.db.models.signals import pre_save, post_save
+from django.db.models import Avg, Count, Sum
+from django.db.models.signals import post_save, pre_save
 from django.urls import reverse
 from django.utils import timezone
 
