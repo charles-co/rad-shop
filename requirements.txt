@@ -30,3 +30,4 @@ celery==4.4.4
 future==0.18.2
 django-colorfield==0.3.2
 rest-framework-generic-relations==2.0.0
+django-heroku==0.3.1
