@@ -82,7 +82,6 @@ INSTALLED_APPS = [
     'sorl_thumbnail_serializer',
     'tinymce',
     'phonenumber_field',
-    'whitenoise.runserver_nostatic',
     'nested_admin',
 ]
 # PHONENUMBER_DB_FORMAT = 'E164'
@@ -118,7 +117,6 @@ TINYMCE_DEFAULT_CONFIG ={
 TINYMCE_SPELLCHECKER = True
 
 MIDDLEWARE = [
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

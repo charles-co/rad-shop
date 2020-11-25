@@ -113,3 +113,4 @@ staticfiles/
 !**/migrations/__init__.py
 shop/fixtures/rad.json
 rad/settings/local.py
+rad/settings/pythonanywhere.py
