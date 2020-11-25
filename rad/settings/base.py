@@ -23,21 +23,14 @@ load_dotenv(find_dotenv())
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+
 SECRET_KEY = os.environ.get("SECRET_KEY")
+
 SITE_ID = 1
+
 AUTH_USER_MODEL = 'accounts.User'
+
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_HOST_USER     = os.environ.get("GMAIL_EMAIL")
-# EMAIL_HOST_PASSWORD = os.environ.get("GMAIL_PASSWORD")
-# EMAIL_PORT = 465
-# EMAIL_USE_SSL = True # Yes for Gmail
-# DEFAULT_FROM_EMAIL = "Rad | Shop os.environ.get("GMAIL_EMAIL")"
-# BASE_URL = 'http://192.168.43.184:8000'
 
 LOGIN_URL = 'accounts:login'
 LOGIN_URL_REDIRECT = 'shop:shop-index'
@@ -51,9 +44,6 @@ MANAGERS = (
 )
 
 ADMINS = MANAGERS
-
-# ALLOWED_HOSTS = ['192.168.43.184', '127.0.0.1', '172.20.10.4']
-
 
 # Application definition
 
@@ -217,12 +207,6 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
-# STATIC_URL = '/static/'
-# # STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-# STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, 'static/'),
-# )
 
 MEDIA_URL ='/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')

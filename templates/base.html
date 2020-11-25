@@ -13,7 +13,7 @@
             <link rel='shortcut icon' href="{% static 'image/favicon.ico' %}">
             {% if debug %}
             <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"> 
-            <link rel="stylesheet" href="{% static 'css/animate/animate.css' %}">
+            <link rel="stylesheet" href="{% static 'css/animate.css' %}">
             <link rel="stylesheet" href="{% static 'css/all.min.css' %}"> 
             <link rel="stylesheet" href="{% static 'css/lightslider.css' %}">
             <link rel="stylesheet" href="{% static 'css/swiper.min.css' %}">
@@ -105,19 +105,6 @@
                                     </button>
                                 </span> 
                             </div>
-                        {% comment %} <div class="d-flex flex-column align-items-center">
-                            <p class="display-4 logo" style="color:#969ca0;">Rad</p>
-                            <div class="d-flex justify-content-around mb-3">
-                                <a href="http://www.instagram.com" target="_blank"><i class="fab fa-instagram shadow-sm fa-2x mx-3 disabled" style="color:#969ca0;" aria-disabled="true"></i></a>
-                                <a href="http://www.twitter.com" target="_blank"><i class="fab fa-twitter shadow-sm fa-2x mx-3 disabled" style="color:#969ca0;" aria-disabled="true"></i></a>
-                                <a href="http://www.facebook.com" target="_blank"><i class="fab fa-facebook shadow-sm fa-2x mx-3 disabled" style="color:#969ca0;" aria-disabled="true"></i></a>
-                                <a href="http://www.whatsapp.com" target="_blank"><i class="fab fa-whatsapp shadow-sm fa-2x mx-3 disabled" style="color:#969ca0;" aria-disabled="true"></i></a>
-                            </div>
-                            {% now "Y" as current_year %}
-                            <p class="m-0 text-center">Copyright &copy; {{ current_year }}, Rad.</p>
-                            <p class="m-0 text-center">ALL RIGHTS RESERVED.</p>  
-                            <span><i class="fas fa-code"></i> with <i class="fas fa-heartbeat text-danger"></i>, Charles.</span>
-                        </div> {% endcomment %}
                     </div>
                 </div>
             </footer>
@@ -131,7 +118,6 @@
         <script src="{% static 'js/popper.min.js' %}"></script>
         <script src="{% static 'js/jquery.mCustomScrollbar.concat.min.js' %}"></script>
         <script src="{% static 'js/bootstrap.min.js' %}"></script>
-        {% comment %} <script src="{% static 'js/jquery.waypoints.min.js' %}"></script> {% endcomment %}
         <script src="{% static 'js/lodash.min.js' %}"></script>
         <script src="{% static 'js/vue2.js' %}"></script>
         <script src="{% static 'js/vuex.js' %}"></script>
@@ -159,16 +145,12 @@
                     $('.navv #cart').removeClass('btn-dark').addClass('btn-light');
                     $('.navv #sidebarCollapse').removeClass('bg-dark');
                     $('.navv #sidebarCollapse span').removeClass('bg-white');
-
-
                 }
             });
             $(document).ready(function () {
                 $("#sidebar").mCustomScrollbar({
                     theme: "minimal"
                 });
-
-
                 $('#sidebarCollapse').on('click', function () {
                     // open sidebar
                     $('#sidebar').addClass('active');
@@ -235,7 +217,5 @@
         </script>
         {% block javascript %}
         {% endblock javascript %}
-        
     </body>
-
 </html>
