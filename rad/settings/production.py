@@ -21,10 +21,10 @@ DATABASES['default'].update(db_from_env)
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static_cdn/'),
+    os.path.join(BASE_DIR, 'static'),
 )
 
 CORS_REPLACE_HTTPS_REFERER      = True
