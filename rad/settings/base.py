@@ -139,8 +139,6 @@ MIDDLEWARE = [
     'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
 ]
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
 ROOT_URLCONF = 'rad.urls'
 
 TEMPLATES = [
