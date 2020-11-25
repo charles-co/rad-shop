@@ -2,7 +2,7 @@ from .base import *
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.43.184', '127.0.0.1', '172.20.10.4']
+ALLOWED_HOSTS = ['192.168.43.184', '127.0.0.1', '172.20.10.4', "rad-simulation.herokuapp.com"]
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
