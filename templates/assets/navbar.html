@@ -48,7 +48,7 @@
 <nav class="navbar navbar-expand-lg d-lg-none fixed-top navbar-light bg-light navv">
     <div class="container-fluid">
         <div class="d-flex justify-content-between w-100 align-items-center">
-            <button type="button" id="sidebarCollapse" class="navbar-btn animated delay-1s slideInLeft">
+            <button type="button" id="sidebarCollapse" class="navbar-btn animate__animated animate__delay-1s animate__slideInLeft">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -56,7 +56,7 @@
             <div class="logo-logo slow">
                 <a href="/"><img src="{% static 'image/favicon.ico' %}" class="logo-image" /></a>
             </div>
-            <div id="cartnav" class="animated delay-1s slideInRight"> 
+            <div id="cartnav" class="animate__animated animate__delay-1s animate__slideInRight"> 
                 <a id="cart" href="{% url 'cart:cart-detail' %}" class="btn btn-light d-inline-block d-lg-none .cart" role="button">
                     <i class="fas fa-box-open position-relative align-middle text-center" :class="{'badger': numItems > 0}" :data-count="numItems"></i>
                 </a>

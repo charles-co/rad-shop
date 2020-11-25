@@ -39,7 +39,7 @@
             <!-- Page Content Holder -->
             {% if messages %}
             {% for message in messages %}
-            <div class="alert alert-{% if message.tags == 'error' %}danger{% else%}{{ message.tags }}{% endif %} alert-dismissible fade show position-fixed w-100 animated fadeInDown delay-2s" style="z-index:100;">
+            <div class="alert alert-{% if message.tags == 'error' %}danger{% else%}{{ message.tags }}{% endif %} alert-dismissible fade show position-fixed w-100 animate__animated animate__fadeInDown animate__delay-2s" style="z-index:100;">
                 <span>
                     {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
                     {{ message }}<br/>
@@ -197,7 +197,7 @@
                 });
                 $(function(){
                     setInterval(function(){
-                        var animationName = 'animated tada';
+                        var animationName = 'animate__animated animate__tada';
                         var animationend = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
                         $('.logo-logo').addClass(animationName).one(animationend, function(){
                             $(this).removeClass(animationName);

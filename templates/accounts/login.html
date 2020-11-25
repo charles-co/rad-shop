@@ -6,7 +6,7 @@
     <section class="mb-4">
       <div class="row justify-content-center justify-content-md-end">
         <div class='col-11 col-md-5'>
-            <transition enter-active-class="animated zoomIn">
+            <transition enter-active-class="animate__animated animate__zoomIn">
                 <div v-if="showlogin">
                     <h1 v-html="label"></h1>
                     <p v-if="showlogin">Don't have an account? Then please <button @click="showform" class="btn btn-sm text-info px-0">Sign up</button></p>
@@ -20,7 +20,7 @@
                     </form>
                 </div>
             </transition>
-            <transition enter-active-class="animated zoomIn">
+            <transition enter-active-class="animate__animated animate__zoomIn">
                 <div v-if="showsignup">
                     <h1 v-html="label"></h1>
                     <p>Already have an account? Then please <button @click="showform" class="btn btn-sm text-info px-0">Login</button></p>

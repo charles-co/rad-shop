@@ -122,13 +122,13 @@
             ></trouser-card>
         </transition-group>
         <div class="d-flex justify-content-center" style="display:none;" v-if="busy">
-            <div class="m-1 animated rubberBand bg-danger infinite rounded fast" style="height:10px;width:8px;" role="status">
+            <div class="m-1 animate__animated animate__rubberBand bg-danger animate__infinite animate__rounded animate__fast" style="height:10px;width:8px;" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
-            <div class="animated rubberBand m-1 bg-warning infinite rounded fast" style="height:10px;width:8px;" role="status">
+            <div class="animate__animated animate__rubberBand m-1 bg-warning animate__infinite animate__rounded animate__fast" style="height:10px;width:8px;" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
-            <div class="animated rubberBand m-1 bg-success infinite rounded fast" style="height:10px;width:8px;" role="status">
+            <div class="animate__animated animate__rubberBand m-1 bg-success animate__infinite animate__rounded animate__fast" style="height:10px;width:8px;" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
         </div>
@@ -259,7 +259,7 @@
                             <span class="text-success">Trouser in cart</span>
                         </div>
                         <div class="message position-absolute" style="z-index:1000;">
-                            <transition enter-active-class="animated slideInDown" leave-active-class="animated bounceOut">
+                            <transition enter-active-class="animate__animated animate__slideInDown" leave-active-class="animate__animated animate__bounceOut">
                                 <div class="alert alert-success p-1 rounded-0 text-center" role="alert" v-if="showMessage">
                                     <p class="m-0">Added to cart :)</p>
                                 </div>
@@ -511,7 +511,7 @@
                 var delay = el.dataset.index * 100
                 setTimeout(function(){
                     el.style.opacity = 1
-                    el.classList.add("animated", "jackInTheBox")
+                    el.classList.add("animate__animated", "animate__jackInTheBox")
 
                     
                 }, delay)

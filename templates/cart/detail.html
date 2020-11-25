@@ -30,8 +30,8 @@
 <div class="container" id="cart-app">
     <p class="display-4">Cart <i class="fas fa-shopping-bag text-success"></i></p>
         <transition
-            enter-active-class="animated slideInLeft"
-            leave-active-class="animated hinge"
+            enter-active-class="animate__animated animate__slideInLeft"
+            leave-active-class="animate__animated animate__hinge"
         >
             <div class="toast position-absolute" v-if="toast" role="alert" :style="{top: topT + 'px'}" style="min-width:262px;left:0;opacity:1;z-index:1000;" aria-live="assertive" aria-atomic="true">
                 <div class="toast-header">
@@ -73,7 +73,7 @@
                 <a href="{% url 'cart:checkout' %}" class="btn btn-block btn-lg btn-success rounded-0">Checkout</a>
             </div>
         </div>
-        <div v-if="trousers.length === 0" class="col-md-3 col-6 my-5 animated tada">
+        <div v-if="trousers.length === 0" class="col-md-3 col-6 my-5 animate__animated animate__tada">
             <div class="d-flex flex-column justify-content-center">
                 <p class="h3 text-center my-4">Oops, no item in cart <i class="fas fa-grin-beam-sweat"></i></p>
                 <a class="btn btn-link btn-md text-decoration-none btn-primary text-white rounded-0" href="{% url 'menu:trouser_by_category' 'collections' %}">Go To Collections</a>

@@ -10,7 +10,7 @@
 {% block content %}
 <div class="container px-md-0" id="checkoutapp">
     <div class='row justify-content-center' v-if="!billing_profile">
-        <transition enter-active-class="animated fadeIn">
+        <transition enter-active-class="animate__animated animate__fadeIn">
             <div class='col-12 col-md-6 my-5' v-if="showlogin">
                 <div class="card border-dark">
                     <p class='lead card-header bg-dark font-weight-bold'>Login / <button @click="showform" class="btn btn-link text-white pl-0">continue as guest</button></p> 
@@ -20,7 +20,7 @@
                 </div>
             </div>
         </transition>
-        <transition enter-active-class="animated fadeIn">
+        <transition enter-active-class="animate__animated animate__fadeIn">
             <div class='col-12 col-md-6 my-5' v-if="showguest">
                 <div class="card border-dark">
                     <p class='lead card-header bg-dark font-weight-bold'>Continue as Guest / <button @click="showform" class="btn btn-link text-white pl-0">login</button></p>
@@ -39,7 +39,7 @@
         </div>
         <div class="col-12 col-md-6 col-lg-5">
             {% if address %}
-            <div class="card border-dark animated fadeIn delay-1s">
+            <div class="card border-dark animate__animated animate__fadeIn animate__delay-1s">
                 <h4 class="card-header font-weight-bold">Address</h4>
                 <div class="d-flex">
                     <div class="pl-2 py-1 pr-0">
@@ -78,7 +78,7 @@
             {% endif %}
         </div>
         <div class="col-md-6 offset-lg-6 col-12 my-3 col-lg-5 my-md-0 overflow-auto" style="max-height:223px;">
-            <div class="card border-warning mt-2 text-dark animated fadeIn delay-2s">
+            <div class="card border-warning mt-2 text-dark animate__animated animate__fadeIn animate__delay-2s">
                 <h4 class="font-weight-bold card-header">Your Order</h4>
                 <div class="card-body py-0">
                     <ul class="list-group list-group-flush">
@@ -89,7 +89,7 @@
         </div>
 
         <div class="col-12 col-md-6 offset-lg-1 col-lg-5">
-            <div class="card border-success my-md-5 animated fadeIn delay-3s">
+            <div class="card border-success my-md-5 animate__animated animate__fadeIn animate__delay-3s">
                 <h4 class="card-header font-weight-bold">Finalize Checkout</h4>
                 <div class="card-body text-success">
                     <p class="card-text">Cart Total: {{ cart.get_total_price|currency }}</p>

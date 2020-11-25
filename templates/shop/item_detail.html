@@ -36,7 +36,7 @@
 <div id="trouserappdetail" class="container">
     <div class="row no-gutters justify-content-between">
         <div class="col-12 col-md-5 d-flex justify-content-center align-items-center order-0" style="min-height:400px;">
-            <transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
+            <transition enter-active-class="animate__animated animate__fadeIn" leave-active-class="animate__animated animate__fadeOut">
                 <div class="" v-if="change">
                     <img :src="mainImage">
                 </div>
@@ -47,7 +47,7 @@
         </div>
         <div class="col-12 col-md-5 px-0 my-2 order-1 m-md-0 order-md-2">
             <div style="min-height:62px;" v-if="selected_trouser_images_count > 1">
-                <div class="d-flex fadeInLeft flex-wrap" v-bind:class="{animated: !blur}" v-if="selected_trouser_images_count > 1 && !changeText">
+                <div class="d-flex animate__fadeInLeft flex-wrap" v-bind:class="{animate__animated: !blur}" v-if="selected_trouser_images_count > 1 && !changeText">
                     <div class="border border-white mr-2" v-for="(img, index) in thumbnails" style="cursor:pointer;" :class="{ 'shadow' : selectedThumbnail === index}" :key="index">
                         <img :src="img" style="height:60px;width:60px;" @click="changeMainImage(index)">
                     </div>
@@ -55,14 +55,14 @@
             </div>
             <div v-if="trousers.length > 1">
                 <p class="mb-0 my-3 font-italic font-weight-bold">Available Colors:</p>
-                <div class="d-flex flex-wrap fadeInLeftBig" v-bind:class="{animated: !blur}">
+                <div class="d-flex flex-wrap animate__fadeInLeftBig" v-bind:class="{animate__animated: !blur}">
                     <div class="border border-dark mr-2" v-for="(img, index) in trousers" style="cursor:pointer;" :class="{ 'shadow' : selectedVariant === index}" :key="index">
                         <img :src="img.trouser_variant_images[0].thumbnail" @click="change_selected_trouser(index)">
                     </div>
                 </div>
             </div>
             <div class="my-4 font-weight-bold d-block" style="min-height:174px;">
-                <transition enter-active-class="animated fadeIn">
+                <transition enter-active-class="animate__animated animate__fadeIn">
                     <div v-if="!changeText">
                         <p> [[ selected_trouser.color ]]</p>
                         <p class=""> [[ name ]]</p>
