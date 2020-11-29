@@ -13,28 +13,23 @@
             <link rel='shortcut icon' href="{% static 'image/favicon.ico' %}">
             {% if debug %}
             <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"> 
-            <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+            <link rel="stylesheet" href="{% static 'css/animate.min.css' %}">
             <link rel="stylesheet" href="{% static 'css/all.min.css' %}"> 
-            <link rel="stylesheet" href="{% static 'css/lightslider.css' %}">
             <link rel="stylesheet" href="{% static 'css/swiper.min.css' %}">
-            <link rel="stylesheet" href="{% static 'css/jquery.mCustomScrollbar.min.css' %}">  
+            {% comment %} <link rel="stylesheet" href="{% static 'css/jquery.mCustomScrollbar.min.css' %}"> {% endcomment %}
             {% else %}
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css" integrity="sha512-oc9+XSs1H243/FRN9Rw62Fn8EtxjEYWHXRvjS43YtueEewbS6ObfXcJNyohjHqVKFPoXXUxwc+q1K7Dee6vv9g==" crossorigin="anonymous" />            
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightslider/1.1.6/css/lightslider.min.css" integrity="sha512-yJHCxhu8pTR7P2UgXFrHvLMniOAL5ET1f5Cj+/dzl+JIlGTh5Cz+IeklcXzMavKvXP8vXqKMQyZjscjf3ZDfGA==" crossorigin="anonymous" />
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/5.4.5/css/swiper.min.css" integrity="sha512-uCQmAoax6aJTxC03VlH0uCEtE0iLi83TW1Qh6VezEZ5Y17rTrIE+8irz4H4ehM7Fbfbm8rb30OkxVkuwhXxrRg==" crossorigin="anonymous" />
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css" integrity="sha512-6qkvBbDyl5TDJtNJiC8foyEVuB6gxMBkrKy67XpqnIDxyvLLPJzmTjAj1dRJfNdmXWqD10VbJoeN4pOQqDwvRA==" crossorigin="anonymous" />
+            {% comment %} <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css" integrity="sha512-6qkvBbDyl5TDJtNJiC8foyEVuB6gxMBkrKy67XpqnIDxyvLLPJzmTjAj1dRJfNdmXWqD10VbJoeN4pOQqDwvRA==" crossorigin="anonymous" /> {% endcomment %}
             {% endif %}
             <link rel="stylesheet" href="{% static 'css/base.css' %}">
             {% block style %}{% endblock style %}
     </head>
-
     <body>
-        <div class="container-fluid px-0" style="padding-top:70px;">
-        
+        <div class="container-fluid px-0 main-wrapper">    
             <div class="overlayy"></div>
-
             {% include 'assets/navbar.html' %}
             <!-- Page Content Holder -->
             {% if messages %}
@@ -50,7 +45,7 @@
             </div>
             {% endfor %}
             {% endif %}
-            <div class="min-vh-100">
+            <div class="min-vah-100 mb-3" style="min-height: 80vh;"> 
             {% block content %}
             {% endblock content %}
             </div>
@@ -114,9 +109,8 @@
         </div>
         {% if debug %}
         <script src="{% static 'js/jquery.js' %}"></script>
-        <script src="{% static 'js/lightslider.js' %}"></script>
         <script src="{% static 'js/popper.min.js' %}"></script>
-        <script src="{% static 'js/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+        {% comment %} <script src="{% static 'js/jquery.mCustomScrollbar.concat.min.js' %}"></script> {% endcomment %}
         <script src="{% static 'js/bootstrap.min.js' %}"></script>
         <script src="{% static 'js/lodash.min.js' %}"></script>
         <script src="{% static 'js/vue2.js' %}"></script>
@@ -126,9 +120,8 @@
         <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/vuex/3.5.1/vuex.min.js" integrity="sha512-n/iV5SyKXzLRbRczKU75fMgHO0A1DWJSWbK5llLNAqdcoxtUK3NfgfszYpjhvcEqS6nEXwu7gQ5bIkx6z8/lrA==" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/lightslider/1.1.6/js/lightslider.min.js" integrity="sha512-Gfrxsz93rxFuB7KSYlln3wFqBaXUc1jtt3dGCp+2jTb563qYvnUBM/GP2ZUtRC27STN/zUamFtVFAIsRFoT6/w==" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.5.4/umd/popper.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js" integrity="sha512-Yk47FuYNtuINE1w+t/KT4BQ7JaycTCcrvlSvdK/jry6Kcxqg5vN7/svVWCxZykVzzJHaxXk5T9jnFemZHSYgnw==" crossorigin="anonymous"></script>
+        {% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js" integrity="sha512-Yk47FuYNtuINE1w+t/KT4BQ7JaycTCcrvlSvdK/jry6Kcxqg5vN7/svVWCxZykVzzJHaxXk5T9jnFemZHSYgnw==" crossorigin="anonymous"></script> {% endcomment %}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js" integrity="sha512-90vH1Z83AJY9DmlWa8WkjkV79yfS2n2Oxhsi2dZbIv0nC4E6m5AbH8Nh156kkM7JePmqD6tcZsfad1ueoaovww==" crossorigin="anonymous"></script>
         {% endif %}
         <script src="{% static 'js/base.js' %}"></script>
@@ -137,20 +130,20 @@
             $(window).scroll(function() {
                 if ($(document).scrollTop() > 80) {
                     $('.navv').addClass('affix navbar-dark text-white').removeClass('navbar-light bg-light text-dark');
-                    $('.navv #cart').removeClass('btn-light').addClass('btn-dark');
+                    $('#cartnav-mobile a').removeClass('btn-light').addClass('btn-dark');
                     $('.navv #sidebarCollapse').addClass('bg-dark');
                     $('.navv #sidebarCollapse span').addClass('bg-white');
                 } else {
                     $('.navv').removeClass('affix navbar-dark text-white').addClass('navbar-light bg-light text-dark');
-                    $('.navv #cart').removeClass('btn-dark').addClass('btn-light');
+                    $('#cartnav-mobile a').removeClass('btn-dark').addClass('btn-light');
                     $('.navv #sidebarCollapse').removeClass('bg-dark');
                     $('.navv #sidebarCollapse span').removeClass('bg-white');
                 }
             });
             $(document).ready(function () {
-                $("#sidebar").mCustomScrollbar({
+                {% comment %} $("#sidebar").mCustomScrollbar({
                     theme: "minimal"
-                });
+                }); {% endcomment %}
                 $('#sidebarCollapse').on('click', function () {
                     // open sidebar
                     $('#sidebar').addClass('active');
@@ -177,6 +170,13 @@
                 $('#COLLECTIONSSubmenu').parent().on('hide.bs.collapse', function () {
                     $('.menu-data-toggle i').removeClass('fa-minus').addClass('fa-plus');
                 });
+                $('.list-group.desktop .list-group-item').hover(function() {
+                    $(this).find('.collapse').collapse('show');
+                    $(this).addClass('text-dark');
+                }, function() {
+                    $(this).find('.collapse').collapse('hide');
+                    $(this).removeClass('text-dark');
+                });
                 $(function(){
                     setInterval(function(){
                         var animationName = 'animate__animated animate__tada';
@@ -198,8 +198,7 @@
                     },
                     changeTotalPrice(state, newPrice){
                         total_price = state.get_total_price + newPrice
-                        state.get_total_price = _.round(total_price, 2);
-                        
+                        state.get_total_price = _.round(total_price, 2);    
                     }
                 }
             });

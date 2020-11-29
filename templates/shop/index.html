@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block style %}
 <style>
 .back-in-stock .lSPager.lSpg > li a{
@@ -13,6 +13,22 @@
 .back-in-stock .lSPager.lSpg {
     bottom:0px;
 }
+
+.swiper-button-next:after, 
+.swiper-container-rtl,
+.swiper-button-prev:after{
+    content: none;
+}
+.swiper-button-next, 
+.swiper-button-prev{
+    border-radius: 100%;
+}
+.swiper-mid .swiper-pagination-bullet{
+    background: #eee;
+}
+.swiper-mid .swiper-pagination-bullet.active{
+    background: white;
+}
 </style>
 
 {% endblock style %}
@@ -20,11 +36,7 @@
 {% block content %}
 <section class="home d-flex align-items-center mb-5">
     <div class="container">
-
-
-
         <div class="row align-items-center justify-content-center animate__animated animate__fadeInUp animate__delay-2s my-auto animate__slower">
-
             <div class="">
                 <span class="text-white text-center">NEW ARRIVALS & RESTOCKS</span>
                 <h4 class="text-white font-weight-bold text-center mb-4">JUST IN.</h4>
@@ -35,7 +47,6 @@
         </div>
     </div>
 </section>
-
 <div class="container" id="index">
     <div class="row border-bottom mb-5">
         <div class="col px-3">
@@ -45,291 +56,184 @@
             <p class="mb-4 text-center">Thank you for your support of all small businesses like ours. Stay safe, stay healthy.</p>
         </div>
     </div>
-
-    <div class="row mb-4 no-gutters best-seller" style="height:auto;">
-        <span>BEST SELLERS</span>
-        <div id="light-slider" class="">
-            <div class="card border-0 bg-transparent">
-                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
-                    <img src="../../static/image/test.jpg" class="card-img-top img-fluid" alt="...">
-                </div> 
-                <div class="card-body mb-0 p-0">
-                    <p class="card-title" style="font-size:10px;font-weight:600;">BLACK <br>N1 CARGO</p>
-                    {% comment %} {% if product.old_price %}<del class="card-text text-danger" style="font-size:1.1em">{{ product.old_price|currency }}</del>{% endif %}<p class="card-text mb-0" style="font-size:1.5em">{{ product.price|currency }}</p>
-                    <a href="{{ product.get_absolute_url }}" class="btn btn-dark btn-lg active rounded-0 text-center d-inline-block" role="button" aria-pressed="true">Read More</a> {% endcomment %}
+    <div class="row mb-4 no-gutters best-seller">
+        <span class="text-uppercase mb-4 font-weight-light">BEST SELLERS</span>
+        <div
+            class="swiper-first mx-0 pb-4"
+            v-swiper:swiper-first="swiperOptions"
+            {% comment %} @click-slide="onSwiperClickSlide"
+            @slide-change-transition-start="onSwiperSlideChangeTransitionStart" {% endcomment %}
+        >
+            <div class="swiper-wrapper">
+                <div class="swiper-slide card bg-transparent border-0" v-for="i, index in 6" :key="index">
+                    <div class="d-flex bg-transparent align-items-center justify-content-center overflow-hidden">
+                        <img src="../../static/image/test.jpg" class="img-fluid img-responsive mx-auto card-img-top" alt="image">
+                    </div>
+                    <div class="card-body py-0">
+                        <p class="card-title font-weight-bold" style="font-size:10px;">BLACK <br>N1 CARGO</p>
+                        <span class="d-flex justify-content-start" style="font-size:10px;font-weight:600;">
+                            {% comment %} <del class="card-text text-danger" v-if="trouser.first_variant.old_price"></del> {% endcomment %}
+                            {% comment %} <p class="align-text-bottom card-text font-weight-bolder">&nbsp;[[ trouser.first_variant.price|currency ]]</p> {% endcomment %}
+                        </span>
+                    </div>
                 </div>
             </div>
-            <div class="card border-0 bg-transparent">
-                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
-                    <img src="../../static/image/test2.jpg" class="card-img-top img-fluid" alt="...">
-                </div> 
-                <div class="card-body mb-0 p-0">
-                    <p class="card-title" style="font-size:10px;font-weight:600;">BLACK <br>N1 CARGO</p>
-                    {% comment %} {% if product.old_price %}<del class="card-text text-danger" style="font-size:1.1em">{{ product.old_price|currency }}</del>{% endif %}<p class="card-text mb-0" style="font-size:1.5em">{{ product.price|currency }}</p>
-                    <a href="{{ product.get_absolute_url }}" class="btn btn-dark btn-lg active rounded-0 text-center d-inline-block" role="button" aria-pressed="true">Read More</a> {% endcomment %}
-                </div>
+            <div class="d-none d-lg-block swiper-button-prev">
+                <i class="fas text-black-50 fa-2x fa-angle-left"></i>
             </div>
-            <div class="card border-0 bg-transparent">
-                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
-                    <img src="../../static/image/test3.jpg" class="card-img-top img-fluid" alt="...">
-                </div> 
-                <div class="card-body mb-0 p-0">
-                    <p class="card-title" style="font-size:10px;font-weight:600;">BLACK <br>N1 CARGO</p>
-                    {% comment %} {% if product.old_price %}<del class="card-text text-danger" style="font-size:1.1em">{{ product.old_price|currency }}</del>{% endif %}<p class="card-text mb-0" style="font-size:1.5em">{{ product.price|currency }}</p>
-                    <a href="{{ product.get_absolute_url }}" class="btn btn-dark btn-lg active rounded-0 text-center d-inline-block" role="button" aria-pressed="true">Read More</a> {% endcomment %}
-                </div>
+            <div class="d-none d-lg-block swiper-button-next">
+                <i class="fas text-black-50 fa-2x fa-angle-right"></i>
             </div>
-            <div class="card border-0 bg-transparent">
-                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
-                    <img src="../../static/image/test4.jpg" class="card-img-top img-fluid" alt="...">
-                </div> 
-                <div class="card-body mb-0 p-0">
-                    <p class="card-title" style="font-size:10px;font-weight:600;">BLACK <br>N1 CARGO</p>
-                    {% comment %} {% if product.old_price %}<del class="card-text text-danger" style="font-size:1.1em">{{ product.old_price|currency }}</del>{% endif %}<p class="card-text mb-0" style="font-size:1.5em">{{ product.price|currency }}</p>
-                    <a href="{{ product.get_absolute_url }}" class="btn btn-dark btn-lg active rounded-0 text-center d-inline-block" role="button" aria-pressed="true">Read More</a> {% endcomment %}
-                </div>
-            </div>
-            <div class="card border-0 bg-transparent">
-                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
-                    <img src="../../static/image/test5.jpg" class="card-img-top img-fluid" alt="...">
-                </div>
-                <div class="card-body mb-0 p-0">
-                    <p class="card-title" style="font-size:10px;font-weight:600;">BLACK <br>N1 CARGO</p>
-                    {% comment %} {% if product.old_price %}<del class="card-text text-danger" style="font-size:1.1em">{{ product.old_price|currency }}</del>{% endif %}<p class="card-text mb-0" style="font-size:1.5em">{{ product.price|currency }}</p>
-                    <a href="{{ product.get_absolute_url }}" class="btn btn-dark btn-lg active rounded-0 text-center d-inline-block" role="button" aria-pressed="true">Read More</a> {% endcomment %}
-                </div> 
-            </div>
-            <div class="card border-0 bg-transparent">
-                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
-                    <img src="../../static/image/test6.jpg" class="card-img-top img-fluid" alt="...">
-                </div> 
-                <div class="card-body mb-0 p-0">
-                    <p class="card-title" style="font-size:10px;font-weight:600;">BLACK <br>N1 CARGO</p>
-                    {% comment %} {% if product.old_price %}<del class="card-text text-danger" style="font-size:1.1em">{{ product.old_price|currency }}</del>{% endif %}<p class="card-text mb-0" style="font-size:1.5em">{{ product.price|currency }}</p>
-                    <a href="{{ product.get_absolute_url }}" class="btn btn-dark btn-lg active rounded-0 text-center d-inline-block" role="button" aria-pressed="true">Read More</a> {% endcomment %}
-                </div>
-            </div>
-            <div class="card border-0 bg-transparent">
-                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
-                    <img src="../../static/image/test4.webp" class="card-img-top img-fluid" alt="...">
-                </div> 
-                <div class="card-body mb-0 p-0">
-                    <p class="card-title" style="font-size:10px;font-weight:600;">BLACK <br>N1 CARGO</p>
-                    {% comment %} {% if product.old_price %}<del class="card-text text-danger" style="font-size:1.1em">{{ product.old_price|currency }}</del>{% endif %}<p class="card-text mb-0" style="font-size:1.5em">{{ product.price|currency }}</p>
-                    <a href="{{ product.get_absolute_url }}" class="btn btn-dark btn-lg active rounded-0 text-center d-inline-block" role="button" aria-pressed="true">Read More</a> {% endcomment %}
-                </div>
-            </div>
+            <div class="swiper-pagination swiper-pagination-bullets"></div>
         </div>
         <a href="{% url 'menu:trouser_by_category' 'bestsellers' %}" class="btn btn-lg px-5 py-3 font-weight-bold rounded-0 text-center mx-auto text-white" style="background-color:#1c1b1b;font-size:11px;" role="button">VIEW ALL</a>
+    </div>
+    <div class="row mb-4 back-in-stock-md">
+        <span class="text-uppercase mb-4 px-2">BACK IN STOCK</span>
+        <div
+            class="swiper-mid mx-0"
+            v-swiper:swiper-mid="swiperoptionsmid"
+        >
+            <div class="swiper-wrapper">
+                <div class="swiper-slide card bg-transparent border-0">
+                    <div class="d-flex bg-transparent align-items-center justify-content-center overflow-hidden">
+                        <img src="../../static/image/new1.jpg" class="img-fluid img-responsive mx-auto card-img-top" alt="image">
+                    </div>
+                    <div class="card-img-overlay d-flex flex-column text-white justify-content-md-end justify-content-center align-items-md-start align-items-center">
+                        <h6 class="card-title mb-4 text-white">BACK IN STOCK</h6>
+                        <h5 class="card-title mb-4 text-white">C1 CARGO</h5>
+                        <a class="btn btn-primary bg-white btn-outline-white rounded-0 text-center text-dark btn-outline-light" href="{% url 'menu:trouser_by_category' 'back-in-stock' %}" role="button">SHOP NOW</a>
+                    </div>
+                </div>
+                <div class="swiper-slide card bg-transparent border-0">
+                    <div class="d-flex bg-transparent align-items-center justify-content-center overflow-hidden">
+                        <img src="../../static/image/new2.jpg" class="img-fluid img-responsive mx-auto card-img-top" alt="image">
+                    </div>
+                        <div class="card-img-overlay d-flex flex-column text-white justify-content-md-end justify-content-center align-items-md-start align-items-center">
+                        <h6 class="card-title mb-4 text-white">BACK IN STOCK</h6>
+                        <h5 class="card-title mb-4 text-white">C1 CARGO</h5>
+                        <a class="btn btn-primary bg-white btn-outline-white rounded-0 text-center text-dark btn-outline-light" href="{% url 'menu:trouser_by_category' 'back-in-stock' %}" role="button">SHOP NOW</a>
+                    </div>
+                </div>
+                <div class="swiper-slide card bg-transparent border-0">
+                    <div class="d-flex bg-transparent align-items-center justify-content-center overflow-hidden">
+                        <img src="../../static/image/new3.jpg" class="img-fluid img-responsive mx-auto card-img-top" alt="image">
+                    </div>
+                    <div class="card-img-overlay d-flex flex-column text-white justify-content-md-end justify-content-center align-items-md-start align-items-center">
+                        <h6 class="card-title mb-4 text-white">BACK IN STOCK</h6>
+                        <h5 class="card-title mb-4 text-white">C1 CARGO</h5>
+                        <a class="btn btn-primary bg-white btn-outline-white rounded-0 text-center text-dark btn-outline-light" href="{% url 'menu:trouser_by_category' 'back-in-stock' %}" role="button">SHOP NOW</a>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-pagination swiper-pagination-bullets d-lg-none d-flex justify-content-start"></div>
+        </div>
     </div>
-
-    <div class="row mb-4 d-md-none back-in-stock" style="height:auto;">
-        <div id="back-in-stock-slider">
-            <div class="card border-0 bg-transparent">
-                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
-                    <img src="../../static/image/new2.jpg" class="card-img-top img-fluid" alt="...">
-                </div> 
-                <div class="card-img-overlay d-flex flex-column text-white justify-content-center align-items-center">
-                    <h6 class="card-title mb-4">BACK IN STOCK</h6>
-                    <h5 class="card-title mb-4">C1 CARGO</h5>
-                    <a class="btn btn-primary bg-white btn-outline-white rounded-0 text-center text-dark btn-outline-light" href="{% url 'menu:trouser_by_category' 'back-in-stock' %}" role="button">SHOP NOW</a>
+    <div class="row mb-4 pb-4 no-gutters new-arrivals">
+        <span class="text-uppercase mb-4 font-weight-light">NEW ARRIVALS</span>
+        <div
+            class="swiper mx-0 pb-4"
+            v-swiper:swiper="swiperOptions"
+        >
+            <div class="swiper-wrapper">
+                <div class="swiper-slide card bg-transparent border-0" v-for="i, index in 6" :key="index">
+                    <div class="d-flex bg-transparent align-items-center justify-content-center overflow-hidden">
+                        <img src="../../static/image/test.jpg" class="img-fluid img-responsive mx-auto card-img-top" alt="image">
+                    </div>
+                    <div class="card-body py-0">
+                        <p class="card-title font-weight-bold" style="font-size:10px;">BLACK <br>N1 CARGO</p>
+                        <span class="d-flex justify-content-start" style="font-size:10px;font-weight:600;">
+                            {% comment %} <del class="card-text text-danger" v-if="trouser.first_variant.old_price"></del> {% endcomment %}
+                            {% comment %} <p class="align-text-bottom card-text font-weight-bolder">&nbsp;[[ trouser.first_variant.price|currency ]]</p> {% endcomment %}
+                        </span>
+                    </div>
                 </div>
             </div>
-            <div class="card border-0 bg-transparent">
-                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
-                    <img src="../../static/image/new1.jpg" class="card-img-top img-fluid" alt="...">
-                </div> 
-                <div class="card-img-overlay d-flex flex-column text-white justify-content-center align-items-center">
-                    <h6 class="card-title mb-4">BACK IN STOCK</h6>
-                    <h5 class="card-title mb-4">C1 CARGO</h5>
-                    <a class="btn btn-primary bg-white btn-outline-white rounded-0 text-center text-dark btn-outline-light" href="{% url 'menu:trouser_by_category' 'back-in-stock' %}" role="button">SHOP NOW</a>
-                </div>
+            <div class="d-none d-lg-block swiper-button-prev">
+                <i class="fas text-black-50 fa-2x fa-angle-left"></i>
             </div>
-            <div class="card border-0 bg-transparent">
-                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
-                    <img src="../../static/image/new3.jpg" class="card-img-top img-fluid" alt="...">
-                </div> 
-                <div class="card-img-overlay d-flex flex-column text-white justify-content-center align-items-center">
-                    <h6 class="card-title mb-4">BACK IN STOCK</h6>
-                    <h5 class="card-title mb-4">C1 CARGO</h5>
-                    <a class="btn btn-primary bg-white btn-outline-white rounded-0 text-center text-dark btn-outline-light" href="{% url 'menu:trouser_by_category' 'back-in-stock' %}" role="button">SHOP NOW</a>
-                </div>
+            <div class="d-none d-lg-block swiper-button-next">
+                <i class="fas text-black-50 fa-2x fa-angle-right"></i>
             </div>
+            <div class="swiper-pagination swiper-pagination-bullets"></div>
         </div>
-
-    </div>
-    <div class="row mb-4 d-none d-md-block back-in-stock-md mt-5" style="height:auto;">
-        <div class="card-group">
-            <div class="card col-md-6 col-lg-4 border-0 bg-transparent">
-                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
-                    <img src="../../static/image/new2.jpg" class="card-img-top img-fluid" alt="...">
-                </div> 
-                <div class="card-img-overlay d-flex flex-column text-white m-4 justify-content-end align-items-start">
-                    <h6 class="card-title mb-4">BACK IN STOCK</h6>
-                    <h5 class="card-title mb-4">C1 CARGO</h5>
-                    <a class="btn btn-primary bg-white btn-outline-white rounded-0 text-center text-dark btn-outline-light" href="{% url 'shop:listing' 'back-in-stock' %}" role="button">SHOP NOW</a>
-                </div>
-            </div>
-            <div class="card col-md-6 col-lg-4 border-0 bg-transparent">
-                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
-                    <img src="../../static/image/new1.jpg" class="card-img-top img-fluid" alt="...">
-                </div> 
-                <div class="card-img-overlay d-flex flex-column text-white m-4 justify-content-end align-items-start">
-                    <h6 class="card-title mb-4">BACK IN STOCK</h6>
-                    <h5 class="card-title mb-4">C1 CARGO</h5>
-                    <a class="btn btn-primary bg-white btn-outline-white rounded-0 text-center text-dark btn-outline-light" href="{% url 'shop:listing' 'back-in-stock' %}" role="button">SHOP NOW</a>
-                </div>
-            </div>
-            <div class="card border-0 col-md-6 col-lg-4 bg-transparent">
-                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
-                    <img src="../../static/image/new3.jpg" class="card-img-top img-fluid" alt="...">
-                </div> 
-                <div class="card-img-overlay d-flex flex-column text-white m-4 justify-content-end align-items-start">
-                    <h6 class="card-title mb-4">BACK IN STOCK</h6>
-                    <h5 class="card-title mb-4">C1 CARGO</h5>
-                    <a class="btn btn-primary bg-white btn-outline-white rounded-0 text-center text-dark btn-outline-light" href="{% url 'shop:listing' 'back-in-stock' %}" role="button">SHOP NOW</a>
-                </div>
-            </div>
-
-        </div>
-    </div>
-    <div class="row mb-4 no-gutters new-arrivals" style="height:auto;">
-        <span>NEW ARRIVALS</span>
-        <div id="new-arrivals-slider" class="">
-            <div class="card border-0 bg-transparent">
-                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
-                    <img src="../../static/image/test.jpg" class="card-img-top img-fluid" alt="...">
-                </div> 
-                <div class="card-body mb-0 p-0">
-                    <p class="card-title" style="font-size:10px;font-weight:600;">BLACK <br>N1 CARGO</p>
-                    {% comment %} {% if product.old_price %}<del class="card-text text-danger" style="font-size:1.1em">{{ product.old_price|currency }}</del>{% endif %}<p class="card-text mb-0" style="font-size:1.5em">{{ product.price|currency }}</p>
-                    <a href="{{ product.get_absolute_url }}" class="btn btn-dark btn-lg active rounded-0 text-center d-inline-block" role="button" aria-pressed="true">Read More</a> {% endcomment %}
-                </div>
-            </div>
-            <div class="card border-0 bg-transparent">
-                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
-                    <img src="../../static/image/test2.jpg" class="card-img-top img-fluid" alt="...">
-                </div> 
-                <div class="card-body mb-0 p-0">
-                    <p class="card-title" style="font-size:10px;font-weight:600;">BLACK <br>N1 CARGO</p>
-                    {% comment %} {% if product.old_price %}<del class="card-text text-danger" style="font-size:1.1em">{{ product.old_price|currency }}</del>{% endif %}<p class="card-text mb-0" style="font-size:1.5em">{{ product.price|currency }}</p>
-                    <a href="{{ product.get_absolute_url }}" class="btn btn-dark btn-lg active rounded-0 text-center d-inline-block" role="button" aria-pressed="true">Read More</a> {% endcomment %}
-                </div>
-            </div>
-            <div class="card border-0 bg-transparent">
-                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
-                    <img src="../../static/image/test3.jpg" class="card-img-top img-fluid" alt="...">
-                </div> 
-                <div class="card-body mb-0 p-0">
-                    <p class="card-title" style="font-size:10px;font-weight:600;">BLACK <br>N1 CARGO</p>
-                    {% comment %} {% if product.old_price %}<del class="card-text text-danger" style="font-size:1.1em">{{ product.old_price|currency }}</del>{% endif %}<p class="card-text mb-0" style="font-size:1.5em">{{ product.price|currency }}</p>
-                    <a href="{{ product.get_absolute_url }}" class="btn btn-dark btn-lg active rounded-0 text-center d-inline-block" role="button" aria-pressed="true">Read More</a> {% endcomment %}
-                </div>
-            </div>
-            <div class="card border-0 bg-transparent">
-                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
-                    <img src="../../static/image/test4.jpg" class="card-img-top img-fluid" alt="...">
-                </div> 
-                <div class="card-body mb-0 p-0">
-                    <p class="card-title" style="font-size:10px;font-weight:600;">BLACK <br>N1 CARGO</p>
-                    {% comment %} {% if product.old_price %}<del class="card-text text-danger" style="font-size:1.1em">{{ product.old_price|currency }}</del>{% endif %}<p class="card-text mb-0" style="font-size:1.5em">{{ product.price|currency }}</p>
-                    <a href="{{ product.get_absolute_url }}" class="btn btn-dark btn-lg active rounded-0 text-center d-inline-block" role="button" aria-pressed="true">Read More</a> {% endcomment %}
-                </div>
-            </div>
-            <div class="card border-0 bg-transparent">
-                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
-                    <img src="../../static/image/test5.jpg" class="card-img-top img-fluid" alt="...">
-                </div>
-                <div class="card-body mb-0 p-0">
-                    <p class="card-title" style="font-size:10px;font-weight:600;">BLACK <br>N1 CARGO</p>
-                    {% comment %} {% if product.old_price %}<del class="card-text text-danger" style="font-size:1.1em">{{ product.old_price|currency }}</del>{% endif %}<p class="card-text mb-0" style="font-size:1.5em">{{ product.price|currency }}</p>
-                    <a href="{{ product.get_absolute_url }}" class="btn btn-dark btn-lg active rounded-0 text-center d-inline-block" role="button" aria-pressed="true">Read More</a> {% endcomment %}
-                </div> 
-            </div>
-            <div class="card border-0 bg-transparent">
-                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
-                    <img src="../../static/image/test6.jpg" class="card-img-top img-fluid" alt="...">
-                </div> 
-                <div class="card-body mb-0 p-0">
-                    <p class="card-title" style="font-size:10px;font-weight:600;">BLACK <br>N1 CARGO</p>
-                    {% comment %} {% if product.old_price %}<del class="card-text text-danger" style="font-size:1.1em">{{ product.old_price|currency }}</del>{% endif %}<p class="card-text mb-0" style="font-size:1.5em">{{ product.price|currency }}</p>
-                    <a href="{{ product.get_absolute_url }}" class="btn btn-dark btn-lg active rounded-0 text-center d-inline-block" role="button" aria-pressed="true">Read More</a> {% endcomment %}
-                </div>
-            </div>
-            <div class="card border-0 bg-transparent">
-                <div class=" d-flex align-items-center justify-contents-center overflow-hidden">
-                    <img src="../../static/image/test4.webp" class="card-img-top img-fluid" alt="...">
-                </div> 
-                <div class="card-body mb-0 p-0">
-                    <p class="card-title" style="font-size:10px;font-weight:600;">BLACK <br>N1 CARGO</p>
-                    {% comment %} {% if product.old_price %}<del class="card-text text-danger" style="font-size:1.1em">{{ product.old_price|currency }}</del>{% endif %}<p class="card-text mb-0" style="font-size:1.5em">{{ product.price|currency }}</p>
-                    <a href="{{ product.get_absolute_url }}" class="btn btn-dark btn-lg active rounded-0 text-center d-inline-block" role="button" aria-pressed="true">Read More</a> {% endcomment %}
-                </div>
-            </div>
-        </div>
-        <a href="{% url 'shop:listing' 'new-arrivals' %}" class="btn btn-lg rounded-0 px-5 py-3 font-weight-bold text-center mx-auto text-white" style="background-color:#1c1b1b;font-size:11px;" role="button">VIEW ALL</a>
+        <a href="{% url 'menu:trouser_by_category' 'new-arrivals' %}" class="btn btn-lg rounded-0 px-5 py-3 font-weight-bold text-center mx-auto text-white" style="background-color:#1c1b1b;font-size:11px;" role="button">VIEW ALL</a>
     </div>
 </div>
 {% endblock content %}
 
 {% block javascript %}
+{% if debug %}
+<script src="{% static 'js/swiper.min.js' %}"></script>
+<script src="{% static 'js/vue-awesome-swiper.js' %}"></script>
+{% else %}
+<script src="https://cdn.jsdelivr.net/npm/vue-awesome-swiper@4.1.1/dist/vue-awesome-swiper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/5.4.5/js/swiper.min.js" integrity="sha512-VHsNaV1C4XbgKSc2O0rZDmkUOhMKPg/rIi8abX9qTaVDzVJnrDGHFnLnCnuPmZ3cNi1nQJm+fzJtBbZU9yRCww==" crossorigin="anonymous"></script>
+{% endif %}
+<script src="{% static 'js/vue-awesome-swiper.js' %}"></script>
 <script type="text/javascript">
-    $(document).ready(function(){
-        $("#light-slider, #new-arrivals-slider").lightSlider({
-            item: 3,
-            loop: false,
-            slideMove: 2,
-            easing: 'cubic-beizer(0.25, 0, 0.25, 1)',
-            speed: 600,
-            controls: true,
-            responsive: [
-            {
-                breakpoint: 800,
-                settings: {
-                    item: 3,
-                    slideMove: 1,
-                    slideMargin: 6,
-                }
-            },
-            {
-                breakpoint: 576,
-                settings: {
-                    item: 2,
-                    slideMove: 1,
-                    slideMargin: 6,
-                }
-            }],
-            onSliderLoad: function() {
-                $('#light-slider, #new-arrivals-slider').removeClass('cS-hidden');
-            }
-        });
-        $("#back-in-stock-slider").lightSlider({
-            item: 1,
-            loop: false,
-            slideMove: 1,
-            easing: 'cubic-beizer(0.25, 0, 0.25, 1)',
-            speed: 600,
-            controls: false,
-            onSliderLoad: function() {
-                $('#back-in-stock-slider').removeClass('cS-hidden');
-            }
-        });
-        $('.best-seller .lSPager, .new-arrivals .lSPager').addClass('d-none')
-        $('.back-in-stock').addClass('position-relative')
-        $('.back-in-stock .lSPager').addClass('m-0 float-left position-absolute')
-    });
-
+    Vue.use(VueAwesomeSwiper)
     const index = new Vue({
         el: '#index',
         store: store,
         delimiters: ['[[', ']]'],
         data (){
             return {
-                navbarscroll: false,
+                swiperOptions: {
+                    grabCursor: true,
+                    loop: false,
+                    pagination: {
+                        el: '.swiper-pagination',
+                        dynamicBullets: true,
+                    },
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev'
+                    },
+                    breakpoints: {
+                        1024: {
+                            slidesPerView: 4,
+                        },
+                        768: {
+                            slidesPerView: 3,
+                        },
+                        320: {
+                            slidesPerView: 2,
+                            {% comment %} spaceBetween: 10 {% endcomment %}
+                        },
+                    }
+                },
+                swiperoptionsmid: {
+                    grabCursor: true,
+                    loop: false,
+                    pagination: {
+                        el: '.swiper-pagination',
+                    },
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev'
+                    },
+                    breakpoints: {
+                        1024: {
+                            slidesPerView: 3,
+                            spaceBetween: 10
+                        },
+                        768: {
+                            slidesPerView: 3,
+                            spaceBetween: 10,
+                        },
+                        320: {
+                            slidesPerView: 1,
+                            {% comment %} spaceBetween: 10 {% endcomment %}
+                        },
+                    }
+                }
             }
         },
         computed: {
-        
+            numItems: function(){
+                return store.state.numItems;
+            },
         },
         methods: {
             ingscroll(){

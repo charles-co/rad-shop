@@ -13,133 +13,140 @@
 {% endblock style %}
 {% block content %}
 <div id="trouserapp" class="container">
-    <div class="my-4">
-        <span >{{ title }}</span>
-    </div>
-    <div class="row">
-        <div class="accordion col-12" id="accordionExample">
-            <div class="card">
-                <div class="card-header" id="headingOne">
-                    <h2 class="mb-0">
-                        <button class="btn dropdown-toggle" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            Filters
-                        </button>
-                    </h2>
-                </div>
-                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-                    <div class="row card-body">
-                        <div class="col-sm-4 col-4">
-                            <div class="form-group">
-                                <label for="colors">Colors</label>
-                                <colors-dropdown
-                                    v-bind:colors="colors"
-                                    v-on:sort="sortTrousers"
-                                ></colors-dropdown>
-                            </div>    
-                        </div>
-                        <div class="col-sm-4 col-4">
-                            <div class="form-group">
-                                <label for="sort">Sort</label>
-                                <select class="form-control" @change="order($event)" id="sort_by">
-                                    <option disabled="disabled" selected value = "none">Choose option</option>
-                                    <option value='featured'>FEATURED</option>
-                                    <option value='bestseller'>BESTSELLER</option>
-                                    <option value='name'>ALPHABETICALLY, A-Z</option>
-                                    <option value='-name'>ALPHABETICALLY, Z-A</option>
-                                    <option value='price'>PRICE, LOW TO HIGH</option>
-                                    <option value='-price'>PRICE, HIGH TO LOW</option>
-                                    <option value='date'>DATE, OLD TO NEW</option>
-                                    <option value='-date'>DATE, NEW TO OLD</option>
-                                </select>
+    <div v-if="has_content">
+        <div class="my-4">
+            <span >{{ title }}</span>
+        </div>
+        <div class="row">
+            <div class="accordion col-12" id="accordionExample">
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <h2 class="mb-0">
+                            <button class="btn dropdown-toggle" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Filters
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                        <div class="row card-body">
+                            <div class="col-sm-4 col-4">
+                                <div class="form-group">
+                                    <label for="colors">Colors</label>
+                                    <colors-dropdown
+                                        v-bind:colors="colors"
+                                        v-on:sort="sortTrousers"
+                                    ></colors-dropdown>
+                                </div>    
                             </div>
-                        </div>
-                        <div class="col-sm-3 col-3">
-                            <div class="row justify-content-center align-self-center" style="color:white;margin-top:30px;">
-                                <a class="btn btn-secondary" id="display_all" @click="reset">Reset</a>
+                            <div class="col-sm-4 col-4">
+                                <div class="form-group">
+                                    <label for="sort">Sort</label>
+                                    <select class="form-control" @change="order($event)" id="sort_by">
+                                        <option disabled="disabled" selected value = "none">Choose option</option>
+                                        <option value='featured'>FEATURED</option>
+                                        <option value='bestseller'>BESTSELLER</option>
+                                        <option value='name'>ALPHABETICALLY, A-Z</option>
+                                        <option value='-name'>ALPHABETICALLY, Z-A</option>
+                                        <option value='price'>PRICE, LOW TO HIGH</option>
+                                        <option value='-price'>PRICE, HIGH TO LOW</option>
+                                        <option value='date'>DATE, OLD TO NEW</option>
+                                        <option value='-date'>DATE, NEW TO OLD</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 col-3">
+                                <div class="row justify-content-center align-self-center" style="color:white;margin-top:30px;">
+                                    <a class="btn btn-secondary" id="display_all" @click="reset">Reset</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div> 
+        <div class="col-12 my-5 d-flex justify-content-center" v-if="loading">
+            <div class="spinner-border text-dark m-1 text-danger" style="width:30px;height:30px;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
         </div>
-    </div> 
-    <div class="col-12 my-5 d-flex justify-content-center" v-if="loading">
-        <div class="spinner-border text-dark m-1 text-danger" style="width:30px;height:30px;" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
-    </div>
 
-    <div class="container-fluid" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy">
-        <transition-group appear tag="div" v-bind:css="false" v-on:before-enter="beforeEnter" v-on:enter="enter" class="row no-gutters">
-            <trouser-card
-                v-if="sortedShouldRender && !loading"
-                v-for="(trouser, index) in sortedTrousers"
-                v-bind:key="trouser.first_variant.id"
-                v-bind:id="trouser.first_variant.id"
-                v-bind:name="trouser.name"
-                v-bind:price="trouser.first_variant.price"
-                {% comment %} v-bind:oldprice="trouser.old_price" {% endcomment %}
-                v-bind:color="trouser.first_variant.color"
-                v-bind:slug="trouser.slug"
-                v-bind:image="trouser.first_variant.first_image.file"
-                v-bind:size="trouser.first_variant.first_meta.size"
-                v-bind:stock="trouser.first_variant.first_meta.stock"
-                v-bind:data-index="index"
-            ></trouser-card>
-        </transition-group>
-        <transition-group name="testing-stuff" v-bind:css="false" v-on:before-enter="beforeEnter" v-on:enter="enter" tag="div" class="row testing no-gutters">
-            <trouser-card
-                v-if="orderShouldRender && !loading"
-                v-for="(trouser, index) in orderTrousers"
-                v-bind:key="trouser.first_variant.id"
-                v-bind:id="trouser.first_variant.id"
-                v-bind:name="trouser.name"
-                v-bind:price="trouser.first_variant.price"
-                {% comment %} v-bind:oldprice="trouser.old_price" {% endcomment %}
-                v-bind:color="trouser.first_variant.color"
-                v-bind:slug="trouser.slug"
-                v-bind:image="trouser.first_variant.first_image.file"
-                v-bind:size="trouser.first_variant.first_meta.size"
-                v-bind:stock="trouser.first_variant.first_meta.stock"
-                v-bind:data-index="index"
-            ></trouser-card>
-        </transition-group>
-        <transition-group name="t" v-bind:css="false" v-on:before-enter="beforeEnter" v-on:enter="enter" tag="div" class="row no-gutters">    
-            <trouser-card
-                v-if="colorSort && !loading"
-                v-for="(trouser, index) in sortedOrderTrousers"
-                v-bind:key="trouser.first_variant.id"
-                v-bind:id="trouser.first_variant.id"
-                v-bind:name="trouser.name"
-                v-bind:price="trouser.first_variant.price"
-                {% comment %} v-bind:oldprice="trouser.old_price" {% endcomment %}
-                v-bind:color="trouser.first_variant.color"
-                v-bind:slug="trouser.slug"
-                v-bind:image="trouser.first_variant.first_image.file"
-                v-bind:size="trouser.first_variant.first_meta.size"
-                v-bind:stock="trouser.first_variant.first_meta.stock"
-                v-bind:data-index="index"
-            ></trouser-card>
-        </transition-group>
-        <div class="d-flex justify-content-center" style="display:none;" v-if="busy">
-            <div class="m-1 animate__animated animate__rubberBand bg-danger animate__infinite animate__rounded animate__fast" style="height:10px;width:8px;" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-            <div class="animate__animated animate__rubberBand m-1 bg-warning animate__infinite animate__rounded animate__fast" style="height:10px;width:8px;" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-            <div class="animate__animated animate__rubberBand m-1 bg-success animate__infinite animate__rounded animate__fast" style="height:10px;width:8px;" role="status">
-                <span class="sr-only">Loading...</span>
+        <div class="container-fluid" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy">
+            <transition-group appear tag="div" v-bind:css="false" v-on:before-enter="beforeEnter" v-on:enter="enter" class="row no-gutters">
+                <trouser-card
+                    v-if="sortedShouldRender && !loading"
+                    v-for="(trouser, index) in sortedTrousers"
+                    v-bind:key="trouser.first_variant.id"
+                    v-bind:id="trouser.first_variant.id"
+                    v-bind:name="trouser.name"
+                    v-bind:price="trouser.first_variant.price"
+                    {% comment %} v-bind:oldprice="trouser.old_price" {% endcomment %}
+                    v-bind:color="trouser.first_variant.color"
+                    v-bind:slug="trouser.slug"
+                    v-bind:image="trouser.first_variant.first_image.file"
+                    v-bind:size="trouser.first_variant.first_meta.size"
+                    v-bind:stock="trouser.first_variant.first_meta.stock"
+                    v-bind:data-index="index"
+                ></trouser-card>
+            </transition-group>
+            <transition-group name="testing-stuff" v-bind:css="false" v-on:before-enter="beforeEnter" v-on:enter="enter" tag="div" class="row testing no-gutters">
+                <trouser-card
+                    v-if="orderShouldRender && !loading"
+                    v-for="(trouser, index) in orderTrousers"
+                    v-bind:key="trouser.first_variant.id"
+                    v-bind:id="trouser.first_variant.id"
+                    v-bind:name="trouser.name"
+                    v-bind:price="trouser.first_variant.price"
+                    {% comment %} v-bind:oldprice="trouser.old_price" {% endcomment %}
+                    v-bind:color="trouser.first_variant.color"
+                    v-bind:slug="trouser.slug"
+                    v-bind:image="trouser.first_variant.first_image.file"
+                    v-bind:size="trouser.first_variant.first_meta.size"
+                    v-bind:stock="trouser.first_variant.first_meta.stock"
+                    v-bind:data-index="index"
+                ></trouser-card>
+            </transition-group>
+            <transition-group name="t" v-bind:css="false" v-on:before-enter="beforeEnter" v-on:enter="enter" tag="div" class="row no-gutters">    
+                <trouser-card
+                    v-if="colorSort && !loading"
+                    v-for="(trouser, index) in sortedOrderTrousers"
+                    v-bind:key="trouser.first_variant.id"
+                    v-bind:id="trouser.first_variant.id"
+                    v-bind:name="trouser.name"
+                    v-bind:price="trouser.first_variant.price"
+                    {% comment %} v-bind:oldprice="trouser.old_price" {% endcomment %}
+                    v-bind:color="trouser.first_variant.color"
+                    v-bind:slug="trouser.slug"
+                    v-bind:image="trouser.first_variant.first_image.file"
+                    v-bind:size="trouser.first_variant.first_meta.size"
+                    v-bind:stock="trouser.first_variant.first_meta.stock"
+                    v-bind:data-index="index"
+                ></trouser-card>
+            </transition-group>
+            <div class="d-flex justify-content-center" style="display:none;" v-if="busy">
+                <div class="m-1 animate__animated animate__rubberBand bg-danger animate__infinite rounded animate__fast" style="height:10px;width:8px;" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="animate__animated animate__rubberBand m-1 bg-warning animate__infinite rounded animate__fast" style="height:10px;width:8px;" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="animate__animated animate__rubberBand m-1 bg-success animate__infinite rounded animate__fast" style="height:10px;width:8px;" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
             </div>
         </div>
     </div>
-</div>         
+    <div v-else>
+        <p class="text-center">Page Not Found.</p>
+    </div>
+</div>          
 {% endblock content %}
 
 {% block javascript %}
+{% if debug %}
 <script src="{% static 'js/vue-infinite-scroll.js' %}"></script>
-<script src="{% static 'js/lodash.min.js' %}"></script>
-
+{% else %}
+<script src="https://cdn.jsdelivr.net/npm/vue-infinite-scroll@2.0.2/vue-infinite-scroll.min.js"></script>
+{% endif %}
 <script>
     const formatter = new Intl.NumberFormat('en-US', {
                                         style: 'currency',
@@ -290,6 +297,7 @@
                 colorSort: false,
                 selectedColor: "all",
                 selectedSort: null,
+                has_content: true,
             }
         },
         created(){
@@ -327,6 +335,9 @@
                     return false
                 }
             }, 
+            has_contjent: function(){
+                return this.trousers.length > 0
+            }
         },
         methods: {
             sortTrousers(e){
@@ -438,7 +449,6 @@
             },
             loadMore(){
                 if (this.has_next === true ){
-                    console.log("running ")
                     this.busy = true;
                     fetch(this.next, {
                         method: 'GET',
@@ -447,27 +457,32 @@
                         return response.json();
                     })
                     .then((jsonData) => {
-                        this.trousers = this.trousers.concat(jsonData.results)
-                        this.colors = _.sortedUniq(_.map(this.trousers, 'first_variant.color'))
-                        temp = jsonData.results
-                        this.next = jsonData.next
-                        this.counter += jsonData.count
-                        setTimeout( function(){
-                            this.sortTemp(temp)
-                            this.orderTemp(temp)
-                            if (this.sortedShouldRender && this.sortedTrousers.length === 0 && this.has_next){
-                                console.log("?")
-                                this.loadMore()
-                            }else if (this.orderShouldRender && this.orderTrousers.length === 0 && this.has_next){
-                                console.log("?")
-                                this.loadMore()
-                            }
-                            this.loading = false
-                            this.busy = false
-                        }.bind(this), 2000)
+                        console.log(jsonData)
+                        if (jsonData["detail"] != "Not found."){
+                            this.trousers = this.trousers.concat(jsonData.results)
+                            console.log(this.trousers)
+                            this.colors = _.sortedUniq(_.map(this.trousers, 'first_variant.color'))
+                            temp = jsonData.results
+                            this.next = jsonData.next
+                            this.counter += jsonData.count
+                            setTimeout( function(){
+                                this.sortTemp(temp)
+                                this.orderTemp(temp)
+                                if (this.sortedShouldRender && this.sortedTrousers.length === 0 && this.has_next){
+                                    this.loadMore()
+                                }else if (this.orderShouldRender && this.orderTrousers.length === 0 && this.has_next){
+                                    this.loadMore()
+                                }
+                                this.loading = false
+                                this.busy = false
+                            }.bind(this), 2000)
+                        }
+                        else{
+                            this.has_content = false
+                        }
                     })
                     .catch((error) => {
-                        console.log(error);
+                        console.log("hi");
                     })
                 }
             },

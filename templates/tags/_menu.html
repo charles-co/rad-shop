@@ -1,11 +1,22 @@
 {% load extras %}
 {% load mptt_tags %}
 {% recursetree menus %}
-<li class="clone {% if node.slug in request.path %}active {% endif %}list-group-item menu-list bg-transparent">
+<li class="clone d-lg-none {% if node.slug in request.path %}active {% endif %}list-group-item menu-list bg-transparent">
     {% if not node.is_leaf_node %}
-    <a href="{{ node|form_url }}" class="d-inline-block text-capitalize" style="width:85%">{{ node.name }}</a>
-    <button class="px-0 menu-data-toggle py-0 d-inline-block float-right bg-transparent text-decoration-none border-0 d-lg-none data-toggle" style="width:15%;" aria-haspopup="true" data-target="#{{ node.name }}Submenu" aria-controls="{{ node.name }}Submenu" aria-expanded="false" data-toggle="collapse" role="button" ><i class="fas fa-xs fa-plus text-white-50"></i></button>
+    <a href="{{ node|form_url }}" class="d-inline-block text-capitalize">{{ node.name }}</a>
+    <button class="p-0 float-right menu-data-toggle d-inline-block bg-transparent text-decoration-none border-0 data-toggle" aria-haspopup="true" data-target="#{{ node.name }}Submenu" aria-controls="{{ node.name }}Submenu" aria-expanded="false" data-toggle="collapse" role="button" ><i class="fas fa-xs fa-plus text-white-50"></i></button>
     <ul class="collapse list-unstyled bg-transparent p-0 list-group list-group-flush" id="{{ node.name }}Submenu">
+        {{ children }}
+    </ul>
+    {% else %}
+    <a href="{{ node|form_url }}" class="text-capitalize">{{ node.name }}</a>
+    {% endif %}
+</li>
+<li class="px-lg-1 {% if node.slug in request.path %}active {% endif %}d-none d-lg-block border-0 list-group-item bg-transparent">
+    {% if not node.is_leaf_node %}
+    <a href="{{ node|form_url }}" class="d-inline-block text-capitalize">{{ node.name }}</a>
+    {% comment %} <button class="py-0 mx-3 btn btn-secondary data-toggle menu-data-toggle bg-transparent" type="button" id="submenu" data-toggle="collapse" role="button" aria-haspopup="true" aria-expanded="false" data-target="#{{ node.name }}Submenu" aria-controls="{{ node.name }}Submenu" data-toggle="collapse"><i class="fas fa-xs fa-plus text-white-50"></i></button> {% endcomment %}
+    <ul class="p-1 collapse position-absolute bg-warning list-unstyled p-0 list-group" id="{{ node.name }}Submenu" style="width:150%">
         {{ children }}
     </ul>
     {% else %}

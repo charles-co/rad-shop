@@ -1,5 +1,6 @@
 # Create your views here.
-from django.http import HttpResponse, JsonResponse
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse, JsonResponse, Http404
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
@@ -47,8 +48,10 @@ class TrouserByCategory(TemplateView):
             if sub_category_slug:
                 title = sub_category_slug.replace("-", " ").upper()
                 context['sub_category_slug'] = sub_category_slug
-            else:
+            elif category_slug == 'collections':
                 title = "ALL"
+            else:
+                raise Http404()
         context['title'] = title
         context['category_slug'] = category_slug
         return context
@@ -60,9 +63,9 @@ class TrouserListing(ListAPIView):
     def get_queryset(self):
         category_slug = self.kwargs["first_slug"]
         if category_slug == 'new-arrivals' or category_slug == 'bestsellers' or category_slug == 'back-in-stock':
+            print("here")
             if category_slug == 'new-arrivals':
                 queryList = Trouser.objects.order_by("-created").prefetch_related('variant', 'variant__trouser_variant_meta', 'variant__trouser_variant_images')
-
             else:
                 if category_slug == 'bestsellers':
                    queryList = Trouser.objects.filter(is_bestseller=True).prefetch_related('variant', 'variant__trouser_variant_meta', 'variant__trouser_variant_images')
@@ -74,11 +77,18 @@ class TrouserListing(ListAPIView):
             except KeyError:
                 sub_category_slug = None
             if sub_category_slug:
-                parent = Menu.objects.get(parent=None, slug=category_slug)
-                sub_category = Menu.objects.get(parent=parent, slug=sub_category_slug)
-                queryList = Trouser.objects.filter(category=sub_category).prefetch_related('variant', 'variant__trouser_variant_meta', 'variant__trouser_variant_images')
-            else:
+                try:
+                    parent = Menu.objects.get(parent=None, slug=category_slug)
+                    sub_category = Menu.objects.get(parent=parent, slug=sub_category_slug)
+                except ObjectDoesNotExist:
+                    raise Http404()
+                else:
+                    queryList = Trouser.objects.filter(category=sub_category).prefetch_related('variant', 'variant__trouser_variant_meta', 'variant__trouser_variant_images')
+            elif category_slug == 'collections':
+                print("here")
                 queryList = Trouser.objects.all().prefetch_related('variant', 'variant__trouser_variant_meta', 'variant__trouser_variant_images')
+            else:
+                raise Http404()
         return queryList
 
 class TrouserDetail(TemplateView):
@@ -94,3 +104,12 @@ class TrouserDetailAPI(RetrieveAPIView):
     lookup_field = 'slug'
     lookup_url_kwarg = 'slug'
     queryset = Trouser.objects.all().prefetch_related('variant', 'variant__trouser_variant_meta', 'variant__trouser_variant_images')
+
+def handler404(request, exception):
+    return render(request, 'error.html', {'error': '404', 'error_message': '404 Not Found'}, status=404)
+
+def handler400(request, exception):
+    return render(request, 'error.html', {'error': '400', 'error_message': '400 Bad Request'}, status=400)
+
+def handler500(request):
+    return render(request, 'error.html', {'error': '500', 'error_message': '500 Internal Server Error'}, status=500)

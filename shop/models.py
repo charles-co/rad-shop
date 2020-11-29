@@ -66,7 +66,7 @@ class Trouser(models.Model):
 
 class TrouserVariant(models.Model):
 
-    trouser = models.ForeignKey(Trouser, on_delete=models.CASCADE, related_name="variant", blank=True, null=True)
+    trouser = models.ForeignKey(Trouser, on_delete=models.CASCADE, related_name="variant")
     color = ColorField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     old_price = models.DecimalField(max_digits=9, decimal_places=2, blank=True, default=0.00)

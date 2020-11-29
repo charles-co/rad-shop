@@ -1,86 +1,103 @@
 {% load static %}
 {% load extras %}
 
-<nav id="sidebar" class="d-lg-none">
-    <div id="dismiss">
-        <button type="button" id="sidebarCollapsev" class="navbar-btn">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-    </div>
-    <div class="sidebar-header d-flex">
-        <h1 class="logo"><i class="fab mx-1 fa-think-peaks"></i></h1>
-        <h1 class="logo"><i class="fab mx-1 fa-think-peaks text-danger"></i></h1>
-        <h1 class="logo"><i class="fab mx-1 fa-think-peaks text-primary"></i></h1>
-    </div>
-    <span class="font-weight-bold">
-        {% if request.user.is_authenticated %}
-        <p class="mx-2">Hi, {{ request.user.first_name }}</p>
-        {% else %}
-        <p class="mx-2">Hello</p>
-        {% endif %}
-    </span>
-    <ul class="list-unstyled list-group p-2 list-group-flush">
-        <li class="{% if 'categories/' not in request.path and 'account/' not in request.path  %}active {% endif %}list-group-item menu-list bg-transparent">
-            <a href="/">HOME</a>
-        </li>
-        {% menu %}
-    </ul>
-    <ul class="list-unstyled list-group fixed-bottom list-group-horizontal" id="login">
-        {% if not request.user.is_authenticated %}
-        <li class="{% if 'login/' in request.path  %}active {% endif %}list-group-item flex-fill rounded-0" style="background-color:#6b8872;">
-            <a href="{% url 'accounts:login' %}" class="text-center">LOGIN</a>
-        </li>
-        <li class="{% if 'signup/' in request.path  %}active {% endif %}list-group-item flex-fill rounded-0" style="background-color:#f47e3a;">
-            <a href="{% url 'accounts:signup' %}" class="text-center">SIGN UP</a>
-        </li>
-        {% else %}
-        <li class="{% if 'account/dashboard/' in request.path  %}active {% endif %}list-group-item flex-fill rounded-0" style="background-color:#6b8872;">
-            <a href="{% url 'accounts:account-home' %}" class="text-center">MY ACCOUNT</a>
-        </li>
-        <li class="{% if 'logout/' in request.path  %}active {% endif %}list-group-item flex-fill rounded-0" style="background-color:#f47e3a;">
-            <a href="{% url 'accounts:logout' %}" class="text-center">LOGOUT</a>
-        </li>
-        {% endif %}
-    </ul>
-</nav>
-<nav class="navbar navbar-expand-lg d-lg-none fixed-top navbar-light bg-light navv">
-    <div class="container-fluid">
-        <div class="d-flex justify-content-between w-100 align-items-center">
-            <button type="button" id="sidebarCollapse" class="navbar-btn animate__animated animate__delay-1s animate__slideInLeft">
+<div id="cart">
+    <nav id="sidebar" class="d-lg-none">
+        <div id="dismiss">
+            <button type="button" id="sidebarCollapsev" class="navbar-btn">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
-            <div class="logo-logo slow">
-                <a href="/"><img src="{% static 'image/favicon.ico' %}" class="logo-image" /></a>
-            </div>
-            <div id="cartnav" class="animate__animated animate__delay-1s animate__slideInRight"> 
-                <a id="cart" href="{% url 'cart:cart-detail' %}" class="btn btn-light d-inline-block d-lg-none .cart" role="button">
-                    <i class="fas fa-box-open position-relative align-middle text-center" :class="{'badger': numItems > 0}" :data-count="numItems"></i>
-                </a>
+        </div>
+        {% comment %} <div class="sidebar-header d-flex">
+            <h1 class="logo"><i class="fab mx-1 fa-think-peaks"></i></h1>
+            <h1 class="logo"><i class="fab mx-1 fa-think-peaks text-danger"></i></h1>
+            <h1 class="logo"><i class="fab mx-1 fa-think-peaks text-primary"></i></h1>
+        </div> {% endcomment %}
+        <span class="font-weight-bold">
+            {% if request.user.is_authenticated %}
+            <p class="mx-2">Hi, {{ request.user.first_name }}</p>
+            {% endif %}
+        </span>
+        <ul class="list-unstyled list-group font-weight-bold mobile p-2 list-group-flush my-5" id="mobile">
+            <li class="{% if 'categories/' not in request.path and 'account/' not in request.path  %}active {% endif %}list-group-item menu-list bg-transparent">
+                <a href="/">HOME</a>
+            </li>
+            {% menu %}
+        </ul>
+        <ul class="list-unstyled list-group font-weight-bold fixed-bottom list-group-horizontal" id="login">
+            {% if not request.user.is_authenticated %}
+            <li class="{% if 'login/' in request.path  %}active {% endif %}list-group-item flex-fill rounded-0" style="background-color:#6b8872;">
+                <a href="{% url 'accounts:login' %}" class="text-center">LOGIN</a>
+            </li>
+            <li class="{% if 'signup/' in request.path  %}active {% endif %}list-group-item flex-fill rounded-0" style="background-color:#f47e3a;">
+                <a href="{% url 'accounts:signup' %}" class="text-center">SIGN UP</a>
+            </li>
+            {% else %}
+            <li class="{% if 'account/dashboard/' in request.path  %}active {% endif %}list-group-item flex-fill rounded-0" style="background-color:#6b8872;">
+                <a href="{% url 'accounts:account-home' %}" class="text-center">MY ACCOUNT</a>
+            </li>
+            <li class="{% if 'logout/' in request.path  %}active {% endif %}list-group-item flex-fill rounded-0" style="background-color:#f47e3a;">
+                <a href="{% url 'accounts:logout' %}" class="text-center">LOGOUT</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    <nav class="navbar navbar-expand-lg d-lg-none fixed-top navbar-light bg-light navv">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between w-100 align-items-center">
+                <button type="button" id="sidebarCollapse" class="navbar-btn animate__animated animate__delay-1s animate__slideInLeft">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <div class="logo-logo animate__slow">
+                    <a href="/"><img src="{% static 'image/favicon.ico' %}" class="logo-image" /></a>
+                </div>
+                <div id="cartnav-mobile" class="animate__animated animate__delay-1s animate__slideInRight"> 
+                    <a id="" href="{% url 'cart:cart-detail' %}" class="btn btn-light d-inline-block d-lg-none .cart" role="button">
+                        <i class="fas fa-box-open position-relative align-middle text-center" :class="{'badger': numItems > 0}" :data-count="numItems"></i>
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
-</nav>
-<nav class="navbar navbar-expand-lg fixed-top d-none d-lg-block navbar-dark bg-dark">
-    <div class="container-fluid">
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="nav navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Page</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Page</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Page</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Page</a>
-                </li>
-            </ul>
+    </nav>
+    <nav class="navbar navbar-expand-lg fixed-top d-none d-lg-block navbar-light inverse bg-light" id="cart">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse d-flex justify-content-around" id="navbarSupportedContent">
+                <div class="animate__animated animate__backInDown animate__slow d-inline-block">
+                    <a href="/"><img src="{% static 'image/favicon.ico' %}" class="logo-image" /></a>
+                </div>
+                <ul class="animate__animated animate__fadeInDownBig animate__slow list-unstyled desktop font-weight-bold list-group list-group-horizontal">
+                    {% comment %} <li class="border-0 {% if 'categories/' not in request.path and 'account/' not in request.path  %}active {% endif %}list-group-item bg-transparent">
+                        <a href="/">HOME</a>
+                    </li> {% endcomment %}
+                    {% menu %}
+                </ul>
+                <ul class="list-unstyled animate__animated animate__fadeInDownBig animate__slow list-group font-weight-bold list-group-horizontal" style="color: rgba(15, 15, 15, 0.63);">
+                    <li id="cartnav" class=" mx-1"> 
+                        <a id="" href="{% url 'cart:cart-detail' %}" class=".cart">
+                            <i class="fas fa-box-open position-relative align-middle text-center"></i> CART ( <span v-if="numItems > 0">[[ numItems ]]</span><span v-else>0</span> ) 
+                        </a>
+                    </li>
+                    {% if not request.user.is_authenticated %}
+                    <li class="{% if 'login/' in request.path  %}active {% endif %}px-1 mx-1 border-0 list-group-item py-0  bg-transparent" style="">
+                        <a href="{% url 'accounts:login' %}" class="text-center">LOGIN</a>
+                    </li>
+                    <li class="{% if 'signup/' in request.path  %}active {% endif %}px-1 mx-1 border-0 list-group-item py-0 bg-transparent" style="">
+                        <a href="{% url 'accounts:signup' %}" class="text-center">SIGN UP</a>
+                    </li>
+                    {% else %}
+                    <li class="{% if 'account/dashboard/' in request.path  %}active {% endif %}}px-1 mx-1 border-0 list-group-item py-0 bg-transparent" style="">
+                        <a href="{% url 'accounts:account-home' %}" class="text-center">MY ACCOUNT</a>
+                    </li>
+                    <li class="{% if 'logout/' in request.path  %}active {% endif %}}px-1 mx-1 border-0 list-group-item py-0 bg-transparent" style="">
+                        <a href="{% url 'accounts:logout' %}" class="text-center">LOGOUT</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
+</div>

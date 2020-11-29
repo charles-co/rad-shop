@@ -27,6 +27,16 @@
     img {
         image-rendering: -webkit-optimize-contrast;
     }
+    .swiper-button-next:after, 
+    .swiper-container-rtl,
+    .swiper-button-prev:after{
+        content: none;
+    }
+    .swiper-button-next, 
+    .swiper-button-prev{
+        border-radius: 100%;
+    }
+
     {% comment %} .animated{
         animation-fill-mode: none;
     } {% endcomment %}
@@ -34,85 +44,101 @@
 {% endblock style %}
 {% block content %}
 <div id="trouserappdetail" class="container">
-    <div class="row no-gutters justify-content-between">
-        <div class="col-12 col-md-5 d-flex justify-content-center align-items-center order-0" style="min-height:400px;">
-            <transition enter-active-class="animate__animated animate__fadeIn" leave-active-class="animate__animated animate__fadeOut">
-                <div class="" v-if="change">
-                    <img :src="mainImage">
-                </div>
-            </transition>
-        </div>
-        <div class="jumbotron py-0 mb-0 px-3 col-12 order-2 order-md-1 col-md-6 mt-3 overflow-auto" style="max-height:400px;">
-            <div class="d-inline-block"><span v-html="description"></span></div>
-        </div>
-        <div class="col-12 col-md-5 px-0 my-2 order-1 m-md-0 order-md-2">
-            <div style="min-height:62px;" v-if="selected_trouser_images_count > 1">
-                <div class="d-flex animate__fadeInLeft flex-wrap" v-bind:class="{animate__animated: !blur}" v-if="selected_trouser_images_count > 1 && !changeText">
-                    <div class="border border-white mr-2" v-for="(img, index) in thumbnails" style="cursor:pointer;" :class="{ 'shadow' : selectedThumbnail === index}" :key="index">
-                        <img :src="img" style="height:60px;width:60px;" @click="changeMainImage(index)">
-                    </div>
-                </div>
-            </div>
-            <div v-if="trousers.length > 1">
-                <p class="mb-0 my-3 font-italic font-weight-bold">Available Colors:</p>
-                <div class="d-flex flex-wrap animate__fadeInLeftBig" v-bind:class="{animate__animated: !blur}">
-                    <div class="border border-dark mr-2" v-for="(img, index) in trousers" style="cursor:pointer;" :class="{ 'shadow' : selectedVariant === index}" :key="index">
-                        <img :src="img.trouser_variant_images[0].thumbnail" @click="change_selected_trouser(index)">
-                    </div>
-                </div>
-            </div>
-            <div class="my-4 font-weight-bold d-block" style="min-height:174px;">
-                <transition enter-active-class="animate__animated animate__fadeIn">
-                    <div v-if="!changeText">
-                        <p> [[ selected_trouser.color ]]</p>
-                        <p class=""> [[ name ]]</p>
-                        <p class="mb-0"> [[ selected_trouser.price|currency ]]</p>
-                        <small class="text-muted"> VAT not included </small> 
-                        <div class="d-flex flex-wrap my-2">
-                            <button v-for="(size, index) in selected_trouser.trouser_variant_meta" class="btn btn-transparent btn-outline-dark rounded-0 mr-2" :class="{active : currentSize == size.size}"@click="changeSize(index)">
-                                [[ size.size ]]
-                            </button>
-                        </div>
+    <div v-if="trousers.length > 0">
+        <div class="row no-gutters justify-content-between">
+            <div class="col-12 col-md-5 d-flex justify-content-center align-items-center order-0" style="min-height:400px;">
+                <transition enter-active-class="animate__animated animate__fadeIn" leave-active-class="animate__animated animate__fadeOut">
+                    <div class="" v-if="change">
+                        <img :src="mainImage">
                     </div>
                 </transition>
             </div>
-            <button class="btn btn-lg col-12 rounded-0" v-if="!inCart" :class="{'btn-warning': outofstock, 'btn-success': !inCart}" :style="{cursor:cssCursor}" :disabled="outofstock || disabled" v-html="message" @click="addToCart(selected_trouser.id)">
-            </button>
-            <button class="btn btn-lg col-12 btn-danger rounded-0" v-if="inCart" :disabled="disabled" @click="removeFromCart(selected_trouser.id)">
-                Remove from cart <i class="fas fa-trash-alt text-white"></i> ([[ quantity ]])
-            </button>
-        </div>
-        <div
-            class="swiper py-5 mx-0 col-md-6 order-3 order-md-3"
-            v-swiper:swiper="swiperOptions"
-            @click-slide="onSwiperClickSlide"
-            @slide-change-transition-start="onSwiperSlideChangeTransitionStart"
-        >
-            <div class="d-flex justify-content-center">
-                <h4 class="text-uppercase font-weight-light">related Products</h4>
+            <div class="jumbotron py-0 mb-0 px-3 col-12 order-2 order-md-1 col-md-6 mt-3 overflow-auto" style="max-height:400px;">
+                <div class="d-inline-block"><span v-html="description"></span></div>
             </div>
-            <div class="swiper-wrapper">
-                <div class="swiper-slide card bg-transparent border-0" v-for="trouser in similiar_trousers" :key="trouser.id">
-                    <div class="d-flex bg-transparent align-items-center justify-contents-center overflow-hidden">
-                        <a :href="trouser.url"><img :src="trouser.first_variant.first_image.file" class="img-fluid img-responsive mx-auto card-img-top" alt="image"></a>
-                    </div>
-                    <div class="card-body py-0">
-                        <h5 class="card-title text-center small">[[ trouser.name ]]</h5>
-                        <span class="d-flex justify-content-center" style="font-size:10px;font-weight:600;">
-                            <del class="card-text text-danger" v-if="trouser.first_variant.old_price"></del>
-                            <p class="align-text-bottom card-text font-weight-bolder">&nbsp;[[ trouser.first_variant.price|currency ]]</p>
-                        </span>
+            <div class="col-12 col-md-5 px-0 my-2 order-1 m-md-0 order-md-2">
+                <div style="min-height:62px;" v-if="selected_trouser_images_count > 1">
+                    <div class="d-flex animate__fadeInLeft flex-wrap" v-bind:class="{animate__animated: !blur}" v-if="selected_trouser_images_count > 1 && !changeText">
+                        <div class="border border-white mr-2" v-for="(img, index) in thumbnails" style="cursor:pointer;" :class="{ 'shadow' : selectedThumbnail === index}" :key="index">
+                            <img :src="img" style="height:60px;width:60px;" @click="changeMainImage(index)">
+                        </div>
                     </div>
                 </div>
+                <div v-if="trousers.length > 1">
+                    <p class="mb-0 my-3 font-italic font-weight-bold">Available Colors:</p>
+                    <div class="d-flex flex-wrap animate__fadeInLeftBig" v-bind:class="{animate__animated: !blur}">
+                        <div class="border border-dark mr-2" v-for="(img, index) in trousers" style="cursor:pointer;" :class="{ 'shadow' : selectedVariant === index}" :key="index">
+                            <img :src="img.trouser_variant_images[0].thumbnail" @click="change_selected_trouser(index)">
+                        </div>
+                    </div>
+                </div>
+                <div class="my-4 font-weight-bold d-block" style="min-height:174px;">
+                    <transition enter-active-class="animate__animated animate__fadeIn">
+                        <div v-if="!changeText">
+                            <p> [[ selected_trouser.color ]]</p>
+                            <p class=""> [[ name ]]</p>
+                            <p class="mb-0"> [[ selected_trouser.price|currency ]]</p>
+                            <small class="text-muted"> VAT not included </small> 
+                            <div class="d-flex flex-wrap my-2">
+                                <button v-for="(size, index) in selected_trouser.trouser_variant_meta" class="btn btn-transparent btn-outline-dark rounded-0 mr-2" :class="{active : currentSize == size.size}"@click="changeSize(index)">
+                                    [[ size.size ]]
+                                </button>
+                            </div>
+                        </div>
+                    </transition>
+                </div>
+                <button class="btn btn-lg col-12 rounded-0" v-if="!inCart" :class="{'btn-warning': outofstock, 'btn-success': !inCart}" :style="{cursor:cssCursor}" :disabled="outofstock || disabled" v-html="message" @click="addToCart(selected_trouser.id)">
+                </button>
+                <button class="btn btn-lg col-12 btn-danger rounded-0" v-if="inCart" :disabled="disabled" @click="removeFromCart(selected_trouser.id)">
+                    Remove from cart <i class="fas fa-trash-alt text-white"></i> ([[ quantity ]])
+                </button>
             </div>
-            <div class="swiper-pagination swiper-pagination-bullets"></div>
+            <div
+                class="swiper py-5 mx-0 col-md-6 order-3 order-md-3"
+                v-swiper:swiper="swiperOptions"
+                @click-slide="onSwiperClickSlide"
+                @slide-change-transition-start="onSwiperSlideChangeTransitionStart"
+            >
+                <div class="d-flex justify-content-center">
+                    <h4 class="text-uppercase font-weight-light">related Products</h4>
+                </div>
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide card bg-transparent border-0" v-for="trouser in similiar_trousers" :key="trouser.id">
+                        <div class="d-flex bg-transparent align-items-center justify-contents-center overflow-hidden">
+                            <a :href="trouser.url"><img :src="trouser.first_variant.first_image.file" class="img-fluid img-responsive mx-auto card-img-top" alt="image"></a>
+                        </div>
+                        <div class="card-body py-0">
+                            <h5 class="card-title text-center small">[[ trouser.name ]]</h5>
+                            <span class="d-flex justify-content-center" style="font-size:10px;font-weight:600;">
+                                <del class="card-text text-danger" v-if="trouser.first_variant.old_price"></del>
+                                <p class="align-text-bottom card-text font-weight-bolder">&nbsp;[[ trouser.first_variant.price|currency ]]</p>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-none d-lg-block swiper-button-prev">
+                    <i class="fas text-black-50 fa-2x fa-angle-left"></i>
+                </div>
+                <div class="d-none d-lg-block swiper-button-next">
+                    <i class="fas text-black-50 fa-2x fa-angle-right"></i>
+                </div>
+                <div class="swiper-pagination swiper-pagination-bullets"></div>
+            </div>
         </div>
+    </div>
+    <div>
+        <p class="text-center">Page Not Found.</p>
     </div>
 </div>
 {% endblock content %}
 {% block javascript %}
-<script src="{% static 'js/lodash.min.js' %}"></script>
+{% if debug %}
 <script src="{% static 'js/swiper.min.js' %}"></script>
+<script src="{% static 'js/vue-awesome-swiper.js' %}"></script>
+{% else %}
+<script src="https://cdn.jsdelivr.net/npm/vue-awesome-swiper@4.1.1/dist/vue-awesome-swiper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/5.4.5/js/swiper.min.js" integrity="sha512-VHsNaV1C4XbgKSc2O0rZDmkUOhMKPg/rIi8abX9qTaVDzVJnrDGHFnLnCnuPmZ3cNi1nQJm+fzJtBbZU9yRCww==" crossorigin="anonymous"></script>
+{% endif %}
 <script src="{% static 'js/vue-awesome-swiper.js' %}"></script>
 <script>
     const formatter = new Intl.NumberFormat('en-US', {
@@ -196,19 +222,20 @@
                 return response.json();
             })
             .then((jsonData) => {
-                this.name = jsonData.name
-                this.trousers = jsonData.variant
-                this.selected_trouser = this.trousers[0]
-                this.similiar_trousers = jsonData.similiar_trousers
-                this.description = jsonData.description
-                this.selected_trouser_images_count = this.selected_trouser.trouser_variant_images.length
-                this.currentSize = this.selected_trouser.trouser_variant_meta[0].size
-                this.mainImage = this.selected_trouser.trouser_variant_images[0].file
-                this.thumbnails = _.map(this.selected_trouser.trouser_variant_images, 'thumbnail')
-                setTimeout( function(){
-                   this.blur = true;
-                }.bind(this), 2000);
-
+                if (jsonData["detail"] != "Not found."){
+                    this.name = jsonData.name
+                    this.trousers = jsonData.variant
+                    this.selected_trouser = this.trousers[0]
+                    this.similiar_trousers = jsonData.similiar_trousers
+                    this.description = jsonData.description
+                    this.selected_trouser_images_count = this.selected_trouser.trouser_variant_images.length
+                    this.currentSize = this.selected_trouser.trouser_variant_meta[0].size
+                    this.mainImage = this.selected_trouser.trouser_variant_images[0].file
+                    this.thumbnails = _.map(this.selected_trouser.trouser_variant_images, 'thumbnail')
+                    setTimeout( function(){
+                    this.blur = true;
+                    }.bind(this), 2000);
+                }
             })
             .catch(function (error){
                 console.log(error);
