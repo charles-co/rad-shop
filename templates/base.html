@@ -28,7 +28,7 @@
             {% block style %}{% endblock style %}
     </head>
     <body>
-        <div class="container-fluid px-0 main-wrapper">    
+        <div class="container-fluid px-0 main-wrapper" style="padding-to: 70px;">    
             <div class="overlayy"></div>
             {% include 'assets/navbar.html' %}
             <!-- Page Content Holder -->
@@ -45,7 +45,7 @@
             </div>
             {% endfor %}
             {% endif %}
-            <div class="min-vah-100 mb-3" style="min-height: 80vh;"> 
+            <div class="mb-3" style="min-height: 80vh;"> 
             {% block content %}
             {% endblock content %}
             </div>
