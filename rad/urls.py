@@ -36,7 +36,7 @@ urlpatterns = [
 
 
 ]
-handler404 = 'shop.views.handler400'
+handler404 = 'shop.views.handler404'
 handler500 = 'shop.views.handler500'
 
 if settings.DEBUG:
