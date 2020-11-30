@@ -15,12 +15,12 @@
             <h1 class="logo"><i class="fab mx-1 fa-think-peaks text-danger"></i></h1>
             <h1 class="logo"><i class="fab mx-1 fa-think-peaks text-primary"></i></h1>
         </div> {% endcomment %}
-        <span class="font-weight-bold">
+        {% comment %} <span class="font-weight-bold">
             {% if request.user.is_authenticated %}
-            <p class="mx-2">Hi, {{ request.user.first_name }}</p>
+            <p class="mx-2">Hi, {{ request.user.get_full_name }}</p>
             {% endif %}
-        </span>
-        <ul class="list-unstyled list-group font-weight-bold mobile p-2 list-group-flush my-5" id="mobile">
+        </span> {% endcomment %}
+        <ul class="list-unstyled list-group font-weight-bold mobile p-2 list-group-flush mt-5" id="mobile">
             <li class="{% if 'categories/' not in request.path and 'account/' not in request.path  %}active {% endif %}list-group-item menu-list bg-transparent">
                 <a href="/">HOME</a>
             </li>

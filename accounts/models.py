@@ -73,6 +73,24 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
 
+    def get_full_name(self):
+        if self.first_name:
+            if self.last_name:
+                return self.first_name + " " + self.last_name
+        else:
+            if self.last_name:
+                return self.last_name
+        return self.email
+
+    def get_short_name(self):
+        return self.email
+
+    def has_perm(self, perm, obj=None):
+        return True
+
+    def has_module_perms(self, app_label):
+        return True
+
 class EmailActivationQuerySet(models.query.QuerySet):
     def confirmable(self):
         now = timezone.now()

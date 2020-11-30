@@ -368,12 +368,12 @@ a.article:hover {
 }
 @media (max-width: 768px) {
     .main-wrapper {
-        padding-top: 70px;
+        padding-top: 70px !important;
     }
 }
 @media (min-width: 1024px) {
     .main-wrapper {
-        padding-top: 78px;
+        padding-top: 78px !important;
     }
 }
 @media (max-width: 991px) {

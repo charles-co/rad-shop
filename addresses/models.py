@@ -13,9 +13,9 @@ ADDRESS_TYPES = (
 
 class Address(models.Model):
     billing_profile = models.ForeignKey(BillingProfile, on_delete=models.CASCADE)
-    name            = models.CharField(max_length=120, null=True, blank=True, help_text='Shipping to? Who is it for?')
+    name            = models.CharField('Fullname', max_length=120, null=True, blank=True, help_text='Shipping to? Who is it for?')
     nickname        = models.CharField(max_length=120, null=True, blank=True, help_text='Internal Reference Nickname')
-    phone           = PhoneNumberField(null=True, blank=True)
+    phone           = PhoneNumberField(null=True, blank=True, help_text='eg. +234XXXXXXXXXX')
     address_type    = models.CharField(max_length=120, choices=ADDRESS_TYPES)
     address_line_1  = models.CharField(max_length=120)
     address_line_2  = models.CharField(max_length=120, null=True, blank=True)
@@ -42,8 +42,9 @@ class Address(models.Model):
             temp =  Address.objects.filter(billing_profile=self.billing_profile)
             if temp.count() == 0:
                 self.default = True
+        if self.billing_profile and not self.name:
+            self.name = self.billing_profile.user.get_full_name()
         super().save(*args, **kwargs)
-            
 
     def get_absolute_url(self):
         return reverse("accounts:address-update", kwargs={"pk": self.pk})

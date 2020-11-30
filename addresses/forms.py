@@ -30,6 +30,8 @@ class AddressCheckoutForm(forms.ModelForm):
     """
     User-related checkout address create form
     """
+    name = forms.CharField(label='FullName', max_length=50, required=True, help_text='Shipping to? Who is it for?')
+    phone = forms.CharField(label='Mobile No.', required=True, help_text='eg. +234XXXXXXXXXX')
     class Meta:
         model = Address
         fields = [

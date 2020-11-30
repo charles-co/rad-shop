@@ -44,7 +44,7 @@
 {% endblock style %}
 {% block content %}
 <div id="trouserappdetail" class="container">
-    <div v-if="trousers.length > 0">
+    <div v-if="has_content">
         <div class="row no-gutters justify-content-between">
             <div class="col-12 col-md-5 d-flex justify-content-center align-items-center order-0" style="min-height:400px;">
                 <transition enter-active-class="animate__animated animate__fadeIn" leave-active-class="animate__animated animate__fadeOut">
@@ -159,6 +159,7 @@
                 selectedVariant: 0,
                 name: "",
                 blur: false,
+                has_content: true,
                 trousers: [],
                 selected_trouser: [],
                 similiar_trousers: [],
@@ -235,6 +236,9 @@
                     setTimeout( function(){
                     this.blur = true;
                     }.bind(this), 2000);
+                }
+                else{
+                    this.has_content = false
                 }
             })
             .catch(function (error){
