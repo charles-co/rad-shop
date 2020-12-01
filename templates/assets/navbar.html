@@ -65,14 +65,14 @@
     </nav>
     <nav class="navbar navbar-expand-lg fixed-top d-none d-lg-block navbar-light inverse bg-light" id="cart">
         <div class="container-fluid">
-            <div class="collapse navbar-collapse d-flex justify-content-around" id="navbarSupportedContent">
+            <div class="collapse navbar-collapse d-flex" id="navbarSupportedContent">
                 <div class="animate__animated animate__backInDown animate__slow d-inline-block">
                     <a href="/"><img src="{% static 'image/favicon.ico' %}" class="logo-image" /></a>
                 </div>
-                <ul class="animate__animated animate__fadeInDownBig animate__slow list-unstyled desktop font-weight-bold list-group list-group-horizontal">
-                    {% comment %} <li class="border-0 {% if 'categories/' not in request.path and 'account/' not in request.path  %}active {% endif %}list-group-item bg-transparent">
+                <ul class="flex-grow-1 d-flex justify-content-around animate__animated animate__fadeInDownBig animate__slow list-unstyled desktop font-weight-bold list-group list-group-horizontal">
+                    <li class="border-0 {% if 'categories/' not in request.path and 'account/' not in request.path  %}active {% endif %}list-group-item bg-transparent">
                         <a href="/">HOME</a>
-                    </li> {% endcomment %}
+                    </li>
                     {% menu %}
                 </ul>
                 <ul class="list-unstyled animate__animated animate__fadeInDownBig animate__slow list-group font-weight-bold list-group-horizontal" style="color: rgba(15, 15, 15, 0.63);">
