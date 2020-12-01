@@ -106,10 +106,10 @@ class TrouserDetailAPI(RetrieveAPIView):
     queryset = Trouser.objects.all().prefetch_related('variant', 'variant__trouser_variant_meta', 'variant__trouser_variant_images')
 
 def handler404(request, exception):
-    return render(request, 'error.html', {'error': '404', 'error_message': '404 Not Found'}, status=404)
+    return render(request, 'error.html', {'error': '404', 'error_message': '404, Page Not Found'}, status=404)
 
 def handler400(request, exception):
-    return render(request, 'error.html', {'error': '400', 'error_message': '400 Bad Request'}, status=400)
+    return render(request, 'error.html', {'error': '400', 'error_message': '400, Bad Request'}, status=400)
 
 def handler500(request):
-    return render(request, 'error.html', {'error': '500', 'error_message': '500 Internal Server Error'}, status=500)
+    return render(request, 'error.html', {'error': '500', 'error_message': '500, Internal Server Error'}, status=500)
