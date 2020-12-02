@@ -259,7 +259,7 @@
                                 </p>
                             </div>
                         </a>
-                        <div v-if="!inCart && !carted">
+                        {% comment %} <div v-if="!inCart && !carted">
                             <button @click="addToCart(id, size)" class="btn btn-transparent add-to-cart btn-outline-transparent text-danger rounded-0 pl-0">Add to cart <i class="fas fa-cart-plus"></i></button>
                         </div>
                         <div v-else>
@@ -271,7 +271,7 @@
                                     <p class="m-0">Added to cart :)</p>
                                 </div>
                             </transition>
-                        </div>
+                        </div> {% endcomment %}
                     </div>                    
                 `
     })

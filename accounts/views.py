@@ -31,7 +31,7 @@ class SignUpView(CreateView):
 
     def form_valid(self, form):
         request = self.request
-        messages.info(request, "A confirmation has been sent to you, please chack your mail to activate your account.")
+        messages.info(request, "A confirmation main has been sent to you, please chack your mail to activate your account.")
         return super(SignUpView, self).form_valid(form)
 
     
@@ -95,7 +95,7 @@ class AccountEmailActivateView(FormMixin, View):
         email = form.cleaned_data.get("email")
         obj = EmailActivation.objects.get(email=email)
         if not use_celery:
-            EmailVerification.delay(obj.id)
+            EmailVerification.delay(obj.id, msg)
         else:
             obj.send_activation()
         return super(AccountEmailActivateView, self).form_valid(form)
