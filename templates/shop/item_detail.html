@@ -67,7 +67,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="swiper-pagination main-detail swiper-pagination-bullets" v-if="selected_trouser_images_count > 1"></div>
+                    <div class="swiper-pagination main-detail swiper-pagination-bullets"></div>
                 </div>
             </div>
             <div class="jumbotron py-0 mb-0 px-3 col-12 order-2 order-md-1 col-md-6 mt-3 overflow-auto" style="max-height:400px;">
@@ -176,7 +176,7 @@
                 cssCursor: "pointer",
                 disabled: false,
                 inCart: undefined,
-                selected_trouser_images_count: null,
+                selected_trouser_images_count: 0,
                 description: "",
                 cartItems: {{ request.session.cart|jsonify }},
                 currentSize: "",
