@@ -53,7 +53,6 @@
             <div class="col-12 col-md-5 order-0" style="min-height:448px;">
                 <div
                     class="trouserimages pb-5 h-100"
-                    {% comment %} style="min-height:400px;" {% endcomment %}
                     v-swiper:trouserimages="trouserimagesoptions"
                     @click-slide="onSwiperClickSlide"
                     @slide-change-transition-start="onSwiperSlideChangeTransitionStart"
@@ -89,7 +88,7 @@
                             <p class="mb-0"> [[ selected_trouser.price|currency ]]</p>
                             <small class="text-muted"> VAT not included </small> 
                             <div class="d-flex flex-wrap my-2">
-                                <button v-for="(size, index) in selected_trouser.trouser_variant_meta" class="btn btn-transparent btn-outline-dark rounded-0 mr-2" :class="{active : currentSize == size.size}"@click="changeSize(index)">
+                                <button v-for="(size, index) in selected_trouser.trouser_variant_meta" class="btn btn-transparent btn-outline-dark rounded-0 mr-2" :class="{active : currentSize == size.size}" @click="changeSize(index)">
                                     [[ size.size ]]
                                 </button>
                             </div>

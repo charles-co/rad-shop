@@ -29,6 +29,14 @@
 .swiper-mid .swiper-pagination-bullet.active{
     background: white;
 }
+.swiper-first .swiper-pagination-bullet, .swiper .swiper-pagination-bullet{
+    background: transparent;
+    opacity: .8;
+    border: 1px solid black;
+}
+.swiper-first .swiper-pagination-bullet-active, .swiper .swiper-pagination-bullet-active{
+    background: #000;
+}
 </style>
 
 {% endblock style %}
@@ -57,15 +65,15 @@
         </div>
     </div>
     <div class="row mb-4 no-gutters best-seller">
-        <span class="text-uppercase mb-4 font-weight-light">BEST SELLERS</span>
+        <span class="text-uppercase mb-4 font-weight-light col-12">BEST SELLERS</span>
         <div
-            class="swiper-first mx-0 pb-4"
+            class="swiper-first mx-0 pb-4 col-12"
             v-swiper:swiper-first="swiperOptions"
             {% comment %} @click-slide="onSwiperClickSlide"
             @slide-change-transition-start="onSwiperSlideChangeTransitionStart" {% endcomment %}
         >
             <div class="swiper-wrapper">
-                <div class="swiper-slide card bg-transparent border-0" v-for="i, index in 6" :key="index">
+                <div class="swiper-slide card bg-transparent border-0" v-for="i, index in 7" :key="index">
                     <div class="d-flex bg-transparent align-items-center justify-content-center overflow-hidden">
                         <img src="../../static/image/test.jpg" class="img-fluid img-responsive mx-auto card-img-top" alt="image">
                     </div>
@@ -89,9 +97,9 @@
         <a href="{% url 'menu:trouser_by_category' 'bestsellers' %}" class="btn btn-lg px-5 py-3 font-weight-bold rounded-0 text-center mx-auto text-white" style="background-color:#1c1b1b;font-size:11px;" role="button">VIEW ALL</a>
     </div>
     <div class="row mb-4 back-in-stock-md">
-        <span class="text-uppercase mb-4 px-2">BACK IN STOCK</span>
+        <span class="text-uppercase col-12 mb-4 px-2">BACK IN STOCK</span>
         <div
-            class="swiper-mid mx-0"
+            class="swiper-mid mx-0 col-12"
             v-swiper:swiper-mid="swiperoptionsmid"
         >
             <div class="swiper-wrapper">
@@ -126,13 +134,13 @@
                     </div>
                 </div>
             </div>
-            <div class="swiper-pagination swiper-pagination-bullets d-lg-none d-flex justify-content-start"></div>
+            <div class="swiper-pagination swiper-pagination-bullets d-md-none d-flex justify-content-start"></div>
         </div>
     </div>
     <div class="row mb-4 pb-4 no-gutters new-arrivals">
-        <span class="text-uppercase mb-4 font-weight-light">NEW ARRIVALS</span>
+        <span class="text-uppercase mb-4 font-weight-light col-12">NEW ARRIVALS</span>
         <div
-            class="swiper mx-0 pb-4"
+            class="swiper mx-0 pb-4 col-12"
             v-swiper:swiper="swiperOptions"
         >
             <div class="swiper-wrapper">
@@ -229,6 +237,11 @@
                     }
                 }
             }
+        },
+        mounted(){
+            window.scrollTo(0, 0);
+            console.log("lol")
+
         },
         computed: {
             numItems: function(){

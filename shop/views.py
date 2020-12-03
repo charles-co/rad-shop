@@ -32,11 +32,11 @@ class TrouserByCategory(TemplateView):
         context = super().get_context_data(**kwargs)
         title=""
         category_slug = self.kwargs["first_slug"]
-        if category_slug == 'new-arrivals' or category_slug == 'bestsellers' or category_slug == 'back-in-stock':
+        if category_slug == 'new-arrivals' or category_slug == 'best-sellers' or category_slug == 'back-in-stock':
             if category_slug == 'new-arrivals':
                 title = "NEW ARRIVALS"
             else:
-                if category_slug == 'bestsellers':
+                if category_slug == 'best-sellers':
                     title = "BEST SELLERS"
                 else:
                     title = "BACK IN STOCK"

@@ -213,6 +213,7 @@
             },
         },
         mounted() {
+            console.log(this)
         },
         methods: {
             addToCart(trouser_id, size){
@@ -247,9 +248,12 @@
         }, 
         template: `                        
                     <div id="" class="col-6 col-md-4 col-lg-3">
-                        <a :href=url class="d-inline-block ml-0"> 
-                            <div class="card border-0 bg-transparent">
-                                <img :src="image" class="card-img-top img-fluid" :alt="name">
+                        <a :href=url class=""> 
+                            <div class="card border-0 bg-transparent d-flex justify-content-center align-items-center lazy-container" style="min-height:210px;">
+                                <img :data-src="image" class="card-img-top img-fluid lazy-image">
+                                <div class="spinner-grow text-dark spinner" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
                             </div>
                             <div class="card-body p-0">
                                 <p class="card-title mb-0" style="font-size:10px;font-weight:600;">  
@@ -298,6 +302,7 @@
                 selectedColor: "all",
                 selectedSort: null,
                 has_content: true,
+                lazyLoading: true,
             }
         },
         created(){
@@ -312,6 +317,7 @@
             }
         },
         mounted(){
+            window.scrollTo(0, 0);
             console.log("mounted")
         },
         updated(){
@@ -475,6 +481,7 @@
                                 }
                                 this.loading = false
                                 this.busy = false
+                                window.addEventListener("scroll", this.lazyLoad);
                             }.bind(this), 2000)
                         }
                         else{
@@ -522,15 +529,50 @@
             beforeEnter: function (el) {
                 el.style.opacity = 0
             },
-            enter: function(el, done){ 
+            enter: function(el, done){
+                this.lazyLoad()
+                console.log("cloen")
                 var delay = el.dataset.index * 100
                 setTimeout(function(){
                     el.style.opacity = 1
-                    el.classList.add("animate__animated", "animate__jackInTheBox")
-
-                    
+                    el.classList.add("animate__animated", "animate__jackInTheBox")    
                 }, delay)
             
+            },
+            lazyLoad(){
+                console.log("ran")
+                let lazyImages = [].slice.call(document.querySelectorAll("div.lazy-container"));
+                if (lazyImages.length > 0){
+                    let active = false;
+                    if (active === false){
+                        active = true;
+                        setTimeout( function() {
+                            lazyImages.forEach(function(lazyImageTemp){
+                                let lazyImage = lazyImageTemp.querySelector("img.lazy-image")
+                                if ((lazyImage.getBoundingClientRect().top <= window.innerHeight && lazyImage.getBoundingClientRect().bottom >= 0) && getComputedStyle(lazyImage).display !== "none"){
+                                    try {
+                                        lazyImageTemp.getElementsByClassName("spinner")[0].remove();
+                                    }
+                                    catch(err) {
+                                        console.log("omo")
+                                    }
+                                    lazyImage.src = lazyImage.dataset.src;
+                                    lazyImageTemp.classList.remove("lazy-container");
+                                    lazyImages = lazyImages.filter(function (image){
+                                        return image !== lazyImageTemp;
+                                    });
+                                    if (lazyImages.length == 0) {
+                                        console.log("ran too")
+                                        window.removeEventListener("scroll", this.lazyLoad);
+                                    }
+                                }
+                            });
+                            active = false;
+                        }.bind(this), 200);
+                    }
+                }else {
+                    window.removeEventListener("scroll", this.lazyLoad);
+                }
             },
         },
 
