@@ -1,10 +1,13 @@
 import json
 from decimal import Decimal
 
+from django.contrib import messages
 from django.http import JsonResponse
 # Create your views here.
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
+from django.views.generic import (CreateView, DetailView, FormView,
+                                  TemplateView, UpdateView, View)
 
 from sorl.thumbnail import get_thumbnail
 
@@ -19,13 +22,6 @@ from templatetags.extras import currency
 from .cart import Cart
 from .forms import CartAddProductForm
 
-
-class DecimalEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, Decimal):
-            return float(obj)
-        return json.JSONEncoder.default(self, obj)
-        
 @require_POST
 def cart_add(request):
     data = json.loads(request.body)
@@ -138,7 +134,10 @@ def checkout_home(request):
                     quantity=item['quantity'][i],
                     size=size)
         # clear the cart
+        msg = "Order created successfully."
+        messages.success(request, msg)
         cart.clear()
+        return redirect('cart:payment')
     context = {
         "object": order_obj,
         "billing_profile": billing_profile,
@@ -151,3 +150,7 @@ def checkout_home(request):
         "address_form": address_form,
     }
     return render(request, "cart/checkout.html", context)
+
+    # class Payment(FormView):
+    #     form_class = carddetailform
+    #     template_name = 

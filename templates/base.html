@@ -191,6 +191,7 @@
                 state: {
                     numItems: {{cart.get_length}},
                     get_total_price: {{cart.get_total_price}},
+                    loading: true,
                 }, 
                 mutations: {
                     increment(state, quantity){
@@ -199,7 +200,11 @@
                     changeTotalPrice(state, newPrice){
                         total_price = state.get_total_price + newPrice
                         state.get_total_price = _.round(total_price, 2);    
+                    },
+                    changeloading(){
+                        state.loading = !state.loading;
                     }
+
                 }
             });
             const cart = new Vue({
