@@ -27,8 +27,10 @@
 </style>
 {% endblock style%}
 {% block content %}
-<div class="container" id="cart-app">
+<div class="container position-absolute">
     <p class="display-4">Cart <i class="fas fa-shopping-bag text-success"></i></p>
+</div>
+<div class="container" :class="{'align-self-center my-auto' : trousers.length === 0}" id="cart-app">
         <transition
             enter-active-class="animate__animated animate__slideInLeft"
             leave-active-class="animate__animated animate__hinge"
@@ -45,11 +47,11 @@
             </div>
         </transition>
     <div class="row justify-content-center">
-        <div class="col-12 col-md-12" ref="bustop" v-if="trousers.length > 0">
+        <div class="col-12 col-md-12 px-md-0" ref="bustop" style="margin-top:83px;" v-if="trousers.length > 0">
             <transition-group tag="ul" name="list" class="list-group d-flex flex-row flex-wrap list-group-flush">
                 <li v-for="(trouser, index) in trousers" :key="trouser.key" class="list-group-item shadow px-0 col-md-6 col-lg-4 list-group-item-darbk">
                     <div class="d-flex justify-content-between">
-                        <div class="p-2">                 
+                        <div class="p-2 py-lg-2 px-lg-1">                 
                             <a :href="trouser.url">
                                 <img :src="[[ trouser.image_url ]]" class="">
                             </a>
@@ -60,7 +62,7 @@
                             <button class="btn btn-sm btn-outline-dark" @click="decrementQuantity(trouser.id, trouser.size, trouser.quantity, trouser.price)">-</button><span class="mx-1">[[ trouser.quantity ]]</span><button class="btn btn-sm btn-outline-dark" @click="incrementQuantity(trouser.id, trouser.size, trouser.quantity, trouser.price)">+</button>
                             <button @click="removeFromCart(trouser.id, trouser.size, trouser.quantity, trouser.total_price)" class="btn btn-transparent p-0 ml-4 my-2 add-to-cart btn-outline-transparent d-block"><i class="fas fa-trash-alt text-danger"></i></button>
                         </div>
-                        <div class="p-2">
+                        <div class="p-2 py-lg-2 px-lg-1">
                             <p class="text-muted mb-1 font-smaller font-italic" style="font-size:11px;">([[ trouser.price|currency ]])</p>
                             <small class="text-muted font-smaller font-italic" style="font-size:10px">[[ trouser.size ]]</small>
 
@@ -73,7 +75,7 @@
                 <a href="{% url 'cart:checkout' %}" class="btn btn-block btn-lg btn-success rounded-0">Checkout</a>
             </div>
         </div>
-        <div v-if="trousers.length === 0" class="col-md-3 col-6 my-5 animate__animated animate__tada">
+        <div v-if="trousers.length === 0" class="col-md-3 col-6 animate__animated animate__tada">
             <div class="d-flex flex-column justify-content-center">
                 <p class="h3 text-center my-4">Oops, no item in cart <i class="fas fa-grin-beam-sweat"></i></p>
                 <a class="btn btn-link btn-md text-decoration-none btn-primary text-white rounded-0" href="{% url 'menu:trouser_by_category' 'collections' %}">Go To Collections</a>
@@ -103,7 +105,7 @@ const cartapp = new Vue({
         },
         mounted(){
             console.log("mounted")
-            console.log(this.trousers)
+            {% comment %} console.log(this.trousers) {% endcomment %}
 
         },
         computed: {

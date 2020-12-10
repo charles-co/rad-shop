@@ -64,14 +64,14 @@
         </div>
     </nav>
     <nav class="navbar navbar-expand-lg fixed-top d-none d-lg-block navbar-light inverse bg-light" id="cart">
-        <div class="container-fluid">
+        <div class="container-fluid px-lg-0">
             <div class="collapse navbar-collapse d-flex" id="navbarSupportedContent">
                 <div class="animate__animated animate__backInDown animate__slow d-inline-block">
                     <a href="/"><img src="{% static 'image/favicon.ico' %}" class="logo-image" /></a>
                 </div>
-                <ul class="flex-grow-1 d-flex justify-content-around animate__animated animate__fadeInDownBig animate__slow list-unstyled desktop font-weight-bold list-group list-group-horizontal">
-                    <li class="border-0 {% if 'categories/' not in request.path and 'account/' not in request.path  %}active {% endif %}list-group-item bg-transparent">
-                        <a href="/">HOME</a>
+                <ul class="flex-grow-1 mx-lg-2 d-flex justify-content-between justify-content-lg-around animate__animated animate__fadeInDownBig animate__slow list-unstyled desktop font-weight-bold list-group list-group-horizontal">
+                    <li class="border-0 px-1 {% if 'categories/' not in request.path and 'account/' not in request.path  %}active {% endif %}list-group-item bg-transparent">
+                        <i class="fas fa-home"></i> <a href="/">HOME</a>
                     </li>
                     {% menu %}
                 </ul>
@@ -89,10 +89,10 @@
                         <a href="{% url 'accounts:signup' %}" class="text-center">SIGN UP</a>
                     </li>
                     {% else %}
-                    <li class="{% if 'account/dashboard/' in request.path  %}active {% endif %}}px-1 mx-1 border-0 list-group-item py-0 bg-transparent" style="">
+                    <li class="{% if 'account/dashboard/' in request.path  %}active {% endif %}px-1 mx-1 border-0 list-group-item py-0 bg-transparent" style="">
                         <a href="{% url 'accounts:account-home' %}" class="text-center">MY ACCOUNT</a>
                     </li>
-                    <li class="{% if 'logout/' in request.path  %}active {% endif %}}px-1 mx-1 border-0 list-group-item py-0 bg-transparent" style="">
+                    <li class="{% if 'logout/' in request.path  %}active {% endif %}px-1 mx-1 border-0 list-group-item py-0 bg-transparent" style="">
                         <a href="{% url 'accounts:logout' %}" class="text-center">LOGOUT</a>
                     </li>
                     {% endif %}

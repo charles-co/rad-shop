@@ -9,7 +9,6 @@ from django.views.generic.list import ListView
 import webcolors
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 
-from cart.forms import CartAddProductForm
 from contents.models import Image
 from menu.models import Menu
 from shop.models import Trouser, TrouserVariant

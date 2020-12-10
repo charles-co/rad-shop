@@ -12,9 +12,9 @@
     <div class='row justify-content-center' v-if="!billing_profile">
         <transition enter-active-class="animate__animated animate__fadeIn">
             <div class='col-12 col-md-6 my-5' v-if="showlogin">
-                <div class="card border-dark">
-                    <p class='lead card-header bg-dark font-weight-bold'>Login / <button @click="showform" class="btn btn-link text-white pl-0">continue as guest</button></p> 
-                    <div class="card-body text-info">
+                <div class="card border-0 bg-transparent">
+                    <p class='lead card-header bg-transparent font-weight-bold'>Login / <button @click="showform" class="btn btn-link text-primary pl-0">continue as guest</button></p> 
+                    <div class="card-body text-black">
                         {% include 'accounts/snippets/form.html' with form=login_form next_url=request.build_absolute_uri %}
                     </div>
                 </div>
@@ -22,9 +22,9 @@
         </transition>
         <transition enter-active-class="animate__animated animate__fadeIn">
             <div class='col-12 col-md-6 my-5' v-if="showguest">
-                <div class="card border-dark">
-                    <p class='lead card-header bg-dark font-weight-bold'>Continue as Guest / <button @click="showform" class="btn btn-link text-white pl-0">login</button></p>
-                    <div class="card-body text-info">
+                <div class="card border-0 bg-transparent">
+                    <p class='lead card-header bg-transparent font-weight-bold'>Continue as Guest / <button @click="showform" class="btn btn-link text-primary pl-0">login</button></p>
+                    <div class="card-body text-black">
                         {% url "accounts:guest_register" as guest_register_url %}
                         {% include 'accounts/snippets/form.html' with form=guest_form next_url=request.build_absolute_uri action_url=guest_register_url %}
                     </div>
@@ -185,6 +185,7 @@
         mounted(){
             console.log("mounted")
         },
+        
 
     });
 

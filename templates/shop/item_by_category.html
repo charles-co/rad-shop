@@ -281,7 +281,6 @@
                             'update': false,
                             'quantity': 1,
                         };
-                console.log(data);
                 fetch("{% url 'cart:cart-add' %}", {
                     method: 'POST',
                     headers: {
@@ -605,7 +604,6 @@
             
             },
             lazyLoad(){
-                console.log("ran")
                 let lazyImages = [].slice.call(document.querySelectorAll("div.lazy-container"));
                 if (lazyImages.length > 0){
                     let active = false;
@@ -626,7 +624,6 @@
                                         return image !== lazyImageTemp;
                                     });
                                     if (lazyImages.length == 0) {
-                                        console.log("ran too")
                                         window.removeEventListener("scroll", this.lazyLoad);
                                     }
                                 }

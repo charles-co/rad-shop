@@ -223,7 +223,7 @@ class OrderItem(models.Model):
     # objects = ProductPurchaseManager()
 
     def __str__(self):
-        return self.trouser.trouer.name
+        return self.trouser.trouser.name
 
     def get_cost(self):
         return self.price * self.quantity

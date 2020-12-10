@@ -366,14 +366,14 @@ a.article:hover {
         /* background-color: #17a2b8; */
     }
 }
-@media (max-width: 768px) {
+@media (max-width: 991px) {
     .main-wrapper {
-        padding-top: 70px !important;
+        padding-top: 75px !important;
     }
 }
 @media (min-width: 1024px) {
     .main-wrapper {
-        padding-top: 78px !important;
+        padding-top: 80px !important;
     }
 }
 @media (max-width: 991px) {

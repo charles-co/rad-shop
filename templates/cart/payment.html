@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% load static %}
+{% load extras %}
+{% load crispy_forms_tags %}
+{% block style %}
+<style>
+.form-control{
+    height: calc(1.5em + .75rem + 6px);
+    border: 1px transparent;
+}
+div.input-group .input-group-text{
+    background-color: #42cccd;
+    border: 1px transparent;
+}
+</style>
+{% endblock style %}
+
+{% block content %}
+<div class="container my-3 my-md-auto" id="paymentapp">
+    <div v-if="loading" class="position-absolute d-flex justify-content-center align-items-center w-100" style="background-color:#dee2e6;opacity:.5;height:81.2%;z-index:100;top:80px;left:0px;">
+        <div>
+            <p>Loading...</p>
+        </div>
+    </div>
+    <div class="row no-gutters justify-content-center">
+        <div class="card col-md-5" style="background-color:#296270;border:1px transparent;">
+            <div class="card-header font-weight-bold" style="background-color:#a33d3d;">
+                <p class="text-warning mb-0 font-weight-lighter">Enter Card Details</p>
+            </div>
+            <div class="card-body">
+                <form method="POST" v-on:submit.prevent="formsubmit($event)">
+                    {% crispy form %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+{% block javascript %}
+<script>
+    const checkout = new Vue({
+        el: '#paymentapp',
+        delimiters: ['[[', ']]'],
+        data () {
+            return {
+                loading: false,
+
+            }
+        },
+        computed: {
+        },
+        methods: {
+            formsubmit(e){
+                this.loading = true
+                this.formErrorReset()
+                let formData = new FormData(e.target)
+                fetch("{% url 'cart:payment' %}", {
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Content-Type': 'applications/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify(Object.fromEntries(formData)),
+                    credentials: 'same-origin',
+                })
+                .then((response) => {
+                    return response.json()
+                })
+                .then((result) => {
+                    if (result.errors){
+                        this.formErrors(result.errors);
+                    }
+                    this.loading = false
+                })
+            },
+            forminputs(){
+                document.querySelector('input[name="cc_number"]').oninput = function() {
+                var num = this.value.split(" ").join("");
+                if (num.length > 0){
+                    num = num.match(new RegExp('.{1,4}', 'g')).join(" ");
+                }
+                this.value = num;
+                };
+                document.querySelector('input[name="cc_expiry"]').oninput = function() {
+                    var num = this.value.split("/").join("");
+                    if (num.length > 0){
+                        num = num.match(new RegExp('.{1,2}', 'g')).join("/");
+                        if (num.length <= 5){
+                            this.value = num;
+                        } else {
+                            this.value = num.slice(0, -2);
+                        }
+                    }
+                };
+            },
+            formErrorReset(){
+                form = document.querySelector("form");
+                list = form.querySelectorAll(".invalid-feedback");
+                for (let p=0; p<list.length; p++){
+                    list[p].remove();
+                }
+                input = form.querySelectorAll(".is-invalid")
+                for (let p=0; p<input.length; p++){
+                    input[p].classList.remove("is-invalid");
+                }
+            },
+            formErrors(errors){
+                for (key in errors){
+                    name = "div_id_" + key
+                    con = document.getElementById(name).querySelector("div")
+                    con.querySelector("input").classList.add("is-invalid")
+                    for (error in errors[key]){
+                        p = document.createElement('P');
+                        p.id = "error_" + (parseInt(error) + 1) +"_id_" + key;
+                        p.className = "invalid-feedback d-block";
+                        p.innerHTML += "<strong class='d-block'>" + errors[key][error] + "</strong>"
+                        con.append(p);
+                    } 
+                }
+            },
+        },
+        mounted(){
+            this.forminputs();
+        },
+
+    });
+</script>
+{% endblock javascript %}

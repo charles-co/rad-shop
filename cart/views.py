@@ -1,10 +1,13 @@
 import json
 from decimal import Decimal
 
+from django.core.serializers import serialize
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.http import JsonResponse
 # Create your views here.
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.views.decorators.http import require_POST
 from django.views.generic import (CreateView, DetailView, FormView,
                                   TemplateView, UpdateView, View)
@@ -19,8 +22,8 @@ from orders.models import Order, OrderItem
 from shop.models import Trouser, TrouserVariant
 from templatetags.extras import currency
 
-from .cart import Cart
-from .forms import CartAddProductForm
+from cart.cart import Cart
+from cart.forms import PaymentForm
 
 @require_POST
 def cart_add(request):
@@ -72,10 +75,12 @@ def checkout_home(request):
     order_obj = None
 
     if cart.get_length() == 0:
-        return redirect("shop:collections")  
+        messages.info(request, "No item in cart.")
+        return redirect("menu:trouser_by_category", "collections")  
 
     login_form = LoginForm(request=request)
     guest_form = GuestForm(request=request)
+    print("!!!!!!!!!!!!", request.POST)
     address_form = AddressCheckoutForm()
 
     shipping_address_id = request.session.get("shipping_address_id", None)
@@ -96,7 +101,7 @@ def checkout_home(request):
                     if not address:
                         address = address_qs.first()
                 shipping_address_id = request.session.get("shipping_address_id", address.id)
-                print(shipping_address_id)
+                # print(shipping_address_id)
         else:
             if address_qs:
                 address = address_qs.first()
@@ -107,7 +112,6 @@ def checkout_home(request):
         order_obj = Order.objects.new_or_get(billing_profile, order_id=order_id)
         request.session["order_id"] = order_obj.id
         if shipping_address_id:
-            print("goot here bruh")
             address_temp = Address.objects.get(id=shipping_address_id)
             order_obj.shipping_address = address_temp
             print(order_obj.shipping_address)
@@ -119,25 +123,37 @@ def checkout_home(request):
 
     if request.method == "POST":
         "check that order is done"
-        for item in cart:
-            if len(item['size']) == 1:
-                OrderItem.objects.create(order=order,
-                trouser=item['trouser'],
-                price=item['price'],
-                quantity=item['quantity'],
-                size=item['size'])
-            else:
-                for i,size in enumerate(item['size']):
-                    OrderItem.objects.create(order=order,
-                    trouser=item['trouser'],
+        try:
+            order_obj.orders.all().delete()
+        except ObjectDoesNotExist:
+            print("error")
+        finally:
+            trouser_temp = {}
+            carttmp = request.session.get('cart')
+            trouser_ids = carttmp.keys()
+            trousers = TrouserVariant.objects.filter(id__in=trouser_ids).prefetch_related('trouser_variant_meta', 'trouser_variant_images')
+            for trouser in trousers:
+                trouser_temp[str(trouser.id)] = trouser
+            for key, item in carttmp.items():
+                if len(item['size']) == 1:
+                    OrderItem.objects.create(order=order_obj,
+                    trouser=trouser_temp[key],
                     price=item['price'],
-                    quantity=item['quantity'][i],
-                    size=size)
-        # clear the cart
-        msg = "Order created successfully."
-        messages.success(request, msg)
-        cart.clear()
-        return redirect('cart:payment')
+                    quantity=item['quantity'][0],
+                    size=item['size'][0],
+                    billing_profile=billing_profile)
+                else:
+                    for i, size in enumerate(item['size']):
+                        OrderItem.objects.create(order=order_obj,
+                        trouser=trouser_temp[key],
+                        price=item['price'],
+                        quantity=item['quantity'][i],
+                        size=size,
+                        billing_profile=billing_profile)
+            # clear the cart
+            msg = "Order created successfully."
+            messages.success(request, msg)
+            return redirect('cart:payment')
     context = {
         "object": order_obj,
         "billing_profile": billing_profile,
@@ -151,6 +167,43 @@ def checkout_home(request):
     }
     return render(request, "cart/checkout.html", context)
 
-    # class Payment(FormView):
-    #     form_class = carddetailform
-    #     template_name = 
+class AjaxableResponseMixin(object):
+    
+    def form_invalid(self, form):
+        response = super().form_invalid(form)
+        if self.request.is_ajax():
+            return JsonResponse({"errors" : form.errors}, status=400)
+        else:
+            return response
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        
+        if self.request.is_ajax():
+            data = {
+                'statuses': 'ok',
+            }
+            return JsonResponse(data)
+        else:
+            return response
+
+class Payment(AjaxableResponseMixin, FormView):
+    form_class = PaymentForm
+    template_name = "cart/payment.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.method == "GET":
+            if request.build_absolute_uri(reverse("cart:checkout")) != request.META.get('HTTP_REFERER'):
+                return redirect("cart:checkout")
+        elif request.method == "POST":
+            data = json.loads(request.body)
+            form = PaymentForm(data)
+            if form.is_valid():
+                return self.form_valid(form)
+            else:
+                return self.form_invalid(form)
+        return super().dispatch(request, *args, **kwargs)
+
+
+
+
