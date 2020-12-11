@@ -8,7 +8,7 @@
 </style>
 {% endblock style %}
 {% block content %}
-<div class="container px-md-0" id="checkoutapp">
+<div class="container px-md-0 mb-4" id="checkoutapp">
     <div class='row justify-content-center' v-if="!billing_profile">
         <transition enter-active-class="animate__animated animate__fadeIn">
             <div class='col-12 col-md-6 my-5' v-if="showlogin">
@@ -77,8 +77,8 @@
                 </div>
             {% endif %}
         </div>
-        <div class="col-md-6 offset-lg-6 col-12 my-3 col-lg-5 my-md-0 overflow-auto" style="max-height:223px;">
-            <div class="card border-warning mt-2 text-dark animate__animated animate__fadeIn animate__delay-2s">
+        <div class="col-md-6 offset-lg-6 offset-md-5 col-12 my-4 col-lg-5 overflow-auto" style="max-height:270px;">
+            <div class="card border-warning text-dark animate__animated animate__fadeIn animate__delay-2s">
                 <h4 class="font-weight-bold card-header">Your Order</h4>
                 <div class="card-body py-0">
                     <ul class="list-group list-group-flush">
@@ -88,7 +88,7 @@
             </div>
         </div>
 
-        <div class="col-12 col-md-6 offset-lg-1 col-lg-5">
+        <div class="col-12 col-md-6 offset-lg-1 offset-md-1 col-lg-5">
             <div class="card border-success my-md-5 animate__animated animate__fadeIn animate__delay-3s">
                 <h4 class="card-header font-weight-bold">Finalize Checkout</h4>
                 <div class="card-body text-success">
@@ -185,7 +185,7 @@
         mounted(){
             console.log("mounted")
         },
-        
+
 
     });
 

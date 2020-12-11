@@ -12,110 +12,42 @@ div.input-group .input-group-text{
     background-color: #42cccd;
     border: 1px transparent;
 }
-.cssload-container{
-	position:relative;
-}
-	
-.cssload-whirlpool,
-.cssload-whirlpool::before,
-.cssload-whirlpool::after {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	border: 1px solid rgb(204,204,204);
-	border-left-color: rgb(0,0,0);
-	border-radius: 974px;
-		-o-border-radius: 974px;
-		-ms-border-radius: 974px;
-		-webkit-border-radius: 974px;
-		-moz-border-radius: 974px;
-}
-
-.cssload-whirlpool {
-	margin: -24px 0 0 -24px;
-	height: 49px;
-	width: 49px;
-	animation: cssload-rotate 1150ms linear infinite;
-		-o-animation: cssload-rotate 1150ms linear infinite;
-		-ms-animation: cssload-rotate 1150ms linear infinite;
-		-webkit-animation: cssload-rotate 1150ms linear infinite;
-		-moz-animation: cssload-rotate 1150ms linear infinite;
-}
-
-.cssload-whirlpool::before {
-	content: "";
-	margin: -22px 0 0 -22px;
-	height: 43px;
-	width: 43px;
-	animation: cssload-rotate 1150ms linear infinite;
-		-o-animation: cssload-rotate 1150ms linear infinite;
-		-ms-animation: cssload-rotate 1150ms linear infinite;
-		-webkit-animation: cssload-rotate 1150ms linear infinite;
-		-moz-animation: cssload-rotate 1150ms linear infinite;
-}
-
-.cssload-whirlpool::after {
-	content: "";
-	margin: -28px 0 0 -28px;
-	height: 55px;
-	width: 55px;
-	animation: cssload-rotate 2300ms linear infinite;
-		-o-animation: cssload-rotate 2300ms linear infinite;
-		-ms-animation: cssload-rotate 2300ms linear infinite;
-		-webkit-animation: cssload-rotate 2300ms linear infinite;
-		-moz-animation: cssload-rotate 2300ms linear infinite;
-}
-
-
-
-@keyframes cssload-rotate {
-	100% {
-		transform: rotate(360deg);
-	}
-}
-
-@-o-keyframes cssload-rotate {
-	100% {
-		-o-transform: rotate(360deg);
-	}
-}
-
-@-ms-keyframes cssload-rotate {
-	100% {
-		-ms-transform: rotate(360deg);
-	}
-}
-
-@-webkit-keyframes cssload-rotate {
-	100% {
-		-webkit-transform: rotate(360deg);
-	}
-}
-
-@-moz-keyframes cssload-rotate {
-	100% {
-		-moz-transform: rotate(360deg);
-	}
-}
 </style>
 {% endblock style %}
 
 {% block content %}
 <div class="container my-3 my-md-auto" id="paymentapp">
-    <div v-if="loading" class="position-absolute d-flex justify-content-center align-items-center w-100" style="background-color:#dee2e6;opacity:.5;height:81.2%;z-index:100;top:80px;left:0px;">
-        <div class="cssload-container">
-	        <div class="cssload-whirlpool"></div>
+    <transition leave-active-class="animate__animated animate__slideOutUp" enter-active-class="animate__animated animate__slideInLeft">
+        <div v-if="loading" class="payment-overlay position-absolute d-flex justify-content-center align-items-center w-100" style="background-color:#dee2e6;opacity:.5;height:80vh;z-index:100;left:0px;">
+            <div class="cssload-container">
+                <div class="cssload-whirlpool"></div>
+            </div>
         </div>
-    </div>
+    </transition>
     <div class="row no-gutters justify-content-center">
-        <div class="card col-md-5" style="background-color:#296270;border:1px transparent;">
+        <div class="card col-md-6 col-lg-5 animate__animated animate__flip" style="background-color:#296270;border:1px transparent;">
             <div class="card-header font-weight-bold" style="background-color:#a33d3d;">
-                <p class="text-warning mb-0 font-weight-lighter">Enter Card Details</p>
+                <p class="text-monospace mb-0">Enter Card Details...</p>
             </div>
             <div class="card-body">
+                <span class="text-right small text-white-50">
+                    <p class="">{{ order_info.billing_profile.email }}</p>
+                    <p class="text-capitalize">{{ order_info.shipping_address.name }}</p>
+                </span>
                 <form method="POST" v-on:submit.prevent="formsubmit($event)">
                     {% crispy form %}
                 </form>
+            </div>
+            <div class="card-footer" style="background-color:#16212d;">
+                <div class="d-flex justify-content-between">
+                    <span class="text-warning">
+                        <i class="fab fa-3x fa-cc-mastercard"></i>
+                        <i class="fab fa-3x fa-cc-visa"></i>
+                    </span>
+                    <span>
+                        <p class="h4 font-weight-bolder mb-0 text-info">{{ cart.get_total_price|addfloatt:order_info.shipping_total|currency }}</p>
+                    </span>
+                </div>
             </div>
         </div>
     </div>
@@ -133,6 +65,13 @@ div.input-group .input-group-text{
             }
         },
         computed: {
+        },
+        filters: {
+            currency: function(value){
+                if (!value) return ''
+                value = formatter.format(value)
+                return value
+            },
         },
         methods: {
             formsubmit(e){
@@ -153,10 +92,10 @@ div.input-group .input-group-text{
                     return response.json()
                 })
                 .then((result) => {
-                    if (result.errors){
-                        this.formErrors(result.errors);
-                    }
                     setTimeout( function(){
+                        if (result.errors){
+                            this.formErrors(result.errors);
+                        }
                         this.loading = false
                     }.bind(this), 2000);
                 })

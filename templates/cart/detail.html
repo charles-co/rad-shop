@@ -27,9 +27,14 @@
 </style>
 {% endblock style%}
 {% block content %}
-<div class="container position-absolute">
-    <p class="display-4">Cart <i class="fas fa-shopping-bag text-success"></i></p>
-</div>
+    <div class="row col-12 no-gutters position-absolute align-items-baseline animate__animated animate__slideInDown animate__delay-1s animate__slow" style="background-color:#b7daaf;left:0;">
+        <div class="d-inline-flex">
+            <p class="display-4">Cart</p>&nbsp;&nbsp;
+            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-bag-check-fill display-4 text-success" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M5.5 3.5a2.5 2.5 0 0 1 5 0V4h-5v-.5zm6 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0zm-.646 5.354a.5.5 0 0 0-.708-.708L7.5 10.793 6.354 9.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"/>
+            </svg>
+        </div>
+    </div>
 <div class="container" :class="{'align-self-center my-auto' : trousers.length === 0}" id="cart-app">
         <transition
             enter-active-class="animate__animated animate__slideInLeft"
@@ -46,52 +51,57 @@
                 </div>
             </div>
         </transition>
-    <div class="row justify-content-center">
-        <div class="col-12 col-md-12 px-md-0" ref="bustop" style="margin-top:83px;" v-if="trousers.length > 0">
-            <transition-group tag="ul" name="list" class="list-group d-flex flex-row flex-wrap list-group-flush">
-                <li v-for="(trouser, index) in trousers" :key="trouser.key" class="list-group-item shadow px-0 col-md-6 col-lg-4 list-group-item-darbk">
-                    <div class="d-flex justify-content-between">
-                        <div class="p-2 py-lg-2 px-lg-1">                 
-                            <a :href="trouser.url">
-                                <img :src="[[ trouser.image_url ]]" class="">
-                            </a>
-                        </div>
-                        <div class="py-2 px-0">
-                            <p>[[ trouser.name ]]</p>
-                            <p class="">[[ trouser.total_price|currency ]]</p>
-                            <button class="btn btn-sm btn-outline-dark" @click="decrementQuantity(trouser.id, trouser.size, trouser.quantity, trouser.price)">-</button><span class="mx-1">[[ trouser.quantity ]]</span><button class="btn btn-sm btn-outline-dark" @click="incrementQuantity(trouser.id, trouser.size, trouser.quantity, trouser.price)">+</button>
-                            <button @click="removeFromCart(trouser.id, trouser.size, trouser.quantity, trouser.total_price)" class="btn btn-transparent p-0 ml-4 my-2 add-to-cart btn-outline-transparent d-block"><i class="fas fa-trash-alt text-danger"></i></button>
-                        </div>
-                        <div class="p-2 py-lg-2 px-lg-1">
-                            <p class="text-muted mb-1 font-smaller font-italic" style="font-size:11px;">([[ trouser.price|currency ]])</p>
-                            <small class="text-muted font-smaller font-italic" style="font-size:10px">[[ trouser.size ]]</small>
+    <div class="row justify-content-center mt-3">
+        <transition appear mode="out-in" enter-active-class="animate__animated animate__fadeIn animate__delay-1s" key="notempty" leave-active-class="animate__animated animate__fadeOut">
+            <div class="col-12 col-md-12 px-md-0" ref="bustop" style="margin-top:83px;" v-if="trousers.length > 0">
+                <div class="d-flex justify-content-end mb-3">
+                    <button @click="removeAll" type="button" name="" id="" class="small btn btn-danger text-monospace btn-lg"><i class="fas fa-trash-alt"></i></button>
+                </div>
+                <transition-group tag="ul" name="list" class="list-group d-flex flex-row flex-wrap justify-content-md-around list-group-flush">
+                    <li v-for="(trouser, index) in trousers" :key="trouser.key" class="list-group-item shadow px-0 col-md-6 col-lg-4 list-group-item-darbk">
+                        <div class="d-flex justify-content-between">
+                            <div class="p-2 py-lg-2 px-lg-1">                 
+                                <a :href="trouser.url">
+                                    <img :src="[[ trouser.image_url ]]" class="">
+                                </a>
+                            </div>
+                            <div class="py-2 px-0">
+                                <p>[[ trouser.name ]]</p>
+                                <p class="text-monospace">[[ trouser.total_price|currency ]]</p>
+                                <button class="btn btn-sm btn-outline-dark" @click="decrementQuantity(trouser.id, trouser.size, trouser.quantity, trouser.price)">-</button><span class="mx-1">[[ trouser.quantity ]]</span><button class="btn btn-sm btn-outline-dark" @click="incrementQuantity(trouser.id, trouser.size, trouser.quantity, trouser.price)">+</button>
+                                <button @click="removeFromCart(trouser.id, trouser.size, trouser.quantity, trouser.total_price)" class="btn btn-transparent p-0 ml-4 my-2 add-to-cart btn-outline-transparent d-block"><i class="fas fa-trash-alt text-danger"></i></button>
+                            </div>
+                            <div class="p-2 py-lg-2 px-lg-1">
+                                <p class="text-muted mb-1 text-monospace font-smaller font-italic" style="font-size:11px;">([[ trouser.price|currency ]])</p>
+                                <small class="text-muted font-smaller font-italic" style="font-size:10px">[[ trouser.size ]]</small>
 
+                            </div>
                         </div>
+                    </li>
+                </transition-group>
+                <div class="col-12 col-md-6 px-0 my-5 mx-auto">
+                    <p class="h2 text-monospace font-weight-bold text-center">Total: <i class="fas fa-shopping-b"></i>[[ get_total_price|currency ]]</p>
+                    <a href="{% url 'cart:checkout' %}" class="btn btn-block btn-lg btn-success rounded-0 text-monospace">Checkout <i class="fas fa-check-double"></i></a>
+                </div>
+            </div>
+            <div v-else key="empty" class="col-md-6 col-6">
+                <div class="d-flex flex-column justify-content-center animate__animated animate__backInLeft animate__slow align-items-center">
+                    <div class="bg-dark mb-4 p-3 rounded-circle">
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash2-fill display-1 text-danger animate__animated animate__pulse animate__slow animate__infinite" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2.037 3.225l1.684 10.104A2 2 0 0 0 5.694 15h4.612a2 2 0 0 0 1.973-1.671l1.684-10.104C13.627 4.224 11.085 5 8 5c-3.086 0-5.627-.776-5.963-1.775z"/>
+                            <path fill-rule="evenodd" d="M12.9 3c-.18-.14-.497-.307-.974-.466C10.967 2.214 9.58 2 8 2s-2.968.215-3.926.534c-.477.16-.795.327-.975.466.18.14.498.307.975.466C5.032 3.786 6.42 4 8 4s2.967-.215 3.926-.534c.477-.16.795-.327.975-.466zM8 5c3.314 0 6-.895 6-2s-2.686-2-6-2-6 .895-6 2 2.686 2 6 2z"/>
+                        </svg>
                     </div>
-                </li>
-            </transition-group>
-            <p class="h3">Total <i class="fas fa-shopping-b"></i>[[get_total_price|currency]]</p>
-            <div class="col-12 col-md-6 px-0 my-5">
-                <a href="{% url 'cart:checkout' %}" class="btn btn-block btn-lg btn-success rounded-0">Checkout</a>
+                    <a class="btn btn-link py-3 font-weight-bold rounded-0 text-decoration-none text-white btn-outline-primary" style="background-color:#9968ff;" href="{% url 'menu:trouser_by_category' 'collections' %}">Go To Collections</a>
+                </div>
             </div>
-        </div>
-        <div v-if="trousers.length === 0" class="col-md-3 col-6 animate__animated animate__tada">
-            <div class="d-flex flex-column justify-content-center">
-                <p class="h3 text-center my-4">Oops, no item in cart <i class="fas fa-grin-beam-sweat"></i></p>
-                <a class="btn btn-link btn-md text-decoration-none btn-primary text-white rounded-0" href="{% url 'menu:trouser_by_category' 'collections' %}">Go To Collections</a>
-            </div>
-        </div>
+        </transition>
     </div>
 </div>
 {% endblock content %}
 {% block javascript %}
 <script src="{% static 'js/lodash.min.js' %}"></script>
 <script>
-const formatter = new Intl.NumberFormat('en-US', {
-                                        style: 'currency',
-                                        currency: 'NGN', 
-                                        minimumFractionDigits: 2
-                                    })
 const cartapp = new Vue({
         delimiters: ['[[', ']]'],
         el: '#cart-app',
@@ -109,11 +119,11 @@ const cartapp = new Vue({
 
         },
         computed: {
-            numItems: function(){
-                return store.state.numItems;
-            },
             get_total_price: function(){
                 return store.state.get_total_price;
+            },
+            num_items: function(){
+                return store.state.numItems;
             }
         },
         filters: {
@@ -124,13 +134,32 @@ const cartapp = new Vue({
             },
         },
         methods: {
+            removeAll(){
+                store.commit('increment', -parseInt(this.num_items));
+                store.commit('changeTotalPrice', -parseFloat(this.get_total_price));
+                fetch("{% url 'cart:cart-remove-all' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'applications/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }, 
+                    credentials: 'same-origin',
+                })
+                .then((response) => { 
+                    len = this.trousers.length
+                    this.trousers.splice(0, len);
+                })
+                .catch(function (error){
+                    console.log(error);
+                })
+            },
             removeFromCart(trouser_id, size, quantity, price){
                 let data = {'trouser_id': trouser_id,
                             'size': size, 
                             'quantity': parseInt(quantity),
                 };
                 store.commit('increment', -parseInt(quantity));
-                store.commit('changeTotalPrice', -parseInt(price));
+                store.commit('changeTotalPrice', -parseFloat(price));
                 fetch("{% url 'cart:cart-remove' %}", {
                     method: 'POST',
                     headers: {

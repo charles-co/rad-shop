@@ -8,7 +8,7 @@ from django.http import JsonResponse
 # Create your views here.
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_GET
 from django.views.generic import (CreateView, DetailView, FormView,
                                   TemplateView, UpdateView, View)
 
@@ -40,6 +40,7 @@ def cart_add(request):
         cart.add(trouser=trouser, size=size, quantity=quantity, update_quantity=True)
     return JsonResponse({'status': 'Ok', 'total_items': str(cart.__len__())})
 
+@require_POST
 def cart_remove(request):
     data = json.loads(request.body) 
     id = data['trouser_id']
@@ -49,6 +50,13 @@ def cart_remove(request):
     cart.remove(trouser, size)
     return JsonResponse({'status': 'Ok', 'total_items': str(cart.__len__())})
 
+@require_POST
+def cart_remove_all(request):
+    cart = Cart(request)
+    cart.clear()
+    return JsonResponse({'status': 'Ok', 'total_items': str(cart.__len__())})
+
+@require_GET
 def cart_detail(request):
     cart = Cart(request)
     trousersString = ''
@@ -80,7 +88,6 @@ def checkout_home(request):
 
     login_form = LoginForm(request=request)
     guest_form = GuestForm(request=request)
-    print("!!!!!!!!!!!!", request.POST)
     address_form = AddressCheckoutForm()
 
     shipping_address_id = request.session.get("shipping_address_id", None)
@@ -114,7 +121,7 @@ def checkout_home(request):
         if shipping_address_id:
             address_temp = Address.objects.get(id=shipping_address_id)
             order_obj.shipping_address = address_temp
-            print(order_obj.shipping_address)
+            # print(order_obj.shipping_address)
             order_obj.save()
             try:
                 del request.session["shipping_address_id"]
@@ -192,6 +199,9 @@ class Payment(AjaxableResponseMixin, FormView):
     template_name = "cart/payment.html"
 
     def dispatch(self, request, *args, **kwargs):
+        self.cart = Cart(request)
+        order_id = request.session.get("order_id", None)
+        self.order = Order.objects.filter(id=order_id).select_related('shipping_address', 'billing_profile').first()
         if request.method == "GET":
             if request.build_absolute_uri(reverse("cart:checkout")) != request.META.get('HTTP_REFERER'):
                 return redirect("cart:checkout")
@@ -203,6 +213,13 @@ class Payment(AjaxableResponseMixin, FormView):
             else:
                 return self.form_invalid(form)
         return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["order_info"] = self.order
+        context["cart"] = self.cart
+        return context
+    
 
 
 

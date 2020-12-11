@@ -72,7 +72,7 @@
 {% endblock style %}
 {% block content %}
 <div id="trouserapp" class="container">
-    <div v-if="has_content">
+    <div v-if="has_content" class="mb-4">
         <div class="my-4">
             <span >{{ title }}</span>
         </div>
@@ -146,8 +146,23 @@
                     v-bind:stock="trouser.first_variant.first_meta.stock"
                     v-bind:data-index="index"
                 ></trouser-card>
-            </transition-group>
-            <transition-group name="testing-stuff" v-bind:css="false" v-on:before-enter="beforeEnter" v-on:enter="enter" tag="div" class="row testing no-gutters">
+
+                <trouser-card
+                    v-if="colorSort && !loading"
+                    v-for="(trouser, index) in sortedOrderTrousers"
+                    v-bind:key="trouser.first_variant.id"
+                    v-bind:id="trouser.first_variant.id"
+                    v-bind:name="trouser.name"
+                    v-bind:price="trouser.first_variant.price"
+                    {% comment %} v-bind:oldprice="trouser.old_price" {% endcomment %}
+                    v-bind:color="trouser.first_variant.color"
+                    v-bind:slug="trouser.slug"
+                    v-bind:image="trouser.first_variant.first_image.file"
+                    v-bind:size="trouser.first_variant.first_meta.size"
+                    v-bind:stock="trouser.first_variant.first_meta.stock"
+                    v-bind:data-index="index"
+                ></trouser-card>
+
                 <trouser-card
                     v-if="orderShouldRender && !loading"
                     v-for="(trouser, index) in orderTrousers"
@@ -164,23 +179,7 @@
                     v-bind:data-index="index"
                 ></trouser-card>
             </transition-group>
-            <transition-group name="t" v-bind:css="false" v-on:before-enter="beforeEnter" v-on:enter="enter" tag="div" class="row no-gutters">    
-                <trouser-card
-                    v-if="colorSort && !loading"
-                    v-for="(trouser, index) in sortedOrderTrousers"
-                    v-bind:key="trouser.first_variant.id"
-                    v-bind:id="trouser.first_variant.id"
-                    v-bind:name="trouser.name"
-                    v-bind:price="trouser.first_variant.price"
-                    {% comment %} v-bind:oldprice="trouser.old_price" {% endcomment %}
-                    v-bind:color="trouser.first_variant.color"
-                    v-bind:slug="trouser.slug"
-                    v-bind:image="trouser.first_variant.first_image.file"
-                    v-bind:size="trouser.first_variant.first_meta.size"
-                    v-bind:stock="trouser.first_variant.first_meta.stock"
-                    v-bind:data-index="index"
-                ></trouser-card>
-            </transition-group>
+
             <div class="d-flex justify-content-center" style="display:none;" v-if="busy">
                 <div class="m-1 animate__animated animate__rubberBand bg-danger animate__infinite rounded animate__fast" style="height:10px;width:8px;" role="status">
                     <span class="sr-only">Loading...</span>
@@ -207,11 +206,6 @@
 <script src="https://cdn.jsdelivr.net/npm/vue-infinite-scroll@2.0.2/vue-infinite-scroll.min.js"></script>
 {% endif %}
 <script>
-    const formatter = new Intl.NumberFormat('en-US', {
-                                        style: 'currency',
-                                        currency: 'NGN', 
-                                        minimumFractionDigits: 2
-                                    })
     Vue.component('colors-dropdown', {
         delimiters: ['[[', ']]'],
         data: function(){
@@ -272,7 +266,6 @@
             },
         },
         mounted() {
-            console.log(this)
         },
         methods: {
             addToCart(trouser_id, size){
@@ -285,13 +278,13 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'applications/json',
+                        'X-Requested-With': 'XMLHttpRequest',
                         'X-CSRFToken': '{{ csrf_token }}'
                     }, 
                     credentials: 'same-origin',
                     body: JSON.stringify(data)
                 })
                 .then((response) => {
-                    console.log(response)
                     this.showMessage = true;
                     this.carted = true;
                     store.commit('increment', 1)
@@ -320,7 +313,7 @@
                                 </div>
                             </div>
                             <div class="card-body p-0">
-                                <p class="card-title mb-0" style="font-size:10px;font-weight:600;">  
+                                <p class="card-title mb-0 text-monospace" style="font-size:10px;font-weight:600;">  
                                     [[ color ]]
                                     <br> [[ name ]] <br>
                                     [[ price|currency ]]  
@@ -377,11 +370,9 @@
             if (this.orderShouldRender && this.sortedShouldRender || this.orderShouldRender && this.colorSort || this.colorSort && this.sortedShouldRender){
                 this.colorSort = this.colorSortfn()
                 this.sortedOrderTrousers = this.sortedOrderTrousersfn()
-                console.log(this.sortedOrderTrousers)
             }
         },
         mounted(){
-            window.scrollTo(0, 0);
             console.log("mounted")
         },
         updated(){
@@ -522,15 +513,17 @@
                     this.busy = true;
                     fetch(this.next, {
                         method: 'GET',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Content-Type': 'applications/json',
+                        },
                     })
                     .then((response) => {
                         return response.json();
                     })
                     .then((jsonData) => {
-                        console.log(jsonData)
                         if (jsonData["detail"] != "Not found."){
                             this.trousers = this.trousers.concat(jsonData.results)
-                            console.log(this.trousers)
                             this.colors = _.sortedUniq(_.map(this.trousers, 'first_variant.color'))
                             temp = jsonData.results
                             this.next = jsonData.next
@@ -553,7 +546,7 @@
                         }
                     })
                     .catch((error) => {
-                        console.log("hi");
+                        console.log(error);
                     })
                 }
             },
@@ -595,13 +588,11 @@
             },
             enter: function(el, done){
                 this.lazyLoad()
-                console.log("cloen")
                 var delay = el.dataset.index * 100
                 setTimeout(function(){
                     el.style.opacity = 1
                     el.classList.add("animate__animated", "animate__jackInTheBox")    
                 }, delay)
-            
             },
             lazyLoad(){
                 let lazyImages = [].slice.call(document.querySelectorAll("div.lazy-container"));
@@ -610,15 +601,17 @@
                     if (active === false){
                         active = true;
                         setTimeout( function() {
-                            lazyImages.forEach(function(lazyImageTemp){
+                            lazyImages.forEach(function(lazyImageTemp, index){
                                 let lazyImage = lazyImageTemp.querySelector("img.lazy-image")
                                 if ((lazyImage.getBoundingClientRect().top <= window.innerHeight && lazyImage.getBoundingClientRect().bottom >= 0) && getComputedStyle(lazyImage).display !== "none"){
-                                    try {
-                                        lazyImageTemp.getElementsByClassName("spinner")[0].remove();
-                                    }
-                                    catch(err) {
-                                    }
-                                    lazyImage.src = lazyImage.dataset.src;
+                                    setTimeout( function(){
+                                        try {
+                                            lazyImageTemp.getElementsByClassName("spinner")[0].remove();
+                                        }
+                                        catch(err) {
+                                        }
+                                        lazyImage.src = lazyImage.dataset.src;
+                                    }, index * 100)
                                     lazyImageTemp.classList.remove("lazy-container");
                                     lazyImages = lazyImages.filter(function (image){
                                         return image !== lazyImageTemp;

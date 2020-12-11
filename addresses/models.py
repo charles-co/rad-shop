@@ -12,7 +12,7 @@ ADDRESS_TYPES = (
 )
 
 class Address(models.Model):
-    billing_profile = models.ForeignKey(BillingProfile, on_delete=models.CASCADE)
+    billing_profile = models.ForeignKey(BillingProfile, related_name="addresses", on_delete=models.CASCADE)
     name            = models.CharField('Fullname', max_length=120, null=True, blank=True, help_text='Shipping to? Who is it for?')
     nickname        = models.CharField(max_length=120, null=True, blank=True, help_text='Internal Reference Nickname')
     phone           = PhoneNumberField(null=True, blank=True, help_text='eg. +234XXXXXXXXXX')

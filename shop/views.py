@@ -1,6 +1,6 @@
 # Create your views here.
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse, JsonResponse, Http404
+from django.http import HttpResponse, JsonResponse, Http404, HttpResponse
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
@@ -60,35 +60,37 @@ class TrouserListing(ListAPIView):
     serializer_class = TrouserSerializer
 
     def get_queryset(self):
-        category_slug = self.kwargs["first_slug"]
-        if category_slug == 'new-arrivals' or category_slug == 'bestsellers' or category_slug == 'back-in-stock':
-            print("here")
-            if category_slug == 'new-arrivals':
-                queryList = Trouser.objects.order_by("-created").prefetch_related('variant', 'variant__trouser_variant_meta', 'variant__trouser_variant_images')
-            else:
-                if category_slug == 'bestsellers':
-                   queryList = Trouser.objects.filter(is_bestseller=True).prefetch_related('variant', 'variant__trouser_variant_meta', 'variant__trouser_variant_images')
+        if self.request.is_ajax():
+            category_slug = self.kwargs["first_slug"]
+            if category_slug == 'new-arrivals' or category_slug == 'bestsellers' or category_slug == 'back-in-stock':
+                if category_slug == 'new-arrivals':
+                    queryList = Trouser.objects.order_by("-created").prefetch_related('variant', 'variant__trouser_variant_meta', 'variant__trouser_variant_images')
                 else:
-                    queryList = Trouser.objects.filter(is_back=True).prefetch_related('variant', 'variant__trouser_variant_meta', 'variant__trouser_variant_images')
-        else:            
-            try:
-                sub_category_slug = self.kwargs["second_slug"]
-            except KeyError:
-                sub_category_slug = None
-            if sub_category_slug:
+                    if category_slug == 'bestsellers':
+                        queryList = Trouser.objects.filter(is_bestseller=True).prefetch_related('variant', 'variant__trouser_variant_meta', 'variant__trouser_variant_images')
+                    else:
+                        queryList = Trouser.objects.filter(is_back=True).prefetch_related('variant', 'variant__trouser_variant_meta', 'variant__trouser_variant_images')
+            else:            
                 try:
-                    parent = Menu.objects.get(parent=None, slug=category_slug)
-                    sub_category = Menu.objects.get(parent=parent, slug=sub_category_slug)
-                except ObjectDoesNotExist:
-                    raise Http404()
+                    sub_category_slug = self.kwargs["second_slug"]
+                except KeyError:
+                    sub_category_slug = None
+                if sub_category_slug:
+                    try:
+                        parent = Menu.objects.get(parent=None, slug=category_slug)
+                        sub_category = Menu.objects.get(parent=parent, slug=sub_category_slug)
+                    except ObjectDoesNotExist:
+                        raise Http404()
+                    else:
+                        queryList = Trouser.objects.filter(category=sub_category).prefetch_related('variant', 'variant__trouser_variant_meta', 'variant__trouser_variant_images')
+                elif category_slug == 'collections':
+                    print("here")
+                    queryList = Trouser.objects.all().prefetch_related('variant', 'variant__trouser_variant_meta', 'variant__trouser_variant_images')
                 else:
-                    queryList = Trouser.objects.filter(category=sub_category).prefetch_related('variant', 'variant__trouser_variant_meta', 'variant__trouser_variant_images')
-            elif category_slug == 'collections':
-                print("here")
-                queryList = Trouser.objects.all().prefetch_related('variant', 'variant__trouser_variant_meta', 'variant__trouser_variant_images')
-            else:
-                raise Http404()
-        return queryList
+                    raise Http404()
+            return queryList
+        raise Http404()
+
 
 class TrouserDetail(TemplateView):
     template_name = 'shop/item_detail.html'

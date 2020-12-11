@@ -83,8 +83,6 @@ INSTALLED_APPS = [
     'tinymce',
     'phonenumber_field',
     'nested_admin',
-    'creditcards',
-
 ]
 # PHONENUMBER_DB_FORMAT = 'E164'
 # PHONENUMBER_DEFAULT_REGION = 'NG'
