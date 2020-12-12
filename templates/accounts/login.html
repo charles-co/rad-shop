@@ -1,35 +1,72 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% load static %}
+{% block style %}
+<style>
+    .wrapper{
+        background: linear-gradient(to top left, #33ccff 0%, #ff99cc 100%);
+        background-size: 400% 400%;
+        animation: gradient 15s ease infinite;
+    }
+    @keyframes gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+    .form-wrapper {
+        background: black;
+        opacity: .6;
+        margin: 4rem 0;
+    }
+    .form-wrapper::before {
+        content: "";
+        font-family: "Font Awesome 5 Free"; font-weight:900; content: "\f2bd";
+        font-size: 6em;
+        position: absolute;
+        top: -77px;
+        display:inline-block;
+        font-style: normal;
+        font-variant: normal;
+        text-rendering: auto;
+        color: initial;
+        -webkit-font-smoothing: antialiased;
+
+    }
+</style>
+{% endblock style %}
 {% block content %}
-<div class="container" id="loginapp">
+<div class="container my-auto" id="loginapp">
     <section class="mb-4">
-      <div class="row justify-content-center justify-content-md-end">
-        <div class='col-11 col-md-5'>
-            <transition enter-active-class="animate__animated animate__zoomIn">
-                <div v-if="showlogin">
-                    <h1 v-html="label"></h1>
-                    <p v-if="showlogin">Don't have an account? Then please <button @click="showform" class="btn btn-sm text-info px-0">Sign up</button></p>
-                    <form method="post" action="{% url 'accounts:login' %}" v-if="showlogin">
-                        {% csrf_token %}
-                        {{ form|crispy }}
-                        <input class='btn btn-primary mt-3 w-100 rounded-0 btn-md' name="submit" type="submit" value="Log In"/>
+      <div class="row justify-content-center justify-content-md-center">
+        <div class='col-10 text-white py-5 rounded form-wrapper d-flex justify-content-center flex-column align-items-center col-md-5'>
+            <transition mode="out-in" appear enter-active-class="animate__animated animate__zoomIn">
+                <div v-if="showlogin" key="login">
+                    <p>Don't have an account? Then please <button @click="showform" class="btn btn-sm text-info px-0">Sign up</button></p>
+                    <form method="post" action="{% url 'accounts:login' %}">
+                        {% crispy form %}
+                        <input class='btn text-uppercase font-weight-bolder text-monospace text-white border-white mt-3 w-100 rounded-0 btn-md' style="background-color:#000000;font-size:12px;" name="submit" type="submit" value="Log In"/>
                         {% if request.GET.next %}
                         <input name="next" type="hidden" value="{{ request.GET.next }}"/>
                         {% endif %}
                     </form>
+                    <a href="{% url 'password_reset' %}" class="small text-right text-decoration-none text-primary my-2 d-block font-italic">forgotten password?</a>
+                </div>
+                <div v-if="showsignup" key="signup">
+                    <p>Already have an account? Then please <button @click="showform" class="btn btn-sm text-info px-0">Login</button></p>
+                    <form method="post" action="{% url 'accounts:signup' %}">
+                        {% crispy signupform %}
+                        <input class='btn text-white font-weight-bolder text-uppercase text-monospace border-white mt-3 w-100 rounded-0 btn-md' style="background-color:#000000;font-size:12px;" name="submit" type="submit" value="Create My Account"/>
+                    </form>
                 </div>
             </transition>
             <transition enter-active-class="animate__animated animate__zoomIn">
-                <div v-if="showsignup">
-                    <h1 v-html="label"></h1>
-                    <p>Already have an account? Then please <button @click="showform" class="btn btn-sm text-info px-0">Login</button></p>
-                    <form method="post" action="{% url 'accounts:signup' %}">
-                        {% csrf_token %}
-                        {{ signupform|crispy }}
-                        <input class='btn btn-primary mt-3 w-100 rounded-0 btn-md' name="submit" type="submit" value="Sign In"/>
-                    </form>
-                </div>
+                
             </transition>
         </div>
       </div>

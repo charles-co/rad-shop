@@ -17,7 +17,7 @@ from . import utils
 class CardNumberField(forms.CharField):
     widget = TelephoneInput
     default_validators = [
-        MinLengthValidator(12),
+        MinLengthValidator(16),
         MaxLengthValidator(19),
         CCNumberValidator(),
     ]
@@ -92,7 +92,7 @@ class PaymentForm(forms.Form):
         self.helper = FormHelper()
         self.helper.form_show_labels = False
         self.helper.layout = Layout(
-                AppendedText('cc_number', '<i class="fab fa-cc-mastercard"></i>', active=True,css_class=""),
+                AppendedText('cc_number', '<i class="fab fa-money-check"></i>', active=True,css_class=""),
                 Div(
                     Div(
                         AppendedText('cc_expiry', '<i class="fas fa-calendar-alt"></i>', active=True,css_class=""),

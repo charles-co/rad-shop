@@ -5,6 +5,22 @@
 
 {% block style %}
 <style>
+.wrapper{
+        background: linear-gradient(to left, #6b8872 0%, #f47E3A 100%);
+        background-size: 200% 200%;
+        animation: gradient 15s ease infinite;
+    }
+    @keyframes gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
 </style>
 {% endblock style %}
 {% block content %}
@@ -32,40 +48,146 @@
             </div>
         </transition>
     </div>
-    <div class='row no-gutters justify-content-md-between' v-else>
+    <div class='row no-gutters justify-content-md-center' v-else>
         <div class='col-12'>
             <p class='lead font-weight-bolder'>Place Order</p>
             <hr/>
         </div>
-        <div class="col-12 col-md-6 col-lg-5">
+        <div class="col-12 col-md-10 align-content-between">
             {% if address %}
-            <div class="card border-dark animate__animated animate__fadeIn animate__delay-1s">
-                <h4 class="card-header font-weight-bold">Address</h4>
-                <div class="d-flex">
-                    <div class="pl-2 py-1 pr-0">
-                        <span><i class="fas text-danger fa-map-marker-alt "></i></span>
-                    </div>
-                    <div class="card-body flex-grow-1 py-1">
-                        <div class="font-italic">
-                            {{ address.get_address|linebreaks }}
+            {% comment %} <div class="card-deck">
+                <div class="card mx-0 rounded-0 animate__animated animate__fadeIn animate__delay-1s">
+                    <h4 class="card-header font-weight-bold">Address</h4>
+                    <div class="d-flex">
+                        <div class="pl-2 py-1 pr-0">
+                            <span><i class="fas text-danger fa-map-marker-alt "></i></span>
+                        </div>
+                        <div class="card-body flex-grow-1 py-1">
+                            <div class="font-italic">
+                                {{ address.get_address|linebreaks }}
+                            </div>
+                        </div>
+                        <div class="d-flex card-footer justify-content-start">
+                            {% if request.user.is_authenticated %}
+                            <a href='{{ address.get_absolute_url }}?next={{ request.build_absolute_uri }}' class='text-primary mr-3'>Edit</a>
+                            <button type="button" class="btn btn-transparent btn-link align-text-top p-0 d-flex" data-toggle="modal" data-target="#changeaddress">
+                                <span>Change</span>
+                            </button>
+                            
+                            {% else %}
+                            <button type="button" class="btn btn-transparent btn-link" data-toggle="modal" data-target="#editaddress">
+                                Edit
+                            </button>
+                            
+                            {% endif %}
                         </div>
                     </div>
-                    <div class="d-flex card-footer justify-content-start">
-                        {% if request.user.is_authenticated %}
-                        <a href='{{ address.get_absolute_url }}?next={{ request.build_absolute_uri }}' class='text-primary mr-3'>Edit</a>
-                        <button type="button" class="btn btn-transparent btn-link align-text-top p-0 d-flex" data-toggle="modal" data-target="#changeaddress">
-                            <span>Change</span>
-                        </button>
-                        
-                        {% else %}
-                        <button type="button" class="btn btn-transparent btn-link" data-toggle="modal" data-target="#editaddress">
-                            Edit
-                        </button>
-                        
+                </div>
+                <div class="card mx-0 rounded-0 text-dark animate__animated animate__fadeIn animate__delay-2s">
+                    <h4 class="font-weight-bold card-header">Your Order</h4>
+                    <div class="card-body py-0">
+                        <ul class="list-group list-group-flush">
+                            {% cartlist %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="card mx-0 rounded-0 animate__animated animate__fadeIn animate__delay-3s">
+                    <h4 class="card-header font-weight-bold">Finalize Checkout</h4>
+                    <div class="card-body text-success">
+                        <p class="card-text">Cart Total: {{ cart.get_total_price|currency }}</p>
+                        {% if object %}
+                        <p class="card-text">Shipping Total: {{ object.shipping_total|currency }}</p>
+                        <p class="card-text">Order Total: {{ cart.get_total_price|addfloatt:object.shipping_total|currency }}</p>
                         {% endif %}
+                    </div>
+                    <form class='card-footer bg-transparent' method='POST' action="">{% csrf_token %}
+                        <button type='submit' {% if not address %}disabled{% endif %} class='btn btn-success btn-md rounded-0'>Pay Now <i class="fas fa-lock"></i></button>
+                    </form>
+                </div>
+            </div> {% endcomment %}
+            <div class="accordion" id="accordionExample">
+                <div class="card bg-transparent">
+                    <div class="card-header" id="headingOne" style="background-color:#766596;border-bottom:2px solid white;">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link text-white text-monospace font-weight-bolder text-uppercase text-decoration-none btn-block" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <i class="fas fa-map-marked-alt "></i> Shipping Address
+                        </button>
+                    </h2>
+                    </div>
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                        <div class="d-flex" style="background-color:#766596;">
+                            <div class="pl-2 py-1 pr-0">
+                                <span><i class="fas text-danger fa-map-marker-alt "></i></span>
+                            </div>
+                            <div class="card-body text-white text-monospace flex-grow-1 py-1">
+                                <div class="font-italic">
+                                    {{ address.get_address|linebreaks }}
+                                </div>
+                            </div>
+                            <div class="d-flex flex-column card-footer bg-dark justify-content-around">
+                                {% if request.user.is_authenticated %}
+                                <a href='{{ address.get_absolute_url }}?next={{ request.build_absolute_uri }}' role="button" class='btn text-monospace btn-primary btn-md rounded-0'>Edit</a>
+                                <button type="button" class="btn btn-info align-text-top text-monospace rounded-0" data-toggle="modal" data-target="#changeaddress">
+                                    Change
+                                </button>
+                                
+                                {% else %}
+                                <button type="button" class="btn btn-transparent btn-link" data-toggle="modal" data-target="#editaddress">
+                                    Edit
+                                </button>
+                                
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card bg-transparent">
+                    <div class="card-header" id="headingTwo" style="background-color:rgb(255 203 123);border-bottom:2px solid white;">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link text-white text-monospace font-weight-bolder text-uppercase btn-block text-decoration-none collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            <i class="fas fa-luggage-cart"></i> Order
+                        </button>
+                    </h2>
+                    </div>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                        <div class="card-body text-monospace text-white py-0" style="background-color:rgb(255 203 123);">
+                            <ul class="list-group list-group-flush">
+                                {% cartlist %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card bg-transparent">
+                    <div class="card-header" id="headingThree" style="background-color:rgb(170 190 125);border-bottom:2px solid white;">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link text-white btn-block text-monospace font-weight-bolder text-uppercase text-decoration-none collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            <i class="fas fa-check-circle"></i> Finalize Checkout
+                        </button>
+                    </h2>
+                    </div>
+                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                        <div class="card-body text-monospace text-white" style="background-color:rgb(170 190 125);">
+                            <p class="card-text">Cart Total: {{ cart.get_total_price|currency }}</p>
+                            {% if object %}
+                            <p class="card-text">Shipping Total: {{ object.shipping_total|currency }}</p>
+                            <p class="card-text">Order Total: {{ cart.get_total_price|addfloatt:object.shipping_total|currency }}</p>
+                            {% endif %}
+                        </div>
+                        <form class='card-footer bg-info' method='POST' action="">{% csrf_token %}
+                            <button type='submit' {% if not address %}disabled{% endif %} class='btn btn-success btn-md rounded-0'>Pay Now <i class="fas fa-lock"></i></button>
+                        </form>
                     </div>
                 </div>
             </div>
+            {% comment %} <div class="d-flex mt-5 flex-column justify-content-center align-items-center">
+                <div class="bg-dark mb-4 p-4 rounded-circle">
+                    <i class="fas fa-shipping-fast display-1 text-info animate__animated animate__pulse animate__slow animate__infinite"></i>
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash2-fill display-1 text-danger animate__animated animate__pulse animate__slow animate__infinite" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2.037 3.225l1.684 10.104A2 2 0 0 0 5.694 15h4.612a2 2 0 0 0 1.973-1.671l1.684-10.104C13.627 4.224 11.085 5 8 5c-3.086 0-5.627-.776-5.963-1.775z"/>
+                        <path fill-rule="evenodd" d="M12.9 3c-.18-.14-.497-.307-.974-.466C10.967 2.214 9.58 2 8 2s-2.968.215-3.926.534c-.477.16-.795.327-.975.466.18.14.498.307.975.466C5.032 3.786 6.42 4 8 4s2.967-.215 3.926-.534c.477-.16.795-.327.975-.466zM8 5c3.314 0 6-.895 6-2s-2.686-2-6-2-6 .895-6 2 2.686 2 6 2z"/>
+                    </svg>
+                </div>
+            </div> {% endcomment %}
             {% else %}
                 <div class>
                     {% if request.user.is_authenticated %}
@@ -76,32 +198,6 @@
                     {% endif %}
                 </div>
             {% endif %}
-        </div>
-        <div class="col-md-6 offset-lg-6 offset-md-5 col-12 my-4 col-lg-5 overflow-auto" style="max-height:270px;">
-            <div class="card border-warning text-dark animate__animated animate__fadeIn animate__delay-2s">
-                <h4 class="font-weight-bold card-header">Your Order</h4>
-                <div class="card-body py-0">
-                    <ul class="list-group list-group-flush">
-                        {% cartlist %}
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-md-6 offset-lg-1 offset-md-1 col-lg-5">
-            <div class="card border-success my-md-5 animate__animated animate__fadeIn animate__delay-3s">
-                <h4 class="card-header font-weight-bold">Finalize Checkout</h4>
-                <div class="card-body text-success">
-                    <p class="card-text">Cart Total: {{ cart.get_total_price|currency }}</p>
-                    {% if object %}
-                    <p class="card-text">Shipping Total: {{ object.shipping_total|currency }}</p>
-                    <p class="card-text">Order Total: {{ cart.get_total_price|addfloatt:object.shipping_total|currency }}</p>
-                    {% endif %}
-                </div>
-                <form class='card-footer bg-transparent' method='POST' action="">{% csrf_token %}
-                    <button type='submit' {% if not address %}disabled{% endif %} class='btn btn-success btn-md rounded-0'>Pay Now <i class="fas fa-lock"></i></button>
-                </form>
-            </div>
         </div>
         <div class="modal fade" id="changeaddress" tabindex="-1" role="dialog" aria-labelledby="changeaddressTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">

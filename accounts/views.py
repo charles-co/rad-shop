@@ -116,8 +116,8 @@ class LoginView(NextUrlMixin, RequestFormAttachMixin, FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["signupform"] = SignUpForm
         request = self.request
+        context["signupform"] = SignUpForm()
         return context
 
 class AccountHomeView(LoginRequiredMixin, DetailView):

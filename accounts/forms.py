@@ -4,6 +4,9 @@ from django.contrib.auth import (authenticate, get_user_model, login,
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.urls import reverse
 from django.utils.safestring import mark_safe
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, Div, MultiField, Field, HTML
+from crispy_forms.bootstrap import AppendedText, PrependedText
 
 from accounts.models import EmailActivation, GuestEmail
 
@@ -112,11 +115,18 @@ class UserChangeForm(forms.ModelForm):
         return self.initial["password"]
 
 class LoginForm(forms.Form):
-    email    = forms.EmailField(label='Email')
-    password = forms.CharField(widget=forms.PasswordInput)
+    email    = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'Email'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
 
     def __init__(self, request, *args, **kwargs):
         self.request = request
+        self.helper = FormHelper()
+        self.helper.form_show_labels = False
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+                PrependedText('email', '<i class="fas fa-user-circle text-info"></i>', active=True, css_class="rounded-0"),
+                PrependedText('password', '<i class="fas fa-key text-info"></i>', active=True, css_class="rounded-0"),
+            )
         super(LoginForm, self).__init__(*args, **kwargs)
 
     def clean(self):
@@ -124,7 +134,7 @@ class LoginForm(forms.Form):
         data = self.cleaned_data
         email  = data.get("email")
         password  = data.get("password")
-        qs = User.objects.get(email=email)
+        qs = User.objects.filter(email=email).first()
         if qs:
             # user email is registered, check active/
             if not(qs.is_active):
@@ -154,13 +164,29 @@ class LoginForm(forms.Form):
 class SignUpForm(UserCreationForm):
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""
-    first_name = forms.CharField(label='First Name', max_length=50, required=True)
-    last_name = forms.CharField(label='Last Name', max_length=50, required=True)
-    email = forms.EmailField(label='Email Address', max_length=255, required=True)
+    first_name = forms.CharField(label='First Name', max_length=50, required=True, widget=forms.TextInput(attrs={'placeholder': 'First Name'}))
+    last_name = forms.CharField(label='Last Name', max_length=50, required=True, widget=forms.TextInput(attrs={'placeholder': 'Last Name'}))
+    email = forms.EmailField(label='Email Address', max_length=255, required=True, widget=forms.EmailInput(attrs={'placeholder': 'Email'}))
+    password1 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
+    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Confirmation Password'}))
 
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'email', 'password1', 'password2')
+
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_show_labels = False
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+                        Field('first_name', active=True, css_class="rounded-0"),
+                        Field('last_name', active=True, css_class="rounded-0"),
+                        Field('email', active=True, css_class="rounded-0"),
+                        Field('password1', active=True, css_class="rounded-0"),
+                        Field('password2', active=True, css_class="rounded-0"),
+                        HTML("""<p class='small font-italic'>A verification will be sent to specified email on form completion.</p>"""),
+                    )
+        super(SignUpForm, self).__init__(*args, **kwargs)
 
     def save(self, commit=True):
         # Save the provided password in hashed format
@@ -172,6 +198,7 @@ class SignUpForm(UserCreationForm):
         return user
 
 class GuestForm(forms.ModelForm):
+    email    = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'Email'}))
     class Meta:
         model = GuestEmail
         fields = [
@@ -180,6 +207,11 @@ class GuestForm(forms.ModelForm):
 
     def __init__(self, request, *args, **kwargs):
         self.request = request
+        self.helper = FormHelper()
+        self.helper.form_show_labels = False
+        self.helper.layout = Layout(
+                PrependedText('email', '<i class="fas fa-user-circle text-info"></i>', active=True, css_class="rounded-0"),
+            )
         super(GuestForm, self).__init__(*args, **kwargs)
 
     def save(self, commit=True):
