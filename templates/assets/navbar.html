@@ -87,12 +87,12 @@
                         <a role="button" class="btn px-0 btn-link font-weight-bold text-decoration-none" data-toggle="modal" data-target="#searchModal"><i class="fas fa-search text-success"></i>&nbsp;SEARCH</a>&nbsp;<span>|</span>
                     </li>
                     {% if not request.user.is_authenticated %}
-                    <li class="{% if 'login/' in request.path or 'signup/' in request.path %}active {% endif %}px-0 d-flex align-items-center border-0 list-group-item bg-transparent" style="">
-                        <a href="{% url 'accounts:login' %}" class="text-center align-text-bottom my-auto">LOGIN</a>&nbsp;<span class="text-warning">|</span>&nbsp;<a href="{% url 'accounts:signup' %}" class="text-center my-auto">SIGN UP</a>
+                    <li class="px-0 d-flex align-items-center border-0 list-group-item bg-transparent" style="">
+                        <a href="{% url 'accounts:login' %}" class="{% if 'login/' in request.path %}active {% endif %}text-center align-text-bottom my-auto">LOGIN</a>&nbsp;<span class="text-warning">|</span>&nbsp;<a href="{% url 'accounts:signup' %}" class="{% if 'signup/' in request.path %}active {% endif %}text-center my-auto">SIGN UP</a>
                     </li>
                     {% else %}
-                    <li class="{% if 'account/dashboard/' in request.path %}active {% endif %}d-flex align-items-center px-0 border-0 list-group-item bg-transparent" style="">
-                        <a href="{% url 'accounts:account-home' %}" class="text-center my-auto">MY ACCOUNT</a>&nbsp;<span class="text-warning">|</span>&nbsp;<a href="{% url 'accounts:logout' %}" class="text-center my-auto">LOGOUT</a>
+                    <li class="d-flex align-items-center px-0 border-0 list-group-item bg-transparent" style="">
+                        <a href="{% url 'accounts:account-home' %}" class="{% if 'account/dashboard/' in request.path %}active {% endif %}text-center my-auto">MY ACCOUNT</a>&nbsp;<span class="text-warning">|</span>&nbsp;<a href="{% url 'accounts:logout' %}" class="text-center my-auto">LOGOUT</a>
                     </li>
                     {% endif %}
                 </ul>
