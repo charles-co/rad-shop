@@ -29,10 +29,8 @@ $(document).ready(function () {
         // open sidebar
         $('#sidebar').removeClass('active');
         // fade in the overlay
-        $(this).removeClass('active');
         $('#sidebarCollapse').removeClass('active');
         $('.overlayy').removeClass('active');
-        
         $('.collapse.in').removeClass('in');
     });
     $('#COLLECTIONSSubmenu').on('show.bs.collapse', function () {

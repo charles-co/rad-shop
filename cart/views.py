@@ -18,6 +18,7 @@ from accounts.forms import GuestForm, LoginForm
 from addresses.forms import AddressCheckoutForm
 from addresses.models import Address
 from billing.models import BillingProfile
+from accounts.models import GuestEmail
 from orders.models import Order, OrderItem
 from shop.models import Trouser, TrouserVariant
 from templatetags.extras import currency
@@ -108,12 +109,12 @@ def checkout_home(request):
                     if not address:
                         address = address_qs.first()
                 shipping_address_id = request.session.get("shipping_address_id", address.id)
-                # print(shipping_address_id)
         else:
             if address_qs:
                 address = address_qs.first()
                 shipping_address_id = request.session.get("shipping_address_id", address.id)
                 address_form = AddressCheckoutForm(instance=address)
+                guest_form = GuestForm(request=request, initial={'email': billing_profile.email, })
     
         trousersString = ''
         order_obj = Order.objects.new_or_get(billing_profile, order_id=order_id)
@@ -170,7 +171,6 @@ def checkout_home(request):
         "address_qs": address_qs,
         "address": address,
         "shipping_address_id": shipping_address_id,
-        "address_form": address_form,
     }
     return render(request, "cart/checkout.html", context)
 

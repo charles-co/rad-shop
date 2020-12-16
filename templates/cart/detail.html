@@ -27,7 +27,7 @@
 </style>
 {% endblock style%}
 {% block content %}
-<div class="row col-12 no-gutters position-absolute align-items-baseline animate__animated animate__slideInDown animate__delay-1s animate__slow" style="background-color:#b7daaf;left:0;">
+<div class="row col-12 no-gutters position-absolute align-items-baseline animate__animated animate__slideInDown animate__delay-1s" style="background-color:#b7daaf;left:0;">
     <div class="d-inline-flex">
         <p class="display-4">Cart</p>&nbsp;&nbsp;
         <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-bag-check-fill display-4 text-success" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -55,7 +55,7 @@
         <transition appear mode="out-in" enter-active-class="animate__animated animate__fadeIn animate__delay-1s" key="notempty" leave-active-class="animate__animated animate__fadeOut">
             <div class="col-12 col-md-12 px-md-0" ref="bustop" style="margin-top:83px;" v-if="trousers.length > 0">
                 <div class="d-flex justify-content-end mb-3">
-                    <button @click="removeAll" type="button" name="" id="" class="small btn btn-danger text-monospace btn-lg"><i class="fas fa-trash-alt"></i></button>
+                    <button @click="removeAll" type="button" name="" id="" class="small btn btn-danger text-monospace btn-lg"><i class="fas fa-trash-alt animate__animated animate__headShake animate__delay-3s"></i></button>
                 </div>
                 <transition-group tag="ul" name="list" class="list-group d-flex flex-row flex-wrap justify-content-md-around list-group-flush">
                     <li v-for="(trouser, index) in trousers" :key="trouser.key" class="list-group-item shadow px-0 col-md-6 col-lg-4 list-group-item-darbk">

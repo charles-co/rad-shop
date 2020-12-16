@@ -19,8 +19,12 @@ class BillingProfileManager(models.Manager):
                             user=user, email=user.email)
         elif guest_email_id is not None:
             'guest user checkout; auto reloads payment stuff'
-            guest_email_obj = GuestEmail.objects.get(id=guest_email_id)
-            obj, created = self.model.objects.get_or_create(
+            guest_email_obj = GuestEmail.objects.filter(id=guest_email_id)
+            if not guest_email_obj.exists():
+                del request.session["guest_email_id"]
+            else:
+                guest_email_obj = guest_email_obj.first()
+                obj, created = self.model.objects.get_or_create(
                                             email=guest_email_obj.email)
         else:
             pass

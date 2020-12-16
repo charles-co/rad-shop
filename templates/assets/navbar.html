@@ -25,7 +25,7 @@
             </li>
             {% menu %}
             <li class="list-group-item mt-4 d-flex menu-list bg-transparent">
-                <i class="fas fa-search text-success">&nbsp;</i>&nbsp;<a role="button" class="btn btn-link p-0 font-weight-bold" data-toggle="modal" data-target="#searchModal">SEARCH</a>
+                <i class="fas fa-search text-success">&nbsp;</i>&nbsp;<a role="button" class="btn btn-link text-decoration-none text-white p-0 font-weight-bold" data-toggle="modal" data-target="#searchModal">SEARCH</a>
             </li>
         </ul>
         <ul class="list-unstyled list-group font-weight-bold fixed-bottom list-group-horizontal" id="login">
@@ -78,13 +78,14 @@
                     {% menu %}
                 </ul>
                 <ul class="list-unstyled desktop-menu-right animate__animated animate__fadeInDownBig animate__slow list-group font-weight-bold list-group-horizontal" style="color: rgba(15, 15, 15, 0.63);">
-                    <li id="cartnav" class="{% if 'cart/' in request.path %}active {% endif %}px-0 list-group-item border-0 bg-transparent d-flex"> 
-                        <a id="" href="{% url 'cart:cart-detail' %}" class="cart my-auto">
-                            <i class="fas fa-box-open text-primary position-relative align-middle text-center"></i>&nbsp;CART&nbsp;(&nbsp;<span v-if="numItems > 0">[[ numItems ]]</span><span v-else>0</span>&nbsp;)&nbsp;<span>|</span>
+                    <li id="cartnav" class="px-0 list-group-item border-0 bg-transparent d-flex"> 
+                        <a id="" href="{% url 'cart:cart-detail' %}" class="{% if 'cart/' in request.path %}active {% endif %} cart my-auto">
+                            <i class="fas fa-box-open text-primary position-relative align-middle text-center"></i>&nbsp;CART&nbsp;(&nbsp;<span v-if="numItems > 0">[[ numItems ]]</span><span v-else>0</span>&nbsp;)
                         </a>
+                        &nbsp;<span class="my-auto">|</span>
                     </li>
-                    <li class="list-group-item bg-transparent border-0 px-2 px-xl-4">
-                        <a role="button" class="btn px-0 btn-link font-weight-bold text-decoration-none" data-toggle="modal" data-target="#searchModal"><i class="fas fa-search text-success"></i>&nbsp;SEARCH</a>&nbsp;<span>|</span>
+                    <li class="list-group-item bg-transparent border-0 px-2 px-xl-4 d-flex">
+                        <a role="button" class="btn px-0 btn-link font-weight-bold text-decoration-none" data-toggle="modal" data-target="#searchModal"><i class="fas fa-search text-success"></i>&nbsp;SEARCH</a>&nbsp;<span class="my-auto">|</span>
                     </li>
                     {% if not request.user.is_authenticated %}
                     <li class="px-0 d-flex align-items-center border-0 list-group-item bg-transparent" style="">
@@ -102,17 +103,17 @@
     {% comment %} <transition enter-active-class="animate__animated animate__zoomIn animate__faster" leave-active-class="animate__animated animate__slideOutDown animate__faster"> {% endcomment %}
         <div class="modal animate__animated animate__zoomIn animate__fast" id="searchModal" style="z-index:10000;" tabindex="-1" role="dialog" aria-labelledby="searchModalTitle" aria-hidden="true">
             <div class="modal-dialog h-100 vw-100 m-0" role="document">
-                <div class="modal-content h-100 vw-100">
+                <div class="modal-content h-100 vw-100" style="background:#212529;opacity:.95;">
                     <div class="modal-header border-bottom-0">
                         <button type="button" class="close text-danger" data-custom-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true" class="display-4">&times;</span>
+                            <span aria-hidden="true"><i class="fas fa-3x fa-times"></i></span>
                         </button>
                     </div>
                     <div class="modal-body" method="GET">
                         <div class="col-12 mx-auto">
                         <form>
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control search border-bottom border-top-0 border-right-0 border-left-0 rounded-0" id="InputSearch" name=query type="search" placeholder="search..." aria-label="Search" style="line-height:3rem;font-size:2rem;">
+                                <input type="text" class="form-control bg-transparent search border-bottom border-top-0 border-right-0 border-left-0 rounded-0" id="InputSearch" name=query type="search" placeholder="search..." aria-label="Search" style="line-height:3rem;font-size:2rem;">
                                 <div class="input-group-append">
                                     <button class="px-1 btn btn-link text-decoration-none search-button bg-transparent border-bottom border-left-0 border-top-0 border-right-0 rounded-0" type="submit" id="basic-addon1"><i class="fas fa-search h3 text-success"></i></span>
                                 </div>
