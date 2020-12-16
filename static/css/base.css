@@ -172,6 +172,9 @@ a:focus {
     border-top-width: 0px;
     border-bottom: 2px solid #007bff;
 }
+.list-group.desktop-menu-right .list-group-item.active {
+    color:#c15b5b !important;
+}
 .list-group#login{
     min-width:60vw !important;
     max-width:60vw !important;
@@ -239,30 +242,6 @@ ul ul a {
     /* border-bottom: 1px solid#999; */
     /* background: #999; */
 }
-
-ul.CTAs {
-    padding: 20px;
-}
-
-ul.CTAs a {
-    text-align: center;
-    font-size: 0.9em !important;
-    display: block;
-    border-radius: 5px;
-    margin-bottom: 5px;
-}
-
-a.download {
-    background: #fff;
-    color: #7386D5;
-}
-
-a.article,
-a.article:hover {
-    background: #6d7fcc !important;
-    color: #fff !important;
-}
-
 
 /* ---------------------------------------------------
     CONTENT STYLE
@@ -381,10 +360,10 @@ a.article:hover {
 }
 @media (min-width: 1024px) {
     .main-wrapper {
-        padding-top: 80px !important;
+        padding-top: 92px !important;
     }
     .payment-overlay {
-        top: 80px;
+        top: 92px;
     }
 }
 @media (max-width: 991px) {

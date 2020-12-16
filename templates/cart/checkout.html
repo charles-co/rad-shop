@@ -40,7 +40,7 @@
 <div class="container-fluid px-0 mb-4" id="checkoutapp">
     <div class='row no-gutters justify-content-center' v-if="!billing_profile">
         <transition enter-active-class="animate__animated animate__fadeIn">
-            <div class='col-12 col-md-6 my-5' v-if="showlogin">
+            <div class='col-11 col-md-6 my-5' v-if="showlogin">
                 <div class="card border-0 bg-transparent">
                     <p class='lead card-header bg-transparent font-weight-bold'>Login / <button @click="showform" class="btn btn-link text-primary pl-0">continue as guest</button></p> 
                     <div class="card-body text-black">
@@ -50,7 +50,7 @@
             </div>
         </transition>
         <transition enter-active-class="animate__animated animate__fadeIn">
-            <div class='col-12 col-md-6 my-5' v-if="showguest">
+            <div class='col-11 col-md-6 my-5' v-if="showguest">
                 <div class="card border-0 bg-transparent">
                     <p class='lead card-header bg-transparent font-weight-bold'>Continue as Guest / <button @click="showform" class="btn btn-link text-primary pl-0">login</button></p>
                     <div class="card-body text-black">

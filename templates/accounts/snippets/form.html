@@ -1,10 +1,9 @@
 {% load crispy_forms_tags %}
 
 <form method='POST' class="d-flex flex-column justify-content-center" action='{% if action_url %}{{ action_url }}{% else %}{% url "accounts:login" %}{% endif %}'>
-    {% csrf_token %}
     {% if next_url %}
     <input type='hidden' name='next' value='{{ next_url }}'/>
     {% endif %}
-  {{ form|crispy }}
-  <button type='submit' class='btn btn-md btn-dark rounded-0 btn-default'>Submit</button>
+  {% crispy form %}
+  <button type='submit' class='btn btn-md btn-dark rounded-0'>Submit</button>
 </form>

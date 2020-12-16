@@ -209,6 +209,7 @@ class GuestForm(forms.ModelForm):
         self.request = request
         self.helper = FormHelper()
         self.helper.form_show_labels = False
+        self.helper.form_tag = False
         self.helper.layout = Layout(
                 PrependedText('email', '<i class="fas fa-user-circle text-info"></i>', active=True, css_class="rounded-0"),
             )
