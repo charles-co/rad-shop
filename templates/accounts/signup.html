@@ -7,10 +7,9 @@
       <div class="row animate__animated animate__fadeIn animate__delay-2s justify-content-center justify-content-md-end">
         <div class='col-11 col-md-5'>
           <h1>Sign Up</h1>
-          <p>Already have an account? Then please <a href="#" style="color:blue;">sign in</a></p>
+          <p>Already have an account? then please <a href="{% url 'accounts:login' %}" style="color:#dc3545;">sign in</a></p>
           <form class="signup" id="signup_form" method="post">
-            {% csrf_token %}
-            {{ form|crispy }}
+            {% crispy form %}
             <input class='btn btn-primary mt-3 w-100 rounded-0 btn-md' type="submit" value="Sign Up"/>
           </form>
         </div>

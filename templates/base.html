@@ -149,11 +149,24 @@
                 el: '#cart',
                 store: store,
                 delimiters: ['[[', ']]'],
+                data() {
+                    return {
+                        showModal: false,
+                    }
+                },
                 computed: {
                     numItems: function(){
                         return store.state.numItems
                     }
                 },
+                mounted(){
+                    document.getElementById('searchModal').addEventListener("hide.bs.modal", this.sModal());
+                },
+                methods: {
+                    sModal(){
+                        this.showModal = !this.showModal
+                    }
+                }
 
             });
         </script>

@@ -1,26 +1,63 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
-
+{% block style %}
+<style>
+{% comment %} .wrapper{
+        background: linear-gradient(-90deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+        background-size: 400% 400%;
+        animation: gradient 15s ease infinite;
+    }
+    @keyframes gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    } {% endcomment %}
+    .custom-switch{
+      padding-left: 16px;
+    }
+    .custom-control-input:checked~.custom-control-label::before{
+      background-color: #dc3545;
+      border-color: #dc3545;
+    }
+    .form-control{
+        border : 1px solid rgba(220, 53, 69, 0.21);
+    }
+    form {
+        color: #dc3545;
+    }
+    fieldset{
+        border: 0px dashed #cc8aca;
+    }
+    legend{
+        padding: 0px 5px;
+        width: auto;
+    }
+</style>
+{% endblock style %}
 {% block content %}
-
-<div class='row'>
-    <div class='col-10 mx-auto col-md-6 '>
-        {% if form.instance.address_line_1  %}
-        <h3 class='my-3'>Update Address</h3>
-        {% else %}
-        <h3 class='my-3'>Create Address</h3>
-        {% endif %}
-        <hr>
-      <form method='POST'> 
-        {% csrf_token %}
-        {% if request.GET.next %}
-        <input type='hidden' name='next' value='{{ request.GET.next }}' />
-        {% endif %}
-        {{ form|crispy }}
-        <button type='submit' class='btn btn-primary'>Save Address</button>
-      </form>
-    </div>
-
+<div class='container'>
+  <div class='row'>
+      <div class='col-12'>
+          {% if form.instance.address_line_1  %}
+          <h3 class='my-3'>Update Address</h3>
+          {% else %}
+          <h3 class='my-3'>Create Address</h3>
+          {% endif %}
+          <hr>
+        <form method='POST'> 
+          {% if request.GET.next %}
+          <input type='hidden' name='next' value='{{ request.GET.next }}' />
+          {% endif %}
+          {% crispy form %}
+          {% comment %} <button type='submit' class='btn btn-primary'>Save Address</button> {% endcomment %}
+        </form>
+      </div>
+  </div>
 </div>
-
 {% endblock %}

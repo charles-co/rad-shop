@@ -282,6 +282,11 @@ a.article:hover {
     cursor: pointer;
 }
 
+#InputSearch:focus, #InputSearch:focus ~ div > .search-button{
+    border-bottom: 1px solid #4dd0e1 !important;
+    box-shadow: 0 0 0 0 #4dd0e1!important;
+}
+
 #sidebarCollapse span {
     width: 80%;
     height: 2px;

@@ -179,12 +179,12 @@ class SignUpForm(UserCreationForm):
         self.helper.form_show_labels = False
         self.helper.form_tag = False
         self.helper.layout = Layout(
-                        Field('first_name', active=True, css_class="rounded-0"),
-                        Field('last_name', active=True, css_class="rounded-0"),
-                        Field('email', active=True, css_class="rounded-0"),
-                        Field('password1', active=True, css_class="rounded-0"),
-                        Field('password2', active=True, css_class="rounded-0"),
-                        HTML("""<p class='small font-italic'>A verification will be sent to specified email on form completion.</p>"""),
+                        Field('first_name', css_class="rounded-0"),
+                        Field('last_name', css_class="rounded-0"),
+                        Field('email', css_class="rounded-0"),
+                        Field('password1', css_class="rounded-0"),
+                        Field('password2', css_class="rounded-0"),
+                        HTML("""<p class='small font-italic'>A verification mail will be sent to the specified email on form completion.</p>"""),
                     )
         super(SignUpForm, self).__init__(*args, **kwargs)
 

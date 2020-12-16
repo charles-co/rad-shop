@@ -1,6 +1,5 @@
 {% load static %}
 {% load extras %}
-
 <div id="cart">
     <nav id="sidebar" class="d-lg-none">
         <div id="dismiss">
@@ -21,10 +20,13 @@
             {% endif %}
         </span> {% endcomment %}
         <ul class="list-unstyled list-group font-weight-bold mobile p-2 list-group-flush mt-5" id="mobile">
-            <li class="{% if 'categories/' not in request.path and 'account/' not in request.path  %}active {% endif %}list-group-item menu-list bg-transparent">
-                <a href="/">HOME</a>
+            <li class="{% if 'categories/' not in request.path and 'account/' not in request.path  %}active {% endif %}list-group-item d-flex menu-list bg-transparent">
+                <i class="fas fa-home text-success"></i>&nbsp;<a href="/">HOME</a>
             </li>
             {% menu %}
+            <li class="list-group-item mt-4 d-flex menu-list bg-transparent">
+                <i class="fas fa-search text-danger">&nbsp;</i>&nbsp;<a role="button" @click="showModal=true" class="btn btn-link p-0" data-toggle="modal" data-target="#searchModal">SEARCH</a>
+            </li>
         </ul>
         <ul class="list-unstyled list-group font-weight-bold fixed-bottom list-group-horizontal" id="login">
             {% if not request.user.is_authenticated %}
@@ -47,7 +49,7 @@
     <nav class="navbar navbar-expand-lg d-lg-none fixed-top navbar-light bg-light navv">
         <div class="container-fluid">
             <div class="d-flex justify-content-between w-100 align-items-center">
-                <button type="button" id="sidebarCollapse" class="navbar-btn animate__animated animate__delay-1s animate__slideInLeft">
+                <button type="button" id="sidebarCollapse" class="navbar-btn btn-link text-decoration-none bg-transparent animate__animated animate__slideInLeft">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -55,15 +57,15 @@
                 <div class="logo-logo animate__slow">
                     <a href="/"><img src="{% static 'image/favicon.ico' %}" class="logo-image" /></a>
                 </div>
-                <div id="cartnav-mobile" class="animate__animated animate__delay-1s animate__slideInRight"> 
-                    <a id="" href="{% url 'cart:cart-detail' %}" class="btn btn-light d-inline-block d-lg-none .cart" role="button">
+                <div id="cartnav-mobile" class="animate__animated animate__slideInRight"> 
+                    <a id="" href="{% url 'cart:cart-detail' %}" class="btn btn-link text-decoration-none text-dark bg-transparent d-inline-block d-lg-none .cart" role="button">
                         <i class="fas fa-box-open position-relative align-middle text-center" :class="{'badger': numItems > 0}" :data-count="numItems"></i>
                     </a>
                 </div>
             </div>
         </div>
     </nav>
-    <nav class="navbar navbar-expand-lg fixed-top d-none d-lg-block navbar-light inverse bg-light" id="cart">
+    <nav class="navbar navbar-expand-lg fixed-top d-none d-lg-block navbar-light inverse bg-light">
         <div class="container-fluid px-lg-0">
             <div class="collapse navbar-collapse d-flex" id="navbarSupportedContent">
                 <div class="animate__animated animate__backInDown animate__slow d-inline-block">
@@ -77,7 +79,7 @@
                 </ul>
                 <ul class="list-unstyled animate__animated animate__fadeInDownBig animate__slow list-group font-weight-bold list-group-horizontal" style="color: rgba(15, 15, 15, 0.63);">
                     <li id="cartnav" class=" mx-1"> 
-                        <a id="" href="{% url 'cart:cart-detail' %}" class=".cart">
+                        <a id="" href="{% url 'cart:cart-detail' %}" class="cart">
                             <i class="fas fa-box-open position-relative align-middle text-center"></i> CART ( <span v-if="numItems > 0">[[ numItems ]]</span><span v-else>0</span> ) 
                         </a>
                     </li>
@@ -100,4 +102,28 @@
             </div>
         </div>
     </nav>
+    {% comment %} <transition enter-active-class="animate__animated animate__zoomIn animate__faster" leave-active-class="animate__animated animate__slideOutDown animate__faster"> {% endcomment %}
+        <div class="modal animate__animated animate__zoomIn animate__faster" id="searchModal" style="z-index:10000;" tabindex="-1" role="dialog" aria-labelledby="searchModalTitle" aria-hidden="true">
+            <div class="modal-dialog h-100 m-0" role="document">
+                <div class="modal-content h-100">
+                <div class="modal-header">
+                    <button type="button" class="close" data-custom-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" method="GET">
+                    <form>
+                        {% comment %} <div class="form-group"> {% endcomment %}
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control search border-bottom border-top-0 border-right-0 border-left-0 rounded-0" id="InputSearch" autofocus>
+                            <div class="input-group-append">
+                                <span class="input-group-text search-button bg-transparent border-left-0 border-top-0 border-right-0 rounded-0" id="basic-addon1"><i class="fas fa-search"></i></span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                </div>
+            </div>
+        </div>
+    {% comment %} </transition> {% endcomment %}
 </div>

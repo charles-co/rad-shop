@@ -27,14 +27,14 @@
 </style>
 {% endblock style%}
 {% block content %}
-    <div class="row col-12 no-gutters position-absolute align-items-baseline animate__animated animate__slideInDown animate__delay-1s animate__slow" style="background-color:#b7daaf;left:0;">
-        <div class="d-inline-flex">
-            <p class="display-4">Cart</p>&nbsp;&nbsp;
-            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-bag-check-fill display-4 text-success" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" d="M5.5 3.5a2.5 2.5 0 0 1 5 0V4h-5v-.5zm6 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0zm-.646 5.354a.5.5 0 0 0-.708-.708L7.5 10.793 6.354 9.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"/>
-            </svg>
-        </div>
+<div class="row col-12 no-gutters position-absolute align-items-baseline animate__animated animate__slideInDown animate__delay-1s animate__slow" style="background-color:#b7daaf;left:0;">
+    <div class="d-inline-flex">
+        <p class="display-4">Cart</p>&nbsp;&nbsp;
+        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-bag-check-fill display-4 text-success" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M5.5 3.5a2.5 2.5 0 0 1 5 0V4h-5v-.5zm6 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0zm-.646 5.354a.5.5 0 0 0-.708-.708L7.5 10.793 6.354 9.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"/>
+        </svg>
     </div>
+</div>
 <div class="container" :class="{'align-self-center my-auto' : trousers.length === 0}" id="cart-app">
         <transition
             enter-active-class="animate__animated animate__slideInLeft"
