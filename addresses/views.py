@@ -56,7 +56,7 @@ def guestaddressedit(request):
         next = request.POST.get('next')
         address = Address.objects.filter(id=id).first()
         form =  AddressCheckoutForm(request.POST, instance=address)
-        if form.is_valid:
+        if form.is_valid():
             try:
                 form.save()
                 if url_has_allowed_host_and_scheme(next, request.get_host()):

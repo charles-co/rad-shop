@@ -218,14 +218,13 @@ class GuestForm(forms.ModelForm):
     def save(self, commit=True):
         obj = super(GuestForm, self).save(commit=False)
         if commit:
-            id = obj.id
+            email = obj.email
             request = self.request
-            dupl = GuestEmail.objects.filter(id=id)
+            dupl = GuestEmail.objects.filter(email=email)
             if not dupl.exists():
                 obj.save()
             else:
                 obj = dupl.first()
-                request = self.request
             request.session['guest_email_id'] = obj.id
         return obj
 

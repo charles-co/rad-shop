@@ -101,28 +101,27 @@
         </div>
     </nav>
     {% comment %} <transition enter-active-class="animate__animated animate__zoomIn animate__faster" leave-active-class="animate__animated animate__slideOutDown animate__faster"> {% endcomment %}
-        <div class="modal animate__animated animate__zoomIn animate__fast" id="searchModal" style="z-index:10000;" tabindex="-1" role="dialog" aria-labelledby="searchModalTitle" aria-hidden="true">
-            <div class="modal-dialog h-100 vw-100 m-0" role="document">
-                <div class="modal-content h-100 vw-100" style="background:#212529;opacity:.95;">
-                    <div class="modal-header border-bottom-0">
-                        <button type="button" class="close text-danger" data-custom-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true"><i class="fas fa-3x fa-times"></i></span>
-                        </button>
-                    </div>
-                    <div class="modal-body" method="GET">
-                        <div class="col-12 mx-auto">
-                        <form>
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control bg-transparent search border-bottom border-top-0 border-right-0 border-left-0 rounded-0" id="InputSearch" name=query type="search" placeholder="search..." aria-label="Search" style="line-height:3rem;font-size:2rem;">
-                                <div class="input-group-append">
-                                    <button class="px-1 btn btn-link text-decoration-none search-button bg-transparent border-bottom border-left-0 border-top-0 border-right-0 rounded-0" type="submit" id="basic-addon1"><i class="fas fa-search h3 text-success"></i></span>
-                                </div>
+    <div class="modal animate__animated animate__zoomIn animate__fast" id="searchModal" style="z-index:10000;" tabindex="-1" role="dialog" aria-labelledby="searchModalTitle" aria-hidden="true">
+        <div class="modal-dialog h-100 vw-100 m-0" role="document">
+            <div class="modal-content h-100 vw-100" style="background:#212529;opacity:.95;">
+                <div class="modal-header border-bottom-0">
+                    <button type="button" class="close text-danger remove-outline" data-custom-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="fas fa-3x fa-times"></i></span>
+                    </button>
+                </div>
+                <div class="modal-body" method="GET">
+                    <div class="col-12 col-md-11 mx-auto">
+                    <form>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control bg-transparent search border-bottom border-top-0 border-right-0 border-left-0 rounded-0" id="InputSearch" name=query type="search" placeholder="search..." aria-label="Search" style="line-height:3rem;font-size:2rem;">
+                            <div class="input-group-append">
+                                <button class="px-1 btn btn-link text-decoration-none search-button bg-transparent border-bottom border-left-0 border-top-0 border-right-0 rounded-0 remove-outline" type="submit" id="basic-addon1"><i class="fas fa-search h3 text-success"></i></span>
                             </div>
-                        </form>
                         </div>
+                    </form>
                     </div>
                 </div>
             </div>
         </div>
-    {% comment %} </transition> {% endcomment %}
+    </div>
 </div>

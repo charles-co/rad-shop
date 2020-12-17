@@ -8,13 +8,14 @@ from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from django.utils.encoding import force_text
-from django.utils.http import is_safe_url, urlsafe_base64_decode
+from django.utils.http import is_safe_url, urlsafe_base64_decode, url_has_allowed_host_and_scheme
 from django.utils.safestring import mark_safe
 from django.views.generic import (CreateView, DetailView, FormView,
                                   TemplateView, UpdateView, View)
 from django.views.generic.edit import FormMixin
 
-from accounts.models import EmailActivation
+from accounts.models import EmailActivation, GuestEmail
+from billing.models import BillingProfile
 from accounts.tasks import EmailVerification
 from accounts.tokens import default_token_generator
 from rad.mixins import NextUrlMixin, RequestFormAttachMixin
@@ -44,6 +45,24 @@ class GuestRegisterView(NextUrlMixin,  RequestFormAttachMixin, CreateView):
 
     def form_invalid(self, form):
         return redirect(self.default_next)
+
+def guestemailedit(request):
+    if request.method == "POST":
+        bid = request.session.get("guest_email_id")
+        next = request.POST.get('next')
+        old_mail = request.POST.get('old_mail')
+        form =  GuestForm(request, request.POST)
+        if form.is_valid():
+            email = str(form.cleaned_data['email'])
+            GuestEmail.objects.filter(id=bid).update(email=email)
+            billing_obj = BillingProfile.objects.filter(email=old_mail, user=None)
+            if billing_obj.exists():
+                billing_obj.update(email=email)
+                if url_has_allowed_host_and_scheme(next, request.get_host()):
+                    return redirect(next)
+        else:
+            messages.error(request, "Edit Unsuccessful")
+            return redirect('cart:checkout')
 
 class AccountEmailActivateView(FormMixin, View):
     success_url = reverse_lazy('accounts:login')

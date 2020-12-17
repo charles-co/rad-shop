@@ -23,9 +23,9 @@ class BillingProfileManager(models.Manager):
             if not guest_email_obj.exists():
                 del request.session["guest_email_id"]
             else:
-                guest_email_obj = guest_email_obj.first()
-                obj, created = self.model.objects.get_or_create(
-                                            email=guest_email_obj.email)
+                guest_email_obj = guest_email_obj.first().email
+                obj, created = self.model.objects.get_or_create(email=guest_email_obj, user=None)
+                print(obj, created)
         else:
             pass
         return obj
@@ -34,7 +34,7 @@ class BillingProfile(models.Model):
     user        = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
     email       = models.EmailField()
     active      = models.BooleanField(default=True)
-    update      = models.DateTimeField(auto_now=True)
+    update_at    = models.DateTimeField(auto_now=True)
     timestamp   = models.DateTimeField(auto_now_add=True)
     customer_id = models.CharField(max_length=120, null=True, blank=True)
     # customer_id in Stripe or Braintree

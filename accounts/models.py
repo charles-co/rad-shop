@@ -182,7 +182,7 @@ class EmailActivation(models.Model):
 class GuestEmail(models.Model):
     email       = models.EmailField()
     active      = models.BooleanField(default=True)
-    update      = models.DateTimeField(auto_now=True)
+    updated_at     = models.DateTimeField(auto_now=True)
     timestamp   = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

@@ -86,7 +86,6 @@ def checkout_home(request):
     if cart.get_length() == 0:
         messages.info(request, "No item in cart.")
         return redirect("menu:trouser_by_category", "collections")  
-
     login_form = LoginForm(request=request)
     guest_form = GuestForm(request=request)
     address_form = AddressCheckoutForm()

@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from django.urls import path
 
+from accounts.views import guestemailedit
 from addresses.views import (checkout_address_create_view,
                              checkout_address_reuse_view, guestaddressedit)
 from cart.views import cart_add, cart_detail, cart_remove, checkout_home, cart_remove_all, Payment
@@ -15,5 +16,6 @@ urlpatterns = [
     path('checkout/address/create/', checkout_address_create_view, name='checkout_address_create'),
     path('checkout/address/reuse/', checkout_address_reuse_view, name='checkout_address_reuse'),
     path('checkout/guest/address/edit/', guestaddressedit, name='guest_address_edit'),
+    path('checkout/guest/email/edit/', guestemailedit, name='guest_email_edit'),
     path('checkout/payment/', Payment.as_view(), name='payment'),
 ]

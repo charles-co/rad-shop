@@ -180,6 +180,9 @@ a:focus {
     color: #f8f9fa;
 }
 
+.remove-outline:focus{
+    outline: 0;
+}
 .list-group#login{
     min-width:60vw !important;
     max-width:60vw !important;

@@ -4,37 +4,37 @@
 {% load crispy_forms_tags %}
 
 {% block style %}
-<style>
-{% comment %} .wrapper{
-        background: linear-gradient(-90deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-        background-size: 400% 400%;
-        animation: gradient 15s ease infinite;
-    }
-    @keyframes gradient {
-        0% {
-            background-position: 0% 50%;
+    <style>
+    {% comment %} .wrapper{
+            background: linear-gradient(-90deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
         }
-        50% {
-            background-position: 100% 50%;
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        } {% endcomment %}
+        .form-control{
+            border : 1px solid rgba(220, 53, 69, 0.21);
         }
-        100% {
-            background-position: 0% 50%;
+        form {
+            color: #dc3545;
         }
-    } {% endcomment %}
-    .form-control{
-        border : 1px solid rgba(220, 53, 69, 0.21);
-    }
-    form {
-        color: #dc3545;
-    }
-    fieldset{
-        border: 0px dashed #cc8aca;
-    }
-    legend{
-        padding: 0px 5px;
-        width: auto;
-    }
-</style>
+        fieldset{
+            border: 0px dashed #cc8aca;
+        }
+        legend{
+            padding: 0px 5px;
+            width: auto;
+        }
+    </style>
 {% endblock style %}
 {% block content %}
 <div class="container-fluid px-0 mb-4" id="checkoutapp">
@@ -229,7 +229,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="changeaddressTitle">Change Address</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close remove-outline" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -254,14 +254,13 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="editaddressTitle">Edit Address</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close remove-outline" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <form method="POST" action="{% url 'cart:guest_address_edit' %}" id="addresseditform">
-                            {% csrf_token %}
-                            {{ address_form|crispy }}
+                            {% crispy address_form %}
                             <input type="hidden" name="address-id" value="{{ address.id }}"/>
                             <input type="hidden" name="next" value="{{ request.build_absolute_uri }}"/>
                         </form>
@@ -278,15 +277,15 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="editemailTitle">Edit Email</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close remove-outline" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form method="POST" action="#" id="emaileditform">
-                            {% csrf_token %}
+                        <form method="POST" action="{% url 'cart:guest_email_edit' %}" id="emaileditform">
                             {% crispy guest_form %}
                             <input type="hidden" name="next" value="{{ request.build_absolute_uri }}"/>
+                            <input type="hidden" name="old_mail" value="{{ billing_profile.email }}"/>
                         </form>
                     </div>
                     <div class="modal-footer">
