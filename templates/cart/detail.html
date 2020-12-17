@@ -140,7 +140,7 @@ const cartapp = new Vue({
                 fetch("{% url 'cart:cart-remove-all' %}", {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'applications/json',
+                        'Content-Type': 'application/json',
                         'X-CSRFToken': '{{ csrf_token }}'
                     }, 
                     credentials: 'same-origin',
@@ -163,7 +163,7 @@ const cartapp = new Vue({
                 fetch("{% url 'cart:cart-remove' %}", {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'applications/json',
+                        'Content-Type': 'application/json',
                         'X-CSRFToken': '{{ csrf_token }}'
                     }, 
                     credentials: 'same-origin',
@@ -199,7 +199,7 @@ const cartapp = new Vue({
                             fetch("{% url 'cart:cart-add' %}", {
                                 method: 'POST',
                                 headers: {
-                                    'Content-Type': 'applications/json',
+                                    'Content-Type': 'application/json',
                                     'X-CSRFToken': '{{ csrf_token }}'
                                 }, 
                                 credentials: 'same-origin',
@@ -250,7 +250,7 @@ const cartapp = new Vue({
                     fetch("{% url 'cart:cart-add' %}", {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'applications/json',
+                            'Content-Type': 'application/json',
                             'X-CSRFToken': '{{ csrf_token }}'
                         }, 
                         credentials: 'same-origin',

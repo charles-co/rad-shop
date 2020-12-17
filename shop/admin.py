@@ -29,8 +29,8 @@ class TrouserVariantInline(NestedStackedInline):
 class TrouserAdmin(NestedModelAdmin):
     model = Trouser
     form = TrouserForm
-    list_display = ['name', 'available', 'created', 'slug']
-    list_filter = ['available', 'created', 'updated']
+    list_display = ['name', 'available', 'created_at', 'slug']
+    list_filter = ['available', 'created_at', 'updated_at']
     list_editable = ['available']
     inlines = [TrouserVariantInline,]
 

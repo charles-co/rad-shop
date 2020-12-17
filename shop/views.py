@@ -2,6 +2,8 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, JsonResponse, Http404, HttpResponse
 from django.shortcuts import render
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
@@ -14,8 +16,12 @@ from menu.models import Menu
 from shop.models import Trouser, TrouserVariant
 
 from .pagination import StandardResultsSetPagination
-from .serializers import TrouserDetailSerializer, TrouserSerializer
+from .serializers import TrouserDetailSerializer, TrouserSearchSerializer, TrouserSerializer
 
+class CSRFExemptMixin(object):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, *args, **kwargs):
+        return super(CSRFExemptMixin, self).dispatch(*args, **kwargs)
 
 class HomeView(TemplateView):
     template_name = "shop/index.html"
@@ -64,7 +70,7 @@ class TrouserListing(ListAPIView):
             category_slug = self.kwargs["first_slug"]
             if category_slug == 'new-arrivals' or category_slug == 'bestsellers' or category_slug == 'back-in-stock':
                 if category_slug == 'new-arrivals':
-                    queryList = Trouser.objects.order_by("-created").prefetch_related('variant', 'variant__trouser_variant_meta', 'variant__trouser_variant_images')
+                    queryList = Trouser.objects.order_by("-created_at").prefetch_related('variant', 'variant__trouser_variant_meta', 'variant__trouser_variant_images')
                 else:
                     if category_slug == 'bestsellers':
                         queryList = Trouser.objects.filter(is_bestseller=True).prefetch_related('variant', 'variant__trouser_variant_meta', 'variant__trouser_variant_images')
@@ -84,7 +90,6 @@ class TrouserListing(ListAPIView):
                     else:
                         queryList = Trouser.objects.filter(category=sub_category).prefetch_related('variant', 'variant__trouser_variant_meta', 'variant__trouser_variant_images')
                 elif category_slug == 'collections':
-                    print("here")
                     queryList = Trouser.objects.all().prefetch_related('variant', 'variant__trouser_variant_meta', 'variant__trouser_variant_images')
                 else:
                     raise Http404()
@@ -105,6 +110,21 @@ class TrouserDetailAPI(RetrieveAPIView):
     lookup_field = 'slug'
     lookup_url_kwarg = 'slug'
     queryset = Trouser.objects.all().prefetch_related('variant', 'variant__trouser_variant_meta', 'variant__trouser_variant_images')
+
+class TrouserSearchList(ListAPIView):
+    # pagination_class = StandardResultsSetPagination
+    serializer_class = TrouserSearchSerializer
+
+    def get_queryset(self):
+        request = self.request
+        if request.is_ajax():
+            query = request.GET.get("query", None)
+            query = query.strip()
+            if query is not None and query != "":
+                queryList = Trouser.objects.search(query)
+            else:
+                queryList = Trouser.objects.featured().prefetch_related('variant')
+            return queryList
 
 def handler404(request, exception):
     return render(request, 'error.html', {'error': '404', 'error_message': '404, Page Not Found'}, status=404)

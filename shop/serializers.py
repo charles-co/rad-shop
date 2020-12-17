@@ -24,6 +24,8 @@ class TrouserMETASerializer(serializers.ModelSerializer):
         model = TrouserMETA
         fields = ("id", "size", "stock",)
 
+# LIST
+
 class TrouserVariantSerializer(serializers.ModelSerializer):
     first_image = serializers.SerializerMethodField()
     first_meta = serializers.SerializerMethodField()
@@ -48,23 +50,23 @@ class TrouserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Trouser
-        fields = ("id", "name", "slug", "category", "first_variant", "is_featured", "is_bestseller", "created")
+        fields = ("id", "name", "slug", "category", "first_variant", "is_featured", "is_bestseller", "created_at")
 
     def get_first_variant(self, obj):
         first_variant = TrouserVariant.objects.filter(trouser=obj).earliest('id')
-        print(type(first_variant))
         first_variant_serializer = TrouserVariantSerializer(first_variant)
         return first_variant_serializer.data
 
-###################################################################################
+
+#DETAIL SERIALIZERS
 
 class ImageDetailSerializer(serializers.HyperlinkedModelSerializer):
-    file = HyperlinkedSorlImageField('300x400', options={"crop": "center", "quality": 100, "format": "PNG"}, read_only=True)
-    thumbnail = HyperlinkedSorlImageField('60x60', options={"crop": "center", "quality": 100, "format": "PNG"}, source='file', read_only=True)
+    file = HyperlinkedSorlImageField('300x400', options={"crop": "center", "quality": 99}, read_only=True)
+    thumbnail = HyperlinkedSorlImageField('60x60', options={"crop": "center", "quality": 99}, source='file', read_only=True)
     
     class Meta:
         model = Image
-        fields = ("id", "file", "thumbnail")
+        fields = ("id", "file", "thumbnail",)
 
 class TrouserVariantTagSerializer(serializers.ModelSerializer):
     first_image = serializers.SerializerMethodField()
@@ -115,3 +117,34 @@ class TrouserDetailSerializer(serializers.ModelSerializer):
         similiar_trousers = Trouser.objects.get(id=obj.id).tags.similar_objects()[:8]
         similiar_trousers_serializer = TrouserTagSerializer(similiar_trousers, many=True)
         return similiar_trousers_serializer.data
+
+
+#SEARCH SERIALIZER
+
+class ImageSearchSerializer(serializers.HyperlinkedModelSerializer):
+    file = HyperlinkedSorlImageField('120x160', options={"crop": "center", "quality": 99}, read_only=True)
+
+    class Meta:
+        model = Image
+        fields = ("id", "file",)
+
+class TrouserVariantSearchSerializer(serializers.ModelSerializer):
+    first_image = serializers.SerializerMethodField()
+    color = serializers.CharField(source='get_color_name', read_only=True)
+
+    class Meta:
+        model = TrouserVariant
+        fields = ("id", "price", "color", "first_image",)
+    
+    def get_first_image(self, obj):
+        first_image = Image.objects.filter(trouser_variant=obj).earliest('id')
+        first_image_serializer = ImageSearchSerializer(first_image)
+        return first_image_serializer.data
+    
+class TrouserSearchSerializer(serializers.ModelSerializer):
+    variant = TrouserVariantSearchSerializer(many=True, read_only=True)
+    url = serializers.CharField(source='get_absolute_url')
+
+    class Meta:
+        model = Trouser
+        fields = ("id", "name", "url", "variant")

@@ -218,8 +218,8 @@
                     {% if request.user.is_authenticated %}
                     <a href="{% url 'accounts:address-create' %}?next={{ request.build_absolute_uri }}" class="btn btn-lg rounded-0 btn-primary" role="button">Create new</a>
                     {% else %}
-                        {% url "cart:checkout_address_create" as checkout_address_create %}
-                        {% include 'addresses/form.html' with form=address_form next_url=request.build_absolute_uri action_url=checkout_address_create address_type='shipping' %}'
+                    {% url "cart:checkout_address_create" as checkout_address_create %}
+                    {% include 'addresses/form.html' with form=address_form next_url=request.build_absolute_uri action_url=checkout_address_create address_type='shipping' %}'
                     {% endif %}
                 </div>
             {% endif %}

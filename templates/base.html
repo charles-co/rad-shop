@@ -145,14 +145,25 @@
 
                 }
             });
-            const cart = new Vue({
-                el: '#cart',
+            const navigationbar = new Vue({
+                el: '#navigation',
                 store: store,
                 delimiters: ['[[', ']]'],
                 data() {
                     return {
-                        showModal: false,
+                        loading: false,
+                        empty: false,
+                        trousers: [],
+                        sortedTrousers: [],
+                        query: "",
                     }
+                },
+                filters: {
+                    currency: function(value){
+                        if (!value) return ''
+                        value = formatter.format(value)
+                        return value
+                    },
                 },
                 computed: {
                     numItems: function(){
@@ -162,11 +173,61 @@
                 mounted(){
                 },
                 methods: {
-                    sModal(){
-                        this.showModal = !this.showModal
-                    }
-                }
-
+                    search(e){
+                        this.trousers = []
+                        this.sortedTrousers = []
+                        this.loading = true
+                        this.empty = false
+                        let url = e.target.dataset.url
+                        let endpoint = url + "?query=" + this.query 
+                        fetch( endpoint, {
+                            method: "GET",
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'Content-Type': 'application/json',
+                            },
+                            credentials: 'same-origin',
+                        })
+                        .then((response) => {
+                            return response.json()
+                        })
+                        .then((result) => {
+                            this.trousers = result
+                            if (this.trousers.length > 0){
+                                this.sort()
+                            } else {
+                                this.empty = true
+                            }
+                            setTimeout( function(){
+                                this.loading = false
+                            }.bind(this), 5000);
+                        })
+                    },
+                    close(){
+                        {% comment %} this.trousers = []
+                        this.sortedTrousers = [] {% endcomment %}
+                    },
+                    sort(){
+                        for(let i = 0; i < this.trousers.length; i++){
+                            for(let j = 0; j < this.trousers[i].variant.length; j++){
+                                trouser = this.trousers[i].variant[j]
+                                trouser["name"] = this.trousers[i].name
+                                trouser["url"] = this.trousers[i].url
+                                this.sortedTrousers.push(trouser)
+                            }
+                        }
+                    },
+                    beforeEnter: function (el) {
+                        el.style.opacity = 0
+                    },
+                    enter: function(el, done){
+                        var delay = el.dataset.index * 150
+                        setTimeout(function(){
+                            el.style.opacity = 1
+                            el.classList.add("animate__animated", "animate__slideInRight")    
+                        }, delay)
+                    },
+                },
             });
         </script>
         {% block javascript %}

@@ -102,13 +102,15 @@ def checkout_address_create_view(request):
             instance.address_type = address_type
             instance.save()
             request.session[address_type + "_address_id"] = instance.id
-            print(address_type + "_address_id")
+            # print(address_type + "_address_id")
         else:
             return redirect("cart:checkout")
 
         if url_has_allowed_host_and_scheme(redirect_path, request.get_host()):
             return redirect(redirect_path)
-    messages.error(request, form.errors)
+    else:
+        request.session["old_form_post"] = request.POST
+        messages.error(request, form.errors)
     return redirect("cart:checkout")
 
 def checkout_address_reuse_view(request):
@@ -118,7 +120,7 @@ def checkout_address_reuse_view(request):
         next_post = request.POST.get('next')
         redirect_path = next_ or next_post or None
         if request.method == "POST":
-            print(request.POST)
+            # print(request.POST)
             shipping_address = request.POST.get('shipping_address', None)
             address_type = request.POST.get('address_type', 'shipping')
             billing_profile = BillingProfile.objects.new_or_get(request)

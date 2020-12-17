@@ -82,7 +82,7 @@ div.input-group .input-group-text{
                     method: 'POST',
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest',
-                        'Content-Type': 'applications/json',
+                        'Content-Type': 'application/json',
                         'X-CSRFToken': '{{ csrf_token }}'
                     },
                     body: JSON.stringify(Object.fromEntries(formData)),

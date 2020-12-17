@@ -43,6 +43,11 @@ def color_name(hexcode):
     return webcolors.hex_to_name(hexcode).title()
 
 @register.filter
+def removeslash(string):
+    substring = string.split("/")
+    return "/".join(substring[:-2])
+
+@register.filter
 def jsonify(cart):
     return mark_safe(json.dumps(cart))
 

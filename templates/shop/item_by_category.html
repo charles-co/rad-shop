@@ -283,7 +283,7 @@
                 fetch("{% url 'cart:cart-add' %}", {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'applications/json',
+                        'Content-Type': 'application/json',
                         'X-Requested-With': 'XMLHttpRequest',
                         'X-CSRFToken': '{{ csrf_token }}'
                     }, 
@@ -521,7 +521,7 @@
                         method: 'GET',
                         headers: {
                             'X-Requested-With': 'XMLHttpRequest',
-                            'Content-Type': 'applications/json',
+                            'Content-Type': 'application/json',
                         },
                     })
                     .then((response) => {

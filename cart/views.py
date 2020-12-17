@@ -88,12 +88,13 @@ def checkout_home(request):
         return redirect("menu:trouser_by_category", "collections")  
     login_form = LoginForm(request=request)
     guest_form = GuestForm(request=request)
-    address_form = AddressCheckoutForm()
 
     shipping_address_id = request.session.get("shipping_address_id", None)
     order_id = request.session.get("order_id", None)
+    old_post = request.session.get("old_form_post", None)
+
+    address_form = AddressCheckoutForm(initial=old_post)
     billing_profile = BillingProfile.objects.new_or_get(request)
-    # print(billing_profile)
     address_qs = None
     address = None
 
@@ -110,6 +111,10 @@ def checkout_home(request):
                 shipping_address_id = request.session.get("shipping_address_id", address.id)
         else:
             if address_qs:
+                try:
+                    del request.session["old_form_post"]
+                except KeyError:
+                    pass
                 address = address_qs.first()
                 shipping_address_id = request.session.get("shipping_address_id", address.id)
                 address_form = AddressCheckoutForm(instance=address)

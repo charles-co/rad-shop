@@ -322,7 +322,7 @@
                 fetch("{% url 'cart:cart-add' %}", {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'applications/json',
+                        'Content-Type': 'application/json',
                         'X-CSRFToken': '{{ csrf_token }}'
                     }, 
                     credentials: 'same-origin',
@@ -355,7 +355,7 @@
                 fetch("{% url 'cart:cart-remove' %}", {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'applications/json',
+                        'Content-Type': 'application/json',
                         'X-CSRFToken': '{{ csrf_token }}'
                     }, 
                     credentials: 'same-origin',
