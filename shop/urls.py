@@ -15,7 +15,7 @@ urlpatterns = [
 
     re_path(r'^api/(?:(?P<first_slug>[-\w]+)/)?(?:(?P<second_slug>[-\w]+)/)?$', TrouserListing.as_view(), name='listing'),
     path('api/trouser/<str:slug>/detail/', TrouserDetailAPI.as_view(), name='api-detail'),
-    path('api/trouser/search/lol/lol/lol/lol/', TrouserSearchList.as_view(), name='api-search'),
+    path('api/trouser/items/search/', TrouserSearchList.as_view(), name='api-search'),
 
     #others
 
