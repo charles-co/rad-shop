@@ -176,6 +176,7 @@
 <script src="{% static 'js/vegas.min.js' %}"></script>
 <script src="{% static 'js/vue-awesome-swiper.js' %}"></script>
 {% else %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vegas/2.5.1/vegas.min.js" integrity="sha512-Bmv8OphSOBca3B+9fmuXfFBTZF4f3dy98T3mEvJHPt3ab4SIbbclYzJJ2//ldUcx6bG2iiFxxWu+CL87StEqDg==" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue-awesome-swiper@4.1.1/dist/vue-awesome-swiper.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/5.4.5/js/swiper.min.js" integrity="sha512-VHsNaV1C4XbgKSc2O0rZDmkUOhMKPg/rIi8abX9qTaVDzVJnrDGHFnLnCnuPmZ3cNi1nQJm+fzJtBbZU9yRCww==" crossorigin="anonymous"></script>
 {% endif %}
@@ -191,7 +192,7 @@
         delay: 10000,
         shuffle: true,
         transitionDuration: 2000,
-        overlay: '/js/vegas/dist/overlays/03.png'
+        overlay: "{% static '/js/overlays/03.png' %}"
         {% comment %} animation: 'kenburnsDownRight' {% endcomment %}
     });
     $('.vegas-timer').addClass('d-none')
