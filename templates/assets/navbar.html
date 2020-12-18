@@ -20,17 +20,17 @@
         </ul>
         <ul class="list-unstyled list-group font-weight-bold fixed-bottom list-group-horizontal" id="login">
             {% if not request.user.is_authenticated %}
-            <li class="{% if 'login/' in request.path  %}active {% endif %}list-group-item flex-fill rounded-0" style="background-color:#6b8872;">
+            <li class="{% if 'login/' in request.path  %}active {% endif %}align-items-center d-flex list-group-item flex-fill rounded-0" style="background-color:#6b8872;">
                 <a href="{% url 'accounts:login' %}" class="text-center">LOGIN</a>
             </li>
-            <li class="{% if 'signup/' in request.path  %}active {% endif %}list-group-item flex-fill rounded-0" style="background-color:#f47e3a;">
+            <li class="{% if 'signup/' in request.path  %}active {% endif %}align-items-center d-flex list-group-item flex-fill rounded-0" style="background-color:#f47e3a;">
                 <a href="{% url 'accounts:signup' %}" class="text-center">SIGN UP</a>
             </li>
             {% else %}
-            <li class="{% if 'account/dashboard/' in request.path  %}active {% endif %}list-group-item flex-fill rounded-0" style="background-color:#6b8872;">
+            <li class="{% if 'account/dashboard/' in request.path  %}active {% endif %}align-items-center d-flex list-group-item flex-fill rounded-0" style="background-color:#6b8872;">
                 <a href="{% url 'accounts:account-home' %}" class="text-center">MY ACCOUNT</a>
             </li>
-            <li class="{% if 'logout/' in request.path  %}active {% endif %}list-group-item flex-fill rounded-0" style="background-color:#f47e3a;">
+            <li class="{% if 'logout/' in request.path  %}active {% endif %}align-items-center d-flex list-group-item flex-fill rounded-0" style="background-color:#f47e3a;">
                 <a href="{% url 'accounts:logout' %}" class="text-center">LOGOUT</a>
             </li>
             {% endif %}
@@ -95,39 +95,45 @@
             <div class="modal-content h-100 vw-100" style="background:#212529;opacity:.95;">
                 <div class="modal-header border-bottom-0">
                     <button type="button" class="close text-danger remove-outline" @click="close" data-custom-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true"><i class="fas fa-3x fa-times"></i></span>
+                        <span aria-hidden="true"><i class="fas fa-3x fa-times close-search"></i></span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="col-12 col-md-11 mx-auto">
                         <form method="GET" data-url="{% url 'shop:api-search' %}" v-on:submit.prevent="search($event)">
                             <div class="input-group mb-3">
-                                <input type="text" v-model="query" autocomplete="off" class="form-control bg-transparent search border-bottom border-top-0 border-right-0 border-left-0 rounded-0" id="InputSearch" name="query" placeholder="search our store..." aria-label="Search" style="line-height:3rem;font-size:2rem;">
+                                <input type="text" v-model="query" autocomplete="off" class="form-control bg-transparent search border-bottom border-top-0 border-right-0 border-left-0 rounded-0" id="InputSearch" name="query" placeholder="search our store..." aria-label="Search">
                                 <div class="input-group-append">
-                                    <button class="px-1 btn btn-link text-decoration-none search-button bg-transparent border-bottom border-left-0 border-top-0 border-right-0 rounded-0 remove-outline" type="submit" id="basic-addon1"><i class="fas fa-search h3 text-success"></i></span>
+                                    <button class="px-1 btn btn-link text-decoration-none search-button bg-transparent border-bottom border-left-0 border-top-0 border-right-0 rounded-0 remove-outline" type="submit" id="basic-addon1"><i class="fas search-icon fa-search mb-0 h3 text-success"></i></span>
                                 </div>
                             </div>
-                            <p class="text-muted font-italic">please try to specific with search. e.g cargo pants.</p>
+                            <p class="text-muted search-help-text font-italic">please try to specific with search. e.g cargo pants.</p>
                         </form>
-                        <p class="text-right text-muted font-italic" v-if="sortedTrousers.length > 0">[[ sortedTrousers.length ]] result(s) found.</p>
-                        <div v-if="loading" class="d-flex flex-column align-items-center justify-content-center" key="loading" style="min-height:55vh;">
-                            <i class="animate__animated animate__bounce animate__slow animate__infinite text-success bg-warning rounded-circle p-4 fas fa-3x text-white fa-search"></i>
-                            <p class="text-muted font-italic">loading...</p>
-                        </div>
-                        <transition-group mode="out-in" tag="div" v-bind:css="false" v-on:before-enter="beforeEnter" v-on:enter="enter" class="d-flex flex-column overflow-auto" style="max-height:55vh;">
-                            <div v-if="!loading && sortedTrousers.length > 0" :data-index="index" class="media mb-2 border-bottom" v-for="(trouser, index) in sortedTrousers" :key="trouser.id">
-                                <a :href="trouser.url" class="text-decoration-none">
-                                    <img :src="trouser.first_image.file" class="align-self-center mr-3" >
-                                </a>
-                                <a :href="trouser.url" class="text-decoration-none">
-                                    <div class="media-body text-monospace" style="color:rgb(255,213,0,0.9);">
-                                        <p class="mt-0 h3">[[ trouser.name ]]</p>
-                                        <p class="h4">[[ trouser.color ]]</p>
-                                        <p class="mb-0 h5">[[ trouser.price|currency ]]</p>
+                        <transition enter-active-class="animate__animated animate__fadeIn" enter-active-class="animate__animated animate__fadeOut">
+                            <p class="text-right search-help-text text-muted font-italic" key="info" v-if="sortedTrousers.length > 0">[[ sortedTrousers.length ]] result(s) found.</p>
+                            <p class="text-right search-help-text text-muted font-italic" key="emptyinfo"cv-else>[[ sortedTrousers.length ]] result(s) found.</p>
+                        </transition>
+                        <transition-group mode="out-in" tag="div" v-bind:css="false" v-on:before-enter="beforeEnter" v-on:enter="enter" leave-active-class="animate__animated animate__fadeOut" class="row border border-light" style="overflow-x:hidden;overflow-y:auto;max-height:55vh;min-height:55vh;">
+                            <div v-if="loading" class="col-12 align-self-center d-flex flex-column align-items-center" key="loading">
+                                <i class="animate__animated animate__bounce animate__slow animate__infinite text-success bg-warning rounded-circle p-4 fas fa-3x text-white fa-search"></i>
+                                <p class="text-muted font-italic">loading...</p>
+                            </div>
+                            <div v-if="!loading && sortedTrousers.length > 0" :data-index="index" class="col-12 col-md-6 list-group mb-2 list-group-flush" v-for="(trouser, index) in sortedTrousers" :key="trouser.id">
+                                <a :href="trouser.url" class="text-decoration-none search-results list-group-item bg-transparent d-flex align-items-center list-group-item-action">
+                                    {% comment %} <img :src="trouser.first_image.file" class="align-self-center img-fluid img-responsive img-thumbnail mr-3" > {% endcomment %}
+                                    <picture>
+                                        <source :srcset="trouser.first_image.file_sm" type="image/svg+xml" media="(max-width: 480px)">
+                                        <source :srcset="trouser.first_image.file" type="image/svg+xml">
+                                        <img :src="trouser.first_image.file" class="align-self-center img-fluid img-thumbnail mr-3" alt="...">
+                                    </picture>
+                                    <div class="text-monospace d-flex flex-column justify-content-center" style="color:rgb(255,213,0,0.9);">
+                                        <p class="mt-0 h5">[[ trouser.name ]]</p>
+                                        <p class="h6 mb-0">[[ trouser.color ]]</p>
+                                        <p class="mb-0">[[ trouser.price|currency ]]</p>
                                     </div>
                                 </a>
                             </div>
-                            <div v-if="sortedTrousers.length < 1 && !loading && empty" key="empty">
+                            <div v-if="sortedTrousers.length < 1 && !loading && empty" class="col-12" key="empty">
                                 <p class="text-white text-center font-italic text-monospace">No item found...</p>
                             </div>
                         </transition-group>

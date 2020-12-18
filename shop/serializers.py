@@ -122,11 +122,12 @@ class TrouserDetailSerializer(serializers.ModelSerializer):
 #SEARCH SERIALIZER
 
 class ImageSearchSerializer(serializers.HyperlinkedModelSerializer):
-    file = HyperlinkedSorlImageField('120x160', options={"crop": "center", "quality": 99}, read_only=True)
+    file = HyperlinkedSorlImageField('90x120', options={"crop": "center", "quality": 99}, read_only=True)
+    file_sm = HyperlinkedSorlImageField('60x80', options={"crop": "center", "quality": 99}, source='file', read_only=True)
 
     class Meta:
         model = Image
-        fields = ("id", "file",)
+        fields = ("id", "file", "file_sm")
 
 class TrouserVariantSearchSerializer(serializers.ModelSerializer):
     first_image = serializers.SerializerMethodField()

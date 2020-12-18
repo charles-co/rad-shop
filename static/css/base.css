@@ -18,7 +18,16 @@ body {
     background-size: cover;
 }
 
+.search-results.list-group-item{
+    border-bottom: 1px solid #dc3545;
+}
 
+.search-results.list-group-item-action:focus, .search-results.list-group-item-action:hover {
+    z-index: 1;
+    color: #495057;
+    text-decoration: none;
+    background-color: #f8f9fa !important;
+}
 /* Navbar section */
 
 .logo-image {
@@ -176,8 +185,25 @@ a:focus {
     color:#c15b5b !important;
 }
 
+.form-control.search {
+    line-height: 2rem;
+    font-size: 1rem;
+}
+
+.search-icon.h3 {
+    font-size: 1rem;
+}
+
+.close-search.fa-3x {
+    font-size: 1.5em;
+}
+
 .form-control.search:focus, .form-control.search {
     color: #f8f9fa;
+}
+
+.search-help-text {
+    font-size: 11px;
 }
 
 .remove-outline:focus{
@@ -357,7 +383,28 @@ ul ul a {
         max-width:40vw !important;
         /* background-color: #17a2b8; */
     }
+    .form-control.search {
+        line-height: 3rem;
+        font-size: 2rem;
+    }
+    .search-icon.h3 {
+        font-size: 1.75rem;
+    }
+    .close-search.fa-3x {
+        font-size: 3em;
+    }
+    .search-help-text {
+        font-size: 1rem;
+    }
 }
+
+/* @media (min-width: 650px) {
+    .form-control.search {
+        line-height: 3rem;
+        font-size: 2rem;
+    }
+} */
+
 @media (max-width: 991px) {
     .main-wrapper {
         padding-top: 71px !important;
