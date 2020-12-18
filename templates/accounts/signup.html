@@ -2,19 +2,19 @@
 {% load crispy_forms_tags %}
 {% load static %}
 {% block content %}
-<div class="container">
-    <section class="mb-4">
-      <div class="row animate__animated animate__fadeIn animate__delay-2s justify-content-center justify-content-md-between">
-        <div class="col-md-7 my-2 col-11 signupimageg my-md-auto">
+<div class="container-fluid flex-grow-1" style="background-color:#dc3545;">
+    <section class="py-4">
+      <div class="row justify-content-center justify-content-md-between">
+        <div class="col-md-7 my-2 col-11 animate__animated animate__lightSpeedInLeft animate__delay-1s animated__slower signupimageg my-md-auto">
           {% include 'svg/welcoming.svg' %}
           {% comment %} <img src="{% static 'image/welcoming.png' %}" class="animate__animated animate__backInLeft animate__slower img-fluid img-responsive img-thumbnail" /> {% endcomment %}
         </div>
-        <div class='col-11 col-md-5'>
-          <h1>Sign Up</h1>
-          <p>Already have an account? then please <a href="{% url 'accounts:login' %}" style="color:#dc3545;">sign in</a></p>
-          <form class="signup animate__animated animate__fadeIn animate__slower" id="signup_form" method="post">
+        <div class='col-11 col-md-5 animate__animated animate__fadeIn animate__slow animate__delay-2s text-white'>
+          <h1 class="text-info">Sign Up</h1>
+          <p>Already have an account? then please <a href="{% url 'accounts:login' %}" style="color:black;">sign in</a></p>
+          <form class="signup" id="signup_form" method="post">
             {% crispy form %}
-            <input class='btn btn-primary mt-3 w-100 rounded-0 btn-md' type="submit" value="Sign Up"/>
+            <input class='btn signin-btn shadow font-weight-bold btn-transparent btn-outline-light mt-3 w-100 rounded-0 btn-md' type="submit" value="Sign Up"/>
           </form>
         </div>
       </div>

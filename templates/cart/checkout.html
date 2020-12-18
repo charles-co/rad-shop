@@ -37,7 +37,7 @@
     </style>
 {% endblock style %}
 {% block content %}
-<div class="container-fluid px-0 mb-4" id="checkoutapp">
+<div class="container-fluid flex-grow-1" id="checkoutapp" style="background:#41607e;">
     <div class='row no-gutters justify-content-center' v-if="!billing_profile">
         <transition enter-active-class="animate__animated animate__fadeIn">
             <div class='col-11 col-md-6 my-5' v-if="showlogin">
@@ -61,68 +61,12 @@
             </div>
         </transition>
     </div>
-    <div class='row no-gutters justify-content-center' v-else>
-        {% comment %} <div class="col-12 align-items-baseline animate__animated animate__slideInDown animate__delay-1s animate__slow" style="background-color:#b7daaf;left:0;">
-            <div class="d-inline-flex">
-                <p class="h2 font-weight-light px-2">Place Order</p>&nbsp;&nbsp;
-            </div>
-        </div> {% endcomment %}
-        {% comment %} <div class='col-12'>
-            <p class='lead font-weight-bolder'>Place Order</p>
-            <hr/>
-        </div> {% endcomment %}
-        <div class="col-10 align-content-between">
+    <div class='row no-gutters p-md-3 justify-content-center justify-content-md-between' style="min-height:400px;" v-else>
+        <div class="col-md-5 p-3 col-12 align-self-top order-md-0 order-1" style="min-height:400px;max-height:400px">
+            {% include 'svg/cart.svg' %}
+        </div>
+        <div class="col-md-6 order-0 order-md-1">
             {% if address %}
-            {% comment %} <div class="card-deck">
-                <div class="card mx-0 rounded-0 animate__animated animate__fadeIn animate__delay-1s">
-                    <h4 class="card-header font-weight-bold">Address</h4>
-                    <div class="d-flex">
-                        <div class="pl-2 py-1 pr-0">
-                            <span><i class="fas text-danger fa-map-marker-alt "></i></span>
-                        </div>
-                        <div class="card-body flex-grow-1 py-1">
-                            <div class="font-italic">
-                                {{ address.get_address|linebreaks }}
-                            </div>
-                        </div>
-                        <div class="d-flex card-footer justify-content-start">
-                            {% if request.user.is_authenticated %}
-                            <a href='{{ address.get_absolute_url }}?next={{ request.build_absolute_uri }}' class='text-primary mr-3'>Edit</a>
-                            <button type="button" class="btn btn-transparent btn-link align-text-top p-0 d-flex" data-toggle="modal" data-target="#changeaddress">
-                                <span>Change</span>
-                            </button>
-                            
-                            {% else %}
-                            <button type="button" class="btn btn-transparent btn-link" data-toggle="modal" data-target="#editaddress">
-                                Edit
-                            </button>
-                            
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                <div class="card mx-0 rounded-0 text-dark animate__animated animate__fadeIn animate__delay-2s">
-                    <h4 class="font-weight-bold card-header">Your Order</h4>
-                    <div class="card-body py-0">
-                        <ul class="list-group list-group-flush">
-                            {% cartlist %}
-                        </ul>
-                    </div>
-                </div>
-                <div class="card mx-0 rounded-0 animate__animated animate__fadeIn animate__delay-3s">
-                    <h4 class="card-header font-weight-bold">Finalize Checkout</h4>
-                    <div class="card-body text-success">
-                        <p class="card-text">Cart Total: {{ cart.get_total_price|currency }}</p>
-                        {% if object %}
-                        <p class="card-text">Shipping Total: {{ object.shipping_total|currency }}</p>
-                        <p class="card-text">Order Total: {{ cart.get_total_price|addfloatt:object.shipping_total|currency }}</p>
-                        {% endif %}
-                    </div>
-                    <form class='card-footer bg-transparent' method='POST' action="">{% csrf_token %}
-                        <button type='submit' {% if not address %}disabled{% endif %} class='btn btn-success btn-md rounded-0'>Pay Now <i class="fas fa-lock"></i></button>
-                    </form>
-                </div>
-            </div> {% endcomment %}
             {% if not request.user.is_authenticated %}
             <div class="mt-5 bg-white text-monospace d-flex justify-content-between">
                 <p class="mb-0 p-2">Email: {{ billing_profile.email }} </p>
