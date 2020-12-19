@@ -114,7 +114,7 @@ class AccountEmailActivateView(FormMixin, View):
         email = form.cleaned_data.get("email")
         obj = EmailActivation.objects.get(email=email)
         if not use_celery:
-            EmailVerification.delay(obj.id, msg)
+            EmailVerification.delay(obj.id)
         else:
             obj.send_activation()
         return super(AccountEmailActivateView, self).form_valid(form)

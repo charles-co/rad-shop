@@ -22,6 +22,15 @@ body {
     border-bottom: 1px solid #dc3545;
 }
 
+.search-wrapper-success{
+    border-color: #28a745 !important;
+    box-shadow: 1px 1px 7px rgba(183, 255, 0, 0.9)
+}
+
+.search-wrapper{
+    border-color:#f8f9fa !important;
+}
+
 .search-results.list-group-item-action:focus, .search-results.list-group-item-action:hover {
     z-index: 1;
     color: #495057;
@@ -208,7 +217,7 @@ a:focus {
 
 .remove-outline:focus{
     outline: 0;
-    box-shadow: 0 0 0 0;
+    box-shadow: 0 0 0 0
 }
 .list-group#login{
     min-width:60vw !important;

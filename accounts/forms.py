@@ -35,12 +35,12 @@ class UserCreationForm(forms.ModelForm):
     password1 = forms.CharField(
         label=("Password"),
         strip=False,
-        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
+        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password', 'placeholder': 'Password'}),
         help_text=password_validation.password_validators_help_text_html(),
     )
     password2 = forms.CharField(
         label=("Password confirmation"),
-        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
+        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password', 'placeholder': 'Password confirmation'}),
         strip=False,
         help_text=("Enter the same password as before, for verification."),
     )
@@ -167,8 +167,8 @@ class SignUpForm(UserCreationForm):
     first_name = forms.CharField(label='First Name', max_length=50, required=True, widget=forms.TextInput(attrs={'placeholder': 'First Name'}))
     last_name = forms.CharField(label='Last Name', max_length=50, required=True, widget=forms.TextInput(attrs={'placeholder': 'Last Name'}))
     email = forms.EmailField(label='Email Address', max_length=255, required=True, widget=forms.EmailInput(attrs={'placeholder': 'Email'}))
-    password1 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
-    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Confirmation Password'}))
+    # password1 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
+    # password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Confirmation Password'}))
 
     class Meta:
         model = User

@@ -160,6 +160,7 @@
                         trousers: [],
                         sortedTrousers: [],
                         query: "",
+                        css_class: "search-wrapper",
                     }
                 },
                 filters: {
@@ -172,7 +173,7 @@
                 computed: {
                     numItems: function(){
                         return store.state.numItems
-                    }
+                    },
                 },
                 mounted(){
                 },
@@ -182,6 +183,7 @@
                         this.sortedTrousers = []
                         this.loading = true
                         this.empty = false
+                        this.css_class = "search-wrapper"
                         let url = e.target.dataset.url
                         let endpoint = url + "?query=" + this.query 
                         fetch( endpoint, {
@@ -204,6 +206,7 @@
                             }
                             setTimeout( function(){
                                 this.loading = false
+                                this.css_class = "search-wrapper-success"
                             }.bind(this), 5000);
                         })
                     },

@@ -21,4 +21,11 @@
     </section>
 </div>
 {% endblock content %}
+{% block javascript %}
+<script>
+  $("#hint_id_password1, #hint_id_password2").removeClass("text-muted").addClass("text-white-50")
+  $(".invalid-feedback").addClass("text-warning")
+</script>
+{% endblock javascript %}
+
 

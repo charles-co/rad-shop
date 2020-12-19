@@ -19,4 +19,5 @@ from accounts.tokens import default_token_generator
 def EmailVerification(id):
     email = EmailActivation.objects.get(id=id)
     sent = email.send_activation()
+    print(sent)
     return sent

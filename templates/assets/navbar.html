@@ -10,12 +10,12 @@
             </button>
         </div>
         <ul class="list-unstyled list-group font-weight-bold mobile p-2 list-group-flush mt-5" id="mobile">
-            <li class="{% if 'categories/' not in request.path and 'account/' not in request.path and 'cart/' not in request.path %}active {% endif %}list-group-item d-flex menu-list bg-transparent">
+            <li class="{% if 'categories/' not in request.path and 'account/' not in request.path and 'cart/' not in request.path %}active {% endif %}d-flex align-items-center list-group-item d-flex menu-list bg-transparent">
                 <i class="fas fa-home text-white-50"></i>&nbsp;<a href="/">HOME</a>
             </li>
             {% menu %}
             <li class="list-group-item mt-4 d-flex align-items-center menu-list bg-transparent">
-                <i class="fas fa-search text-success">&nbsp;</i>&nbsp;<a role="button" class="btn btn-link text-decoration-none text-white p-0 font-weight-bold" data-toggle="modal" data-target="#searchModal">SEARCH</a>
+                <i class="fas fa-search text-success">&nbsp;</i>&nbsp;<a href="javascript:void(0);" role="button" class="btn btn-link text-decoration-none text-white p-0 font-weight-bold" data-toggle="modal" data-target="#searchModal">SEARCH</a>
             </li>
         </ul>
         <ul class="list-unstyled list-group font-weight-bold fixed-bottom list-group-horizontal" id="login">
@@ -71,11 +71,10 @@
                     <li id="cartnav" class="px-0 list-group-item border-0 bg-transparent d-flex"> 
                         <a id="" href="{% url 'cart:cart-detail' %}" class="{% if 'cart/' in request.path %}active {% endif %} cart my-auto">
                             <i class="fas fa-box-open text-primary position-relative align-middle text-center"></i>&nbsp;CART&nbsp;(&nbsp;<span v-if="numItems > 0">[[ numItems ]]</span><span v-else>0</span>&nbsp;)
-                        </a>
-                        &nbsp;<span class="my-auto">|</span>
+                        </a>&nbsp;<span class="my-auto">|</span>
                     </li>
                     <li class="list-group-item bg-transparent border-0 px-2 px-xl-4 d-flex">
-                        <a role="button" class="px-0 font-weight-bold text-decoration-none" data-toggle="modal" data-target="#searchModal"><i class="fas fa-search text-success"></i>&nbsp;SEARCH</a>&nbsp;<span class="my-auto">|</span>
+                        <a href="javascript:void(0);" role="button" class="px-0 font-weight-bold text-decoration-none" data-toggle="modal" data-target="#searchModal"><i class="fas fa-search text-success"></i>&nbsp;SEARCH</a>&nbsp;<span class="my-auto">|</span>
                     </li>
                     {% if not request.user.is_authenticated %}
                     <li class="px-0 d-flex align-items-center border-0 list-group-item bg-transparent" style="">
@@ -113,7 +112,7 @@
                             <p class="text-right search-help-text text-muted font-italic" key="info" v-if="sortedTrousers.length > 0">[[ sortedTrousers.length ]] result(s) found.</p>
                             <p class="text-right search-help-text text-muted font-italic" key="emptyinfo" v-else>[[ sortedTrousers.length ]] result(s) found.</p>
                         </transition>
-                        <transition-group appear mode="out-in" tag="ul" v-bind:css="false" v-on:before-enter="beforeEnter" v-on:enter="enter" leave-active-class="animate__animated animate__fadeOut" class="row justify-content-around flex-row list-group list-unstyled list-group-flush border border-light" style="overflow-x:hidden;overflow-y:auto;max-height:55vh;min-height:55vh;">
+                        <transition-group appear mode="out-in" tag="ul" v-bind:css="false" v-on:before-enter="beforeEnter" v-on:enter="enter" leave-active-class="animate__animated animate__fadeOut" class="row justify-content-around flex-row list-group list-unstyled list-group-flush border" :class="css_class" style="overflow-x:hidden;overflow-y:auto;max-height:55vh;min-height:55vh;">
                             <div v-if="loading" class="col-12 my-auto d-flex flex-column align-items-center" key="loading">
                                 <i class="animate__animated animate__bounce animate__slow animate__infinite text-success bg-warning rounded-circle p-4 fas fa-3x text-white fa-search"></i>
                                 <p class="text-muted font-italic">loading...</p>
@@ -122,7 +121,7 @@
                                 <picture>
                                     <source :srcset="trouser.first_image.file_sm" type="image/svg+xml" media="(max-width: 480px)">
                                     <source :srcset="trouser.first_image.file" type="image/svg+xml">
-                                    <img :src="trouser.first_image.file" class="align-self-center img-fluid img-thumbnail mr-3" alt="...">
+                                    <img :src="trouser.first_image.file" class="align-self-center rounded-circle img-fluid img-thumbnail mr-3" alt="...">
                                 </picture>
                                 <div style="color:rgba(255,213,0,0.9);text-shadow: 1px 1px 3px #ffc107, 1px 1px 3px #7b07ff;" class="text-monospace d-flex flex-column justify-content-center">
                                     <p class="mt-0 h5">[[ trouser.name ]]</p>
