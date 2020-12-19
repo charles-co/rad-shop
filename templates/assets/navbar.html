@@ -113,25 +113,23 @@
                             <p class="text-right search-help-text text-muted font-italic" key="info" v-if="sortedTrousers.length > 0">[[ sortedTrousers.length ]] result(s) found.</p>
                             <p class="text-right search-help-text text-muted font-italic" key="emptyinfo" v-else>[[ sortedTrousers.length ]] result(s) found.</p>
                         </transition>
-                        <transition-group mode="out-in" tag="div" v-bind:css="false" v-on:before-enter="beforeEnter" v-on:enter="enter" leave-active-class="animate__animated animate__fadeOut" class="row border border-light" style="overflow-x:hidden;overflow-y:auto;max-height:55vh;min-height:55vh;">
-                            <div v-if="loading" class="col-12 align-self-center d-flex flex-column align-items-center" key="loading">
+                        <transition-group appear mode="out-in" tag="ul" v-bind:css="false" v-on:before-enter="beforeEnter" v-on:enter="enter" leave-active-class="animate__animated animate__fadeOut" class="row justify-content-around flex-row list-group list-unstyled list-group-flush border border-light" style="overflow-x:hidden;overflow-y:auto;max-height:55vh;min-height:55vh;">
+                            <div v-if="loading" class="col-12 my-auto d-flex flex-column align-items-center" key="loading">
                                 <i class="animate__animated animate__bounce animate__slow animate__infinite text-success bg-warning rounded-circle p-4 fas fa-3x text-white fa-search"></i>
                                 <p class="text-muted font-italic">loading...</p>
                             </div>
-                            <ul v-if="!loading && sortedTrousers.length > 0" :data-index="index" class="col-12 col-md-6 list-group list-unstyled mb-2 list-group-flush" v-for="(trouser, index) in sortedTrousers" :key="trouser.id">
-                                <a :href="trouser.url" class="text-decoration-none search-results list-group-item bg-transparent d-flex align-items-center list-group-item-action">
-                                    <picture>
-                                        <source :srcset="trouser.first_image.file_sm" type="image/svg+xml" media="(max-width: 480px)">
-                                        <source :srcset="trouser.first_image.file" type="image/svg+xml">
-                                        <img :src="trouser.first_image.file" class="align-self-center img-fluid img-thumbnail mr-3" alt="...">
-                                    </picture>
-                                    <div style="color:rgba(255,213,0,0.9)" class="text-monospace d-flex flex-column justify-content-center">
-                                        <p class="mt-0 h5">[[ trouser.name ]]</p>
-                                        <p class="h6 mb-0">[[ trouser.color ]]</p>
-                                        <p class="mb-0">[[ trouser.price|currency ]]</p>
-                                    </div>
-                                </a>
-                            </ul>
+                            <a v-if="!loading && sortedTrousers.length > 0" v-for="(trouser, index) in sortedTrousers" :data-index="index" :key="trouser.id" :href="trouser.url" class="col-11 col-md-5 text-decoration-none search-results list-group-item bg-transparent d-flex align-items-center list-group-item-action">
+                                <picture>
+                                    <source :srcset="trouser.first_image.file_sm" type="image/svg+xml" media="(max-width: 480px)">
+                                    <source :srcset="trouser.first_image.file" type="image/svg+xml">
+                                    <img :src="trouser.first_image.file" class="align-self-center img-fluid img-thumbnail mr-3" alt="...">
+                                </picture>
+                                <div style="color:rgba(255,213,0,0.9);text-shadow: 1px 1px 3px #ffc107, 1px 1px 3px #7b07ff;" class="text-monospace d-flex flex-column justify-content-center">
+                                    <p class="mt-0 h5">[[ trouser.name ]]</p>
+                                    <p class="h6 mb-0">[[ trouser.color ]]</p>
+                                    <p class="mb-0">[[ trouser.price|currency ]]</p>
+                                </div>
+                            </a>
                             <div v-if="sortedTrousers.length < 1 && !loading && empty" class="col-12" key="empty">
                                 <p class="text-white text-center font-italic text-monospace">No item found...</p>
                             </div>
