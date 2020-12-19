@@ -208,6 +208,7 @@ a:focus {
 
 .remove-outline:focus{
     outline: 0;
+    box-shadow: 0 0 0 0;
 }
 .list-group#login{
     min-width:60vw !important;
@@ -415,10 +416,10 @@ ul ul a {
 }
 @media (min-width: 1024px) {
     .main-wrapper {
-        padding-top: 92px !important;
+        padding-top: 79px !important;
     }
     .payment-overlay {
-        top: 92px;
+        top: 79px;
     }
 }
 @media (max-width: 991px) {

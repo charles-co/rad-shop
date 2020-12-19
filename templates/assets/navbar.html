@@ -75,7 +75,7 @@
                         &nbsp;<span class="my-auto">|</span>
                     </li>
                     <li class="list-group-item bg-transparent border-0 px-2 px-xl-4 d-flex">
-                        <a role="button" class="btn px-0 btn-link font-weight-bold text-decoration-none" data-toggle="modal" data-target="#searchModal"><i class="fas fa-search text-success"></i>&nbsp;SEARCH</a>&nbsp;<span class="my-auto">|</span>
+                        <a role="button" class="px-0 font-weight-bold text-decoration-none" data-toggle="modal" data-target="#searchModal"><i class="fas fa-search text-success"></i>&nbsp;SEARCH</a>&nbsp;<span class="my-auto">|</span>
                     </li>
                     {% if not request.user.is_authenticated %}
                     <li class="px-0 d-flex align-items-center border-0 list-group-item bg-transparent" style="">
@@ -93,7 +93,7 @@
     <div class="modal animate__animated animate__zoomIn animate__fast" id="searchModal" style="z-index:10000;" tabindex="-1" role="dialog" aria-labelledby="searchModalTitle" aria-hidden="true">
         <div class="modal-dialog h-100 vw-100 m-0" role="document">
             <div class="modal-content h-100 vw-100" style="background:#212529;opacity:.95;">
-                <div class="modal-header border-bottom-0">
+                <div class="modal-header p-md-4 border-bottom-0">
                     <button type="button" class="close text-danger remove-outline" @click="close" data-custom-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true"><i class="fas fa-3x fa-times close-search"></i></span>
                     </button>
@@ -111,7 +111,7 @@
                         </form>
                         <transition appear mode="out-in" enter-active-class="animate__animated animate__fadeIn" leave-active-class="animate__animated animate__fadeOut">
                             <p class="text-right search-help-text text-muted font-italic" key="info" v-if="sortedTrousers.length > 0">[[ sortedTrousers.length ]] result(s) found.</p>
-                            <p class="text-right search-help-text text-muted font-italic" key="emptyinfo"cv-else>[[ sortedTrousers.length ]] result(s) found.</p>
+                            <p class="text-right search-help-text text-muted font-italic" key="emptyinfo" v-else>[[ sortedTrousers.length ]] result(s) found.</p>
                         </transition>
                         <transition-group mode="out-in" tag="div" v-bind:css="false" v-on:before-enter="beforeEnter" v-on:enter="enter" leave-active-class="animate__animated animate__fadeOut" class="row border border-light" style="overflow-x:hidden;overflow-y:auto;max-height:55vh;min-height:55vh;">
                             <div v-if="loading" class="col-12 align-self-center d-flex flex-column align-items-center" key="loading">
@@ -125,13 +125,13 @@
                                         <source :srcset="trouser.first_image.file" type="image/svg+xml">
                                         <img :src="trouser.first_image.file" class="align-self-center img-fluid img-thumbnail mr-3" alt="...">
                                     </picture>
-                                    <div class="text-monospace d-flex flex-column justify-content-center" style="color: rgb(255, 213, 0, 0.9);">
+                                    <div style="color:rgba(255,213,0,0.9)" class="text-monospace d-flex flex-column justify-content-center">
                                         <p class="mt-0 h5">[[ trouser.name ]]</p>
                                         <p class="h6 mb-0">[[ trouser.color ]]</p>
                                         <p class="mb-0">[[ trouser.price|currency ]]</p>
                                     </div>
                                 </a>
-                            </div>
+                            </ul>
                             <div v-if="sortedTrousers.length < 1 && !loading && empty" class="col-12" key="empty">
                                 <p class="text-white text-center font-italic text-monospace">No item found...</p>
                             </div>
