@@ -93,10 +93,10 @@ def settings(name):
     return getattr(settings, name, "")
     
 @register.inclusion_tag('tags/_menu.html', takes_context=True)
-def menu(context):
+def menu(context, dimension):
     menus = Menu.objects.filter(is_active=True)
     request = context['request']
-    return {'menus': menus, 'request': request}
+    return {'menus': menus, 'request': request, 'dimension': dimension}
 
 @register.inclusion_tag('tags/_cartlist.html', takes_context=True)
 def cartlist(context):

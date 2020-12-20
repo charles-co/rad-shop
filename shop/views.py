@@ -68,11 +68,11 @@ class TrouserListing(ListAPIView):
     def get_queryset(self):
         if self.request.is_ajax():
             category_slug = self.kwargs["first_slug"]
-            if category_slug == 'new-arrivals' or category_slug == 'bestsellers' or category_slug == 'back-in-stock':
+            if category_slug == 'new-arrivals' or category_slug == 'best-sellers' or category_slug == 'back-in-stock':
                 if category_slug == 'new-arrivals':
                     queryList = Trouser.objects.order_by("-created_at").prefetch_related('variant', 'variant__trouser_variant_meta', 'variant__trouser_variant_images')
                 else:
-                    if category_slug == 'bestsellers':
+                    if category_slug == 'best-sellers':
                         queryList = Trouser.objects.filter(is_bestseller=True).prefetch_related('variant', 'variant__trouser_variant_meta', 'variant__trouser_variant_images')
                     else:
                         queryList = Trouser.objects.filter(is_back=True).prefetch_related('variant', 'variant__trouser_variant_meta', 'variant__trouser_variant_images')

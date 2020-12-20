@@ -97,44 +97,65 @@
         <a href="{% url 'menu:trouser_by_category' 'bestsellers' %}" class="btn btn-lg px-5 py-3 font-weight-bold rounded-0 text-center mx-auto text-white" style="background-color:#1c1b1b;font-size:11px;" role="button">VIEW ALL</a>
     </div>
     <div class="row mb-4 back-in-stock-md">
-        <span class="text-uppercase col-12 mb-4 px-2">BACK IN STOCK</span>
-        <div
-            class="swiper-mid mx-0 col-12"
-            v-swiper:swiper-mid="swiperoptionsmid"
-        >
-            <div class="swiper-wrapper">
-                <div class="swiper-slide card bg-transparent border-0">
-                    <div class="d-flex bg-transparent align-items-center justify-content-center overflow-hidden">
-                        <img src="../../static/image/new1.jpg" class="img-fluid img-responsive mx-auto card-img-top" alt="image">
-                    </div>
-                    <div class="card-img-overlay d-flex flex-column text-white justify-content-md-end justify-content-center align-items-md-start align-items-center">
-                        <h6 class="card-title mb-4 text-white">BACK IN STOCK</h6>
-                        <h5 class="card-title mb-4 text-white">C1 CARGO</h5>
-                        <a class="btn btn-primary bg-white btn-outline-white rounded-0 text-center text-dark btn-outline-light" href="{% url 'menu:trouser_by_category' 'back-in-stock' %}" role="button">SHOP NOW</a>
-                    </div>
-                </div>
-                <div class="swiper-slide card bg-transparent border-0">
-                    <div class="d-flex bg-transparent align-items-center justify-content-center overflow-hidden">
-                        <img src="../../static/image/new2.jpg" class="img-fluid img-responsive mx-auto card-img-top" alt="image">
-                    </div>
-                        <div class="card-img-overlay d-flex flex-column text-white justify-content-md-end justify-content-center align-items-md-start align-items-center">
-                        <h6 class="card-title mb-4 text-white">BACK IN STOCK</h6>
-                        <h5 class="card-title mb-4 text-white">C1 CARGO</h5>
-                        <a class="btn btn-primary bg-white btn-outline-white rounded-0 text-center text-dark btn-outline-light" href="{% url 'menu:trouser_by_category' 'back-in-stock' %}" role="button">SHOP NOW</a>
-                    </div>
-                </div>
-                <div class="swiper-slide card bg-transparent border-0">
-                    <div class="d-flex bg-transparent align-items-center justify-content-center overflow-hidden">
-                        <img src="../../static/image/new3.jpg" class="img-fluid img-responsive mx-auto card-img-top" alt="image">
-                    </div>
-                    <div class="card-img-overlay d-flex flex-column text-white justify-content-md-end justify-content-center align-items-md-start align-items-center">
-                        <h6 class="card-title mb-4 text-white">BACK IN STOCK</h6>
-                        <h5 class="card-title mb-4 text-white">C1 CARGO</h5>
-                        <a class="btn btn-primary bg-white btn-outline-white rounded-0 text-center text-dark btn-outline-light" href="{% url 'menu:trouser_by_category' 'back-in-stock' %}" role="button">SHOP NOW</a>
-                    </div>
-                </div>
+        <div class="col-6 col-xl-3 card mb-3 bg-transparent border-0">
+            <div class="d-flex bg-transparent align-items-center justify-content-center overflow-hidden">
+                <img src="../../static/image/new1.jpg" class="img-fluid img-responsive mx-auto card-img-top" alt="image">
             </div>
-            <div class="swiper-pagination swiper-pagination-bullets d-md-none d-flex justify-content-start"></div>
+            <div class="card-img-overlay flex-column justify-content-md-end align-items-md-start p-5 d-none d-md-flex text-white">
+                <p class="card-title mb-0 text-monospace">BACK IN STOCK</p>
+                <p class="card-title small text-monospace">C1 CARGO</p>
+                <a style="font-size:11px;color:black;" class="btn py-2 bg-light py-md-3 mt-1 btn-sm btn-outline-white rounded-0 text-center small" href="{% url 'menu:trouser_by_category' 'back-in-stock' %}" role="button">SHOP NOW</a>
+            </div>
+            <div class="card-body py-1 d-md-none d-flex flex-column text-white justify-content-center align-items-center">
+                <p class="card-title mb-0 text-monospace text-dark">BACK IN STOCK</p>
+                <p class="card-title small text-monospace text-dark">C1 CARGO</p>
+                <a style="background-color:#1c1b1b;font-size:11px;" class="btn btn-block py-2 py-md-3 mt-1 btn-sm btn-outline-white rounded-0 text-center text-white small" href="{% url 'menu:trouser_by_category' 'back-in-stock' %}" role="button">SHOP NOW</a>
+            </div>
+        </div>
+        <div class="col-6 col-xl-3 card mb-3 bg-transparent border-0">
+            <div class="d-flex bg-transparent align-items-center justify-content-center overflow-hidden">
+                <img src="../../static/image/new1.jpg" class="img-fluid img-responsive mx-auto card-img-top" alt="image">
+            </div>
+            <div class="card-img-overlay flex-column justify-content-md-end align-items-md-start p-5 d-none d-md-flex text-white">
+                <p class="card-title mb-0 text-monospace">BACK IN STOCK</p>
+                <p class="card-title small text-monospace">C1 CARGO</p>
+                <a style="font-size:11px;color:black;" class="btn py-2 bg-light py-md-3 mt-1 btn-sm btn-outline-white rounded-0 text-center small" href="{% url 'menu:trouser_by_category' 'back-in-stock' %}" role="button">SHOP NOW</a>
+            </div>
+            <div class="card-body py-1 d-md-none d-flex flex-column text-white justify-content-center align-items-center">
+                <p class="card-title mb-0 text-monospace text-dark">BACK IN STOCK</p>
+                <p class="card-title small text-monospace text-dark">C1 CARGO</p>
+                <a style="background-color:#1c1b1b;font-size:11px;" class="btn btn-block py-2 py-md-3 mt-1 btn-sm btn-outline-white rounded-0 text-center text-white small" href="{% url 'menu:trouser_by_category' 'back-in-stock' %}" role="button">SHOP NOW</a>
+            </div>
+        </div>
+        <div class="col-6 col-xl-3 card mb-3 bg-transparent border-0">
+            <div class="d-flex bg-transparent align-items-center justify-content-center overflow-hidden">
+                <img src="../../static/image/new2.jpg" class="img-fluid img-responsive mx-auto card-img-top" alt="image">
+            </div>
+            <div class="card-img-overlay flex-column justify-content-md-end align-items-md-start p-5 d-none d-md-flex text-white">
+                <p class="card-title mb-0 text-monospace">BACK IN STOCK</p>
+                <p class="card-title small text-monospace">C1 CARGO</p>
+                <a style="font-size:11px;color:black;" class="btn py-2 bg-light py-md-3 mt-1 btn-sm btn-outline-white rounded-0 text-center small" href="{% url 'menu:trouser_by_category' 'back-in-stock' %}" role="button">SHOP NOW</a>
+            </div>
+            <div class="card-body py-1 d-md-none d-flex flex-column text-white justify-content-center align-items-center">
+                <p class="card-title mb-0 text-monospace text-dark">BACK IN STOCK</p>
+                <p class="card-title small text-monospace text-dark">C1 CARGO</p>
+                <a style="background-color:#1c1b1b;font-size:11px;" class="btn btn-block py-2 py-md-3 mt-1 btn-sm btn-outline-white rounded-0 text-center text-white small" href="{% url 'menu:trouser_by_category' 'back-in-stock' %}" role="button">SHOP NOW</a>
+            </div>
+        </div>
+        <div class="col-6 col-xl-3 card mb-3 bg-transparent border-0">
+            <div class="d-flex bg-transparent align-items-center justify-content-center overflow-hidden">
+                <img src="../../static/image/new3.jpg" class="img-fluid img-responsive mx-auto card-img-top" alt="image">
+            </div>
+            <div class="card-img-overlay flex-column justify-content-md-end align-items-md-start p-5 d-none d-md-flex text-white">
+                <p class="card-title mb-0 text-monospace">BACK IN STOCK</p>
+                <p class="card-title small text-monospace">C1 CARGO</p>
+                <a style="font-size:11px;color:black;" class="btn py-2 bg-light py-md-3 mt-1 btn-sm btn-outline-white rounded-0 text-center small" href="{% url 'menu:trouser_by_category' 'back-in-stock' %}" role="button">SHOP NOW</a>
+            </div>
+            <div class="card-body py-1 d-md-none d-flex flex-column text-white justify-content-center align-items-center">
+                <p class="card-title mb-0 text-monospace text-dark">BACK IN STOCK</p>
+                <p class="card-title small text-monospace text-dark">C1 CARGO</p>
+                <a style="background-color:#1c1b1b;font-size:11px;" class="btn btn-block py-2 py-md-3 mt-1 btn-sm btn-outline-white rounded-0 text-center text-white small" href="{% url 'menu:trouser_by_category' 'back-in-stock' %}" role="button">SHOP NOW</a>
+            </div>
         </div>
     </div>
     <div class="row mb-4 no-gutters new-arrivals">
@@ -187,6 +208,7 @@
             { src: "{% static 'image/background/background.jpg' %}" },
             { src: "{% static 'image/background/background2.jpg' %}" },
             { src: "{% static 'image/background/background3.jpg' %}" },
+            { src: "{% static 'image/background/background4.jpg' %}" },
         ],
         transition: ['zoomOut', 'flash'],
         delay: 10000,
@@ -196,7 +218,7 @@
         {% comment %} animation: 'kenburnsDownRight' {% endcomment %}
     });
     $('.vegas-timer').addClass('d-none')
-    $('.vegas-content-scrollable').addClass('d-flex align-items-center')
+    $('.vegas-content-scrollable').addClass('d-flex align-items-end justify-content-start p-md-5 py-5 px-4 w-100')
     Vue.use(VueAwesomeSwiper)
     const index = new Vue({
         el: '#index',

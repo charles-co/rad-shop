@@ -13,10 +13,7 @@
             <li class="{% if 'categories/' not in request.path and 'account/' not in request.path and 'cart/' not in request.path %}active {% endif %}d-flex align-items-center list-group-item d-flex menu-list bg-transparent">
                 <i class="fas fa-home text-white-50"></i>&nbsp;<a href="/">HOME</a>
             </li>
-            {% menu %}
-            <li class="list-group-item mt-4 d-flex align-items-center menu-list bg-transparent">
-                <i class="fas fa-search text-success">&nbsp;</i>&nbsp;<a href="javascript:void(0);" role="button" class="btn btn-link text-decoration-none text-white p-0 font-weight-bold" data-toggle="modal" data-target="#searchModal">SEARCH</a>
-            </li>
+            {% menu "mobile" %}
         </ul>
         <ul class="list-unstyled list-group font-weight-bold fixed-bottom list-group-horizontal" id="login">
             {% if not request.user.is_authenticated %}
@@ -48,6 +45,9 @@
                     <a href="/"><img src="{% static 'image/favicon.ico' %}" class="logo-image" /></a>
                 </div>
                 <div id="cartnav-mobile" class="animate__animated animate__slideInRight"> 
+                    <button class="bg-transparent remove-outline btn text-decoration-none text-white p-0 font-weight-bold" data-toggle="modal" data-target="#searchModal">
+                        <i class="fas fa-search text-dark"></i>
+                    </button>
                     <a id="cart" href="{% url 'cart:cart-detail' %}" class="btn btn-link text-decoration-none text-dark bg-transparent d-inline-block d-lg-none" role="button">
                         <i class="fas fa-box-open position-relative align-middle text-center" :class="{'badger': numItems > 0}" :data-count="numItems"></i>
                     </a>
@@ -65,7 +65,7 @@
                     <li class="border-0 px-1 d-lg-none d-xl-block {% if 'categories/' not in request.path and 'account/' not in request.path and 'cart/' not in request.path %}active {% endif %}list-group-item bg-transparent">
                         <a href="/"><i class="fas fa-home"></i>&nbsp;HOME</a>
                     </li>
-                    {% menu %}
+                    {% menu "desktop" %}
                 </ul>
                 <ul class="list-unstyled desktop-menu-right animate__animated animate__fadeInDownBig animate__slow list-group font-weight-bold list-group-horizontal" style="color: rgba(15, 15, 15, 0.63);">
                     <li id="cartnav" class="px-0 list-group-item border-0 bg-transparent d-flex"> 
