@@ -56,7 +56,7 @@
     </div>
 </section>
 <div class="container" id="index">
-    <div class="row mb-4 no-gutters best-seller" style="min-height:300px;">
+    <div class="row mb-4 no-gutters best-seller overflow-hidden" style="min-height:300px;">
         <span class="text-uppercase mb-4 font-weight-light col-12">BEST SELLERS</span>
         <transition mode="out-in" enter-active-class="animate__animated animate__fadeInRight animate__slow" leave-active-class="animate__animated animate__fadeOut">
             <div v-if="bestSellerLoading" key="loadingbestseller" class="col-12 d-flex flex-column justify-content-center align-items-center" style="min-height:300px;">
@@ -126,7 +126,7 @@
         </div>
         {% endfor %}
     </div>
-    <div class="row mb-4 no-gutters new-arrivals" style="min-height:300px;">
+    <div class="row mb-4 no-gutters new-arrivals overflow-hidden" style="min-height:300px;">
         <span class="text-uppercase mb-4 font-weight-light col-12">NEW ARRIVALS</span>
         <transition mode="out-in" enter-active-class="animate__animated animate__fadeInRight" leave-active-class="animate__animated animate__fadeOut">
             <div v-if="newArrivalLoading" key="loadingnewaarival" class="col-12 d-flex flex-column justify-content-center align-items-center" style="height:300px;">
@@ -135,10 +135,10 @@
                 </div>
             </div>
             <div
-                class="swiper mx-0 pb-4 col-12"
-                v-swiper:swiper="swiperOptions"
                 v-if="!newArrivalLoading"
                 key="newarrival"
+                class="swiper mx-0 pb-4 col-12"
+                v-swiper:swiper="swiperOptions"
             >
                 <div class="swiper-wrapper">
                     <div class="swiper-slide card bg-transparent border-0" v-for="trouser in newArrivalTrousers" :key="trouser.id">
@@ -165,8 +165,8 @@
                 </div>
                 <div class="swiper-pagination swiper-pagination-bullets"></div>
             </div>
-            <a href="{% url 'menu:trouser_by_category' 'new-arrivals' %}" class="btn btn-lg rounded-0 px-5 py-3 font-weight-bold text-center mx-auto text-white" style="background-color:#1c1b1b;font-size:11px;" role="button">VIEW ALL PRODUCTS</a>
         </transition>
+            <a href="{% url 'menu:trouser_by_category' 'new-arrivals' %}" class="btn btn-lg rounded-0 px-5 py-3 font-weight-bold text-center mx-auto text-white" style="background-color:#1c1b1b;font-size:11px;" role="button">VIEW ALL PRODUCTS</a>
     </div>
     <div class="row no-gutters mb-4">
         <div class="col-12 px-3">

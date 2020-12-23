@@ -3,11 +3,13 @@ $(window).scroll(function() {
     if ($(document).scrollTop() > 80) {
         $('.navv').addClass('affix navbar-dark text-white').removeClass('navbar-light bg-light text-dark');
         $('#cartnav-mobile a').removeClass('text-dark').addClass('text-white');
+        $('#cartnav-mobile button').removeClass('text-dark').addClass('text-info');
         $('.navv #sidebarCollapse').addClass('bg-dark');
         $('.navv #sidebarCollapse span').addClass('bg-white');
     } else {
         $('.navv').removeClass('affix navbar-dark text-white').addClass('navbar-light bg-light text-dark');
         $('#cartnav-mobile a').removeClass('text-white').addClass('text-dark');
+        $('#cartnav-mobile button').removeClass('text-info').addClass('text-dark');
         $('.navv #sidebarCollapse').removeClass('bg-dark');
         $('.navv #sidebarCollapse span').removeClass('bg-white');
     }
