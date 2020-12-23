@@ -11,12 +11,12 @@ from django.views.generic.list import ListView
 import webcolors
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 
-from contents.models import Image
+from contents.models import Image, ShopIndex
 from menu.models import Menu
 from shop.models import Trouser, TrouserVariant
 
 from .pagination import StandardResultsSetPagination
-from .serializers import TrouserDetailSerializer, TrouserSearchSerializer, TrouserSerializer
+from .serializers import TrouserDetailSerializer, TrouserSearchSerializer, TrouserSerializer, IndexTrouserSerializer
 
 class CSRFExemptMixin(object):
     @method_decorator(csrf_exempt)
@@ -26,9 +26,29 @@ class CSRFExemptMixin(object):
 class HomeView(TemplateView):
     template_name = "shop/index.html"
 
+    def dispatch(self, request, *args, **kwargs):
+        if request.method == "GET":
+            self.home = ShopIndex.objects.all().prefetch_related('features').first()
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['home'] = self.home
         return context
+
+class NewArrivalsListing(ListAPIView):
+    serializer_class = IndexTrouserSerializer
+
+    def get_queryset(self):
+        queryList = Trouser.objects.order_by("-created_at")[:10]
+        return queryList
+
+class BestSellerListing(ListAPIView):
+    serializer_class = IndexTrouserSerializer
+
+    def get_queryset(self):
+        queryList = Trouser.objects.filter(is_bestseller=True)[:10]
+        return queryList
 
 class TrouserByCategory(TemplateView):
     template_name = 'shop/item_by_category.html'  
@@ -95,7 +115,6 @@ class TrouserListing(ListAPIView):
                     raise Http404()
             return queryList
         raise Http404()
-
 
 class TrouserDetail(TemplateView):
     template_name = 'shop/item_detail.html'

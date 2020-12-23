@@ -1,4 +1,6 @@
 from django.conf import settings
+from django.contrib.contenttypes.fields import (GenericForeignKey,
+                                                GenericRelation)
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Q
@@ -16,6 +18,7 @@ from mptt.models import MPTTModel, TreeForeignKey
 from taggit.managers import TaggableManager
 from tinymce.models import HTMLField
 
+# from contents.models import ShopIndexImages
 from menu.models import Menu
 
 # Create your models here.
@@ -140,6 +143,7 @@ class TrouserMETA(models.Model):
 
     def __str__(self):
         return self.trouser_variant.__str__()
+
 
 
     

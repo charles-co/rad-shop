@@ -17,12 +17,40 @@ class CategorySerializer(serializers.ModelSerializer):
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
-        fields = ("id","file",)
+        fields = ("id", "file",)
 
 class TrouserMETASerializer(serializers.ModelSerializer):
     class Meta:
         model = TrouserMETA
         fields = ("id", "size", "stock",)
+
+# INDEX
+
+class IndexTrouserVariantSerializer(serializers.ModelSerializer):
+    first_image = serializers.SerializerMethodField()
+    color = serializers.CharField(source='get_color_name', read_only=True)
+    
+    class Meta:
+        model = TrouserVariant
+        fields = ("id", "color", "price", "old_price", "first_image",)
+    
+    def get_first_image(self, obj):
+        first_image = Image.objects.filter(trouser_variant=obj).latest('id')
+        first_image_serializer = ImageSerializer(first_image)
+        return first_image_serializer.data
+
+class IndexTrouserSerializer(serializers.ModelSerializer):
+    url = serializers.CharField(source='get_absolute_url')
+    first_variant = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Trouser
+        fields = ("id", "name", "url", "first_variant", "created_at")
+
+    def get_first_variant(self, obj):
+        first_variant = TrouserVariant.objects.filter(trouser=obj).latest('id')
+        first_variant_serializer = IndexTrouserVariantSerializer(first_variant)
+        return first_variant_serializer.data
 
 # LIST
 
@@ -30,6 +58,7 @@ class TrouserVariantSerializer(serializers.ModelSerializer):
     first_image = serializers.SerializerMethodField()
     first_meta = serializers.SerializerMethodField()
     color = serializers.CharField(source='get_color_name', read_only=True)
+    
     class Meta:
         model = TrouserVariant
         fields = ("id", "first_meta", "price", "color", "first_image",)

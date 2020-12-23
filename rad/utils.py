@@ -89,6 +89,11 @@ def unique_order_id_generator(instance):
         return unique_order_id_generator(instance)
     return order_new_id.upper()
 
+def shop_index_directory_path(instance, filename):
+    return '/'.join([str(instance.__class__.__name__.lower()), 
+                    'images',
+                    str(uuid.uuid4().hex + ".png")])
+
 def images_directory_path(instance, filename):
     if (instance.__class__.__name__).lower() == 'image':
         return '/'.join(['trouser_images', 

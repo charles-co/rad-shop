@@ -21,7 +21,7 @@ class TrouserMETAInline(NestedStackedInline):
     model = TrouserMETA
     extra = 1
 
-class TrouserVariantInline(NestedStackedInline):
+class TrouserVariantInline(AdminImageMixin, NestedStackedInline):
     model = TrouserVariant
     inlines = [TrouserMETAInline, ImageInline,]
     extra = 1

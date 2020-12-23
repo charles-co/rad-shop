@@ -52,12 +52,12 @@
             </div>
         </transition>
     <div class="row justify-content-center mt-3">
-        <transition appear mode="out-in" enter-active-class="animate__animated animate__fadeIn animate__delay-1s" key="notempty" leave-active-class="animate__animated animate__fadeOut">
-            <div class="col-12 col-md-12 px-md-0" ref="bustop" style="margin-top:83px;" v-if="trousers.length > 0">
+        <transition appear mode="out-in" enter-active-class="animate__animated animate__fadeIn animate__delay-1s" leave-active-class="animate__animated animate__fadeOut">
+            <div class="col-12 col-md-12 px-md-0" ref="bustop" style="margin-top:83px;" v-if="trousers.length > 0" key="notempty">
                 <div class="d-flex justify-content-end mb-3">
                     <button @click="removeAll" type="button" name="" id="" class="small btn btn-danger text-monospace btn-lg"><i class="fas fa-trash-alt animate__animated animate__headShake animate__delay-3s"></i></button>
                 </div>
-                <transition-group tag="ul" name="list" class="list-group d-flex flex-row flex-wrap justify-content-md-around list-group-flush">
+                <transition-group mode="out-in" tag="ul" name="list" class="list-group d-flex flex-row flex-wrap justify-content-md-around list-group-flush">
                     <li v-for="(trouser, index) in trousers" :key="trouser.key" class="list-group-item shadow px-0 col-md-6 col-lg-4 list-group-item-darbk">
                         <div class="d-flex justify-content-between">
                             <div class="p-2 py-lg-2 px-lg-1">                 

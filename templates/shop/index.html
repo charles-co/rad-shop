@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load thumbnail %}
 {% block style %}
 <style>
 .back-in-stock .lSPager.lSpg > li a{
@@ -45,9 +46,8 @@
 <section id="home-slideshow" class="home d-flex align-items-center justify-content-center mb-5">
     <div class="container">
         <div class="row align-items-center justify-content-center animate__animated animate__fadeInUp animate__delay-2s my-auto animate__slow">
-            <div class="">
-                <span class="text-white text-center">NEW ARRIVALS & RESTOCKS</span>
-                <h4 class="text-white font-weight-bold text-center mb-4">JUST IN.</h4>
+            <div class=" d-flex flex-column align-items-start">
+                {{ home.get_markdown_top }}
                 <div class="d-flex align-items-center justify-content-center">
                     <a class="btn btn-primary bg-white rounded-0 text-center text-dark btn-outline-light" href="{% url 'menu:trouser_by_category' 'collections' %}" role="button">SHOP NOW</a>
                 </div>
@@ -56,137 +56,122 @@
     </div>
 </section>
 <div class="container" id="index">
-    <div class="row border-bottom mb-4">
-        <div class="col px-3">
-            <p class="text-center font-weight-bold mb-4 h6">ORDERS ARE SHIPPED AS USUAL</p>
-            <p class="mb-4 text-center">Despite challenges presented by COVID-19, our online store is still open, with orders shipped everyday.
-                Our logistics team is taking extraordinary precaution with each order to ensure the safety of our customers and employees.</p>
-            <p class="mb-4 text-center">Thank you for your support of all small businesses like ours. Stay safe, stay healthy.</p>
-        </div>
-    </div>
-    <div class="row mb-4 no-gutters best-seller">
+    <div class="row mb-4 no-gutters best-seller" style="min-height:300px;">
         <span class="text-uppercase mb-4 font-weight-light col-12">BEST SELLERS</span>
-        <div
-            class="swiper-first mx-0 pb-4 col-12"
-            v-swiper:swiper-first="swiperOptions"
-            {% comment %} @click-slide="onSwiperClickSlide"
-            @slide-change-transition-start="onSwiperSlideChangeTransitionStart" {% endcomment %}
-        >
-            <div class="swiper-wrapper">
-                <div class="swiper-slide card bg-transparent border-0" v-for="i, index in 7" :key="index">
-                    <div class="d-flex bg-transparent align-items-center justify-content-center overflow-hidden">
-                        <img src="../../static/image/test.jpg" class="img-fluid img-responsive mx-auto card-img-top" alt="image">
-                    </div>
-                    <div class="card-body py-0">
-                        <p class="card-title font-weight-bold" style="font-size:10px;">BLACK <br>N1 CARGO</p>
-                        <span class="d-flex justify-content-start" style="font-size:10px;font-weight:600;">
-                            {% comment %} <del class="card-text text-danger" v-if="trouser.first_variant.old_price"></del> {% endcomment %}
-                            {% comment %} <p class="align-text-bottom card-text font-weight-bolder">&nbsp;[[ trouser.first_variant.price|currency ]]</p> {% endcomment %}
-                        </span>
-                    </div>
+        <transition mode="out-in" enter-active-class="animate__animated animate__fadeInRight animate__slow" leave-active-class="animate__animated animate__fadeOut">
+            <div v-if="bestSellerLoading" key="loadingbestseller" class="col-12 d-flex flex-column justify-content-center align-items-center" style="min-height:300px;">
+                <div class="spinner-border text-secondary" role="status">
+                    <span class="sr-only">Loading...</span>
                 </div>
             </div>
-            <div class="d-none d-lg-block swiper-button-prev">
-                <i class="fas text-black-50 fa-2x fa-angle-left"></i>
+            <div
+                class="swiper-first mx-0 pb-4 col-12"
+                v-swiper:swiper-first="swiperOptions"
+                v-if="!bestSellerLoading"
+                key="bestseller"
+            >
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide card bg-transparent border-0" v-for="trouser in bestSellerTrousers" :key="trouser.id">
+                        <a :href="trouser.url">
+                            <div class="d-flex bg-transparent align-items-center justify-content-center overflow-hidden">
+                                <img :src="trouser.first_variant.first_image.file" class="img-fluid img-responsive mx-auto card-img-top" alt="image">
+                            </div>
+                            <div class="card-body py-0">
+                                <p class="card-title mb-1  font-weight-bold" style="font-size:10px;">[[ trouser.first_variant.color ]]<br>[[ trouser.name ]]</p>
+                                <span class="d-flex col-8 col-md-12 px-0 flex-wrap justify-content-start" style="font-size:11px;font-weight:600;">
+                                    <del class="card-text flex-grow-0 text-danger small" v-if="trouser.first_variant.old_price != 0">[[ trouser.first_variant.old_price|currency ]]&nbsp;&nbsp;</del>
+                                    <p class="align-text-bottom card-text" v-if="trouser.first_variant.old_price == 0">[[ trouser.first_variant.price|currency ]]</p>
+                                    <p class="align-text-bottom text-warning card-text" v-else>[[ trouser.first_variant.price|currency ]]</p>
+                                </span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="d-none d-lg-block swiper-button-prev">
+                    <i class="fas text-black-50 fa-2x fa-angle-left"></i>
+                </div>
+                <div class="d-none d-lg-block swiper-button-next">
+                    <i class="fas text-black-50 fa-2x fa-angle-right"></i>
+                </div>
+                <div class="swiper-pagination swiper-pagination-bullets"></div>
             </div>
-            <div class="d-none d-lg-block swiper-button-next">
-                <i class="fas text-black-50 fa-2x fa-angle-right"></i>
-            </div>
-            <div class="swiper-pagination swiper-pagination-bullets"></div>
-        </div>
-        <a href="{% url 'menu:trouser_by_category' 'bestsellers' %}" class="btn btn-lg px-5 py-3 font-weight-bold rounded-0 text-center mx-auto text-white" style="background-color:#1c1b1b;font-size:11px;" role="button">VIEW ALL</a>
+        </transition>
+        <a href="{% url 'menu:trouser_by_category' 'bestsellers' %}" class="btn btn-lg px-5 py-3 font-weight-bold rounded-0 text-center mx-auto text-white" style="background-color:#1c1b1b;font-size:11px;" role="button">VIEW ALL PRODUCTS</a>
     </div>
-    <div class="row mb-4 back-in-stock-md">
+    <div class="row mb-4 back-in-stock-md justify-content-between">
+        {% for feature in home.features.all %}
         <div class="col-6 col-xl-3 card mb-3 bg-transparent border-0">
             <div class="d-flex bg-transparent align-items-center justify-content-center overflow-hidden">
-                <img src="../../static/image/new1.jpg" class="img-fluid img-responsive mx-auto card-img-top" alt="image">
+                <picture>
+                    {% thumbnail feature.image "325x577" crop="center" as im %}
+                        <source srcset="{{ im.url }}" type="image/svg+xml" media="(max-width: 991px)">
+                    {% endthumbnail %}
+                    {% thumbnail feature.image "450x799" crop="center" as im %}
+                        <source srcset="{{ im.url }}" type="image/svg+xml" media="(min-width: 992px) and (max-width: 1199px)">
+                    {% endthumbnail %}
+                    {% thumbnail feature.image "260x453" crop="center" as im %}
+                        <source srcset="{{ im.url }}" type="image/svg+xml" media="(min-width: 1200px)">
+                    {% endthumbnail %}
+                    <img src="{{ feature.image.url }}" class="img-fluid img-responsive mx-auto card-img-top" alt="...">
+                </picture>
             </div>
             <div class="card-img-overlay flex-column justify-content-md-end align-items-md-start p-5 d-none d-md-flex text-white">
-                <p class="card-title mb-0 text-monospace">BACK IN STOCK</p>
-                <p class="card-title small text-monospace">C1 CARGO</p>
-                <a style="font-size:11px;color:black;" class="btn py-2 bg-light py-md-3 mt-1 btn-sm btn-outline-white rounded-0 text-center small" href="{% url 'menu:trouser_by_category' 'back-in-stock' %}" role="button">SHOP NOW</a>
+                {{ feature.get_markdown }}
+                <a style="font-size:11px;color:black;" class="btn py-2 bg-light mt-1 btn-sm btn-outline-white rounded-0 text-center small" href="{{ feature.url }}" role="button">SHOP NOW</a>
             </div>
             <div class="card-body py-1 d-md-none d-flex flex-column text-white justify-content-center align-items-center">
-                <p class="card-title mb-0 text-monospace text-dark">BACK IN STOCK</p>
-                <p class="card-title small text-monospace text-dark">C1 CARGO</p>
-                <a style="background-color:#1c1b1b;font-size:11px;" class="btn btn-block py-2 py-md-3 mt-1 btn-sm btn-outline-white rounded-0 text-center text-white small" href="{% url 'menu:trouser_by_category' 'back-in-stock' %}" role="button">SHOP NOW</a>
+                <span style="color: rgba(0, 0, 0, 0.81)">{{ feature.get_markdown }}</span>
+                <a style="background-color:#1c1b1b;font-size:11px;" class="btn btn-block py-2 mt-1 btn-sm btn-outline-white rounded-0 text-center text-white small" href="{{ feature.url }}" role="button">SHOP NOW</a>
             </div>
         </div>
-        <div class="col-6 col-xl-3 card mb-3 bg-transparent border-0">
-            <div class="d-flex bg-transparent align-items-center justify-content-center overflow-hidden">
-                <img src="../../static/image/new1.jpg" class="img-fluid img-responsive mx-auto card-img-top" alt="image">
-            </div>
-            <div class="card-img-overlay flex-column justify-content-md-end align-items-md-start p-5 d-none d-md-flex text-white">
-                <p class="card-title mb-0 text-monospace">BACK IN STOCK</p>
-                <p class="card-title small text-monospace">C1 CARGO</p>
-                <a style="font-size:11px;color:black;" class="btn py-2 bg-light py-md-3 mt-1 btn-sm btn-outline-white rounded-0 text-center small" href="{% url 'menu:trouser_by_category' 'back-in-stock' %}" role="button">SHOP NOW</a>
-            </div>
-            <div class="card-body py-1 d-md-none d-flex flex-column text-white justify-content-center align-items-center">
-                <p class="card-title mb-0 text-monospace text-dark">BACK IN STOCK</p>
-                <p class="card-title small text-monospace text-dark">C1 CARGO</p>
-                <a style="background-color:#1c1b1b;font-size:11px;" class="btn btn-block py-2 py-md-3 mt-1 btn-sm btn-outline-white rounded-0 text-center text-white small" href="{% url 'menu:trouser_by_category' 'back-in-stock' %}" role="button">SHOP NOW</a>
-            </div>
-        </div>
-        <div class="col-6 col-xl-3 card mb-3 bg-transparent border-0">
-            <div class="d-flex bg-transparent align-items-center justify-content-center overflow-hidden">
-                <img src="../../static/image/new2.jpg" class="img-fluid img-responsive mx-auto card-img-top" alt="image">
-            </div>
-            <div class="card-img-overlay flex-column justify-content-md-end align-items-md-start p-5 d-none d-md-flex text-white">
-                <p class="card-title mb-0 text-monospace">BACK IN STOCK</p>
-                <p class="card-title small text-monospace">C1 CARGO</p>
-                <a style="font-size:11px;color:black;" class="btn py-2 bg-light py-md-3 mt-1 btn-sm btn-outline-white rounded-0 text-center small" href="{% url 'menu:trouser_by_category' 'back-in-stock' %}" role="button">SHOP NOW</a>
-            </div>
-            <div class="card-body py-1 d-md-none d-flex flex-column text-white justify-content-center align-items-center">
-                <p class="card-title mb-0 text-monospace text-dark">BACK IN STOCK</p>
-                <p class="card-title small text-monospace text-dark">C1 CARGO</p>
-                <a style="background-color:#1c1b1b;font-size:11px;" class="btn btn-block py-2 py-md-3 mt-1 btn-sm btn-outline-white rounded-0 text-center text-white small" href="{% url 'menu:trouser_by_category' 'back-in-stock' %}" role="button">SHOP NOW</a>
-            </div>
-        </div>
-        <div class="col-6 col-xl-3 card mb-3 bg-transparent border-0">
-            <div class="d-flex bg-transparent align-items-center justify-content-center overflow-hidden">
-                <img src="../../static/image/new3.jpg" class="img-fluid img-responsive mx-auto card-img-top" alt="image">
-            </div>
-            <div class="card-img-overlay flex-column justify-content-md-end align-items-md-start p-5 d-none d-md-flex text-white">
-                <p class="card-title mb-0 text-monospace">BACK IN STOCK</p>
-                <p class="card-title small text-monospace">C1 CARGO</p>
-                <a style="font-size:11px;color:black;" class="btn py-2 bg-light py-md-3 mt-1 btn-sm btn-outline-white rounded-0 text-center small" href="{% url 'menu:trouser_by_category' 'back-in-stock' %}" role="button">SHOP NOW</a>
-            </div>
-            <div class="card-body py-1 d-md-none d-flex flex-column text-white justify-content-center align-items-center">
-                <p class="card-title mb-0 text-monospace text-dark">BACK IN STOCK</p>
-                <p class="card-title small text-monospace text-dark">C1 CARGO</p>
-                <a style="background-color:#1c1b1b;font-size:11px;" class="btn btn-block py-2 py-md-3 mt-1 btn-sm btn-outline-white rounded-0 text-center text-white small" href="{% url 'menu:trouser_by_category' 'back-in-stock' %}" role="button">SHOP NOW</a>
-            </div>
-        </div>
+        {% endfor %}
     </div>
-    <div class="row mb-4 no-gutters new-arrivals">
+    <div class="row mb-4 no-gutters new-arrivals" style="min-height:300px;">
         <span class="text-uppercase mb-4 font-weight-light col-12">NEW ARRIVALS</span>
-        <div
-            class="swiper mx-0 pb-4 col-12"
-            v-swiper:swiper="swiperOptions"
-        >
-            <div class="swiper-wrapper">
-                <div class="swiper-slide card bg-transparent border-0" v-for="i, index in 6" :key="index">
-                    <div class="d-flex bg-transparent align-items-center justify-content-center overflow-hidden">
-                        <img src="../../static/image/test.jpg" class="img-fluid img-responsive mx-auto card-img-top" alt="image">
-                    </div>
-                    <div class="card-body py-0">
-                        <p class="card-title font-weight-bold" style="font-size:10px;">BLACK <br>N1 CARGO</p>
-                        <span class="d-flex justify-content-start" style="font-size:10px;font-weight:600;">
-                            {% comment %} <del class="card-text text-danger" v-if="trouser.first_variant.old_price"></del> {% endcomment %}
-                            {% comment %} <p class="align-text-bottom card-text font-weight-bolder">&nbsp;[[ trouser.first_variant.price|currency ]]</p> {% endcomment %}
-                        </span>
-                    </div>
+        <transition mode="out-in" enter-active-class="animate__animated animate__fadeInRight" leave-active-class="animate__animated animate__fadeOut">
+            <div v-if="newArrivalLoading" key="loadingnewaarival" class="col-12 d-flex flex-column justify-content-center align-items-center" style="height:300px;">
+                <div class="spinner-border text-secondary" role="status">
+                    <span class="sr-only">Loading...</span>
                 </div>
             </div>
-            <div class="d-none d-lg-block swiper-button-prev">
-                <i class="fas text-black-50 fa-2x fa-angle-left"></i>
+            <div
+                class="swiper mx-0 pb-4 col-12"
+                v-swiper:swiper="swiperOptions"
+                v-if="!newArrivalLoading"
+                key="newarrival"
+            >
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide card bg-transparent border-0" v-for="trouser in newArrivalTrousers" :key="trouser.id">
+                        <a :href="trouser.url">
+                            <div class="d-flex bg-transparent align-items-center justify-content-center overflow-hidden">
+                                <img :src="trouser.first_variant.first_image.file" class="img-fluid img-responsive mx-auto card-img-top" alt="image">
+                            </div>
+                            <div class="card-body py-0">
+                                <p class="card-title font-weight-bold mb-1" style="font-size:10px;">[[ trouser.first_variant.color ]]<br>[[ trouser.name ]]</p>
+                                <span class="d-flex col-8 col-md-12 px-0 flex-wrap justify-content-start" style="font-size:11px;font-weight:600;">
+                                    <del class="card-text flex-grow-0 text-danger small" v-if="trouser.first_variant.old_price != 0">[[ trouser.first_variant.old_price|currency ]]&nbsp;&nbsp;</del>
+                                    <p class="align-text-bottom card-text" v-if="trouser.first_variant.old_price == 0">[[ trouser.first_variant.price|currency ]]</p>
+                                    <p class="align-text-bottom text-warning card-text" v-else>[[ trouser.first_variant.price|currency ]]</p>
+                                </span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="d-none d-lg-block swiper-button-prev">
+                    <i class="fas text-black-50 fa-2x fa-angle-left"></i>
+                </div>
+                <div class="d-none d-lg-block swiper-button-next">
+                    <i class="fas text-black-50 fa-2x fa-angle-right"></i>
+                </div>
+                <div class="swiper-pagination swiper-pagination-bullets"></div>
             </div>
-            <div class="d-none d-lg-block swiper-button-next">
-                <i class="fas text-black-50 fa-2x fa-angle-right"></i>
-            </div>
-            <div class="swiper-pagination swiper-pagination-bullets"></div>
+            <a href="{% url 'menu:trouser_by_category' 'new-arrivals' %}" class="btn btn-lg rounded-0 px-5 py-3 font-weight-bold text-center mx-auto text-white" style="background-color:#1c1b1b;font-size:11px;" role="button">VIEW ALL PRODUCTS</a>
+        </transition>
+    </div>
+    <div class="row no-gutters mb-4">
+        <div class="col-12 px-3">
+            {{ home.get_markdown_info }}
         </div>
-        <a href="{% url 'menu:trouser_by_category' 'new-arrivals' %}" class="btn btn-lg rounded-0 px-5 py-3 font-weight-bold text-center mx-auto text-white" style="background-color:#1c1b1b;font-size:11px;" role="button">VIEW ALL</a>
     </div>
 </div>
 {% endblock content %}
@@ -205,10 +190,15 @@
 <script type="text/javascript">
     $("#home-slideshow").vegas({
         slides: [
-            { src: "{% static 'image/background/background.jpg' %}" },
-            { src: "{% static 'image/background/background2.jpg' %}" },
-            { src: "{% static 'image/background/background3.jpg' %}" },
-            { src: "{% static 'image/background/background4.jpg' %}" },
+            {% if home.image1 %}
+            { src: "{{ home.image1.url }}" },
+            {% endif %}
+            {% if home.image2 %}
+            { src: "{{ home.image2.url }}" },
+            {% endif %}
+            {% if home.image3 %}
+            { src: "{{ home.image3.url }}" },
+            {% endif %}
         ],
         transition: ['zoomOut', 'flash'],
         delay: 10000,
@@ -250,7 +240,7 @@
                         },
                     }
                 },
-                swiperoptionsmid: {
+                {% comment %} swiperoptionsmid: {
                     grabCursor: true,
                     loop: false,
                     pagination: {
@@ -271,14 +261,25 @@
                         },
                         320: {
                             slidesPerView: 1,
-                            {% comment %} spaceBetween: 10 {% endcomment %}
                         },
-                    }
-                }
+                    },
+                }, {% endcomment %}
+                newArrivalTrousers: [],
+                bestSellerTrousers: [],
+                newArrivalLoading: true,
+                bestSellerLoading: true,
             }
         },
         mounted(){
-            window.scrollTo(0, 0);
+            this.newArrival();
+            this.bestSeller();
+        },
+        filters: {
+            currency: function(value){
+                if (!value) return ''
+                value = formatter.format(value)
+                return value
+            },
         },
         computed: {
             numItems: function(){
@@ -286,9 +287,51 @@
             },
         },
         methods: {
-            ingscroll(){
-                console.log("hi")
+            newArrival(){
+                fetch("{% url 'shop:api-new-arrivals' %}", {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }, 
+                    credentials: 'same-origin',
+                })
+                .then((response) => { 
+                    return response.json();
+                })
+                .then((results) => {
+                    this.newArrivalTrousers = results;
+                    setTimeout( function(){
+                        this.newArrivalLoading = false;
+                    }.bind(this), 1000);
+                })
+                .catch(function (error){
+                    console.log(error);
+                })
             },
+            bestSeller(){
+                fetch("{% url 'shop:api-best-sellers' %}", {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }, 
+                    credentials: 'same-origin',
+                })
+                .then((response) => { 
+                    return response.json();
+                })
+                .then((results) => {
+                    this.bestSellerTrousers = results;
+                    setTimeout( function(){
+                        this.bestSellerLoading = false;
+                    }.bind(this), 1000);
+                })
+                .catch(function (error){
+                    console.log(error);
+                })
+            },
+            
         }
 
     });
