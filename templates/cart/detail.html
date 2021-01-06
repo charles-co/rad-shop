@@ -51,7 +51,7 @@
                 </div>
             </div>
         </transition>
-    <div class="row justify-content-center mt-3">
+    <div class="row justify-content-center overflow-hidden mt-3">
         <transition appear mode="out-in" enter-active-class="animate__animated animate__fadeIn animate__delay-1s" leave-active-class="animate__animated animate__fadeOut">
             <div class="col-12 col-md-12 px-md-0" ref="bustop" style="margin-top:83px;" v-if="trousers.length > 0" key="notempty">
                 <div class="d-flex justify-content-end mb-3">
@@ -112,6 +112,10 @@ const cartapp = new Vue({
                 toast: false,
                 topT:0,
             }
+        },
+        created(){
+        },
+        updated(){
         },
         mounted(){
             console.log("mounted")

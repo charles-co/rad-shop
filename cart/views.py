@@ -11,7 +11,7 @@ from django.urls import reverse
 from django.views.decorators.http import require_POST, require_GET
 from django.views.generic import (CreateView, DetailView, FormView,
                                   TemplateView, UpdateView, View)
-
+                                  
 from sorl.thumbnail import get_thumbnail
 
 from accounts.forms import GuestForm, LoginForm
@@ -69,7 +69,7 @@ def cart_detail(request):
     for item in cart:
         trouser=item['trouser']
         for i, size in enumerate(item['size']):
-            im = get_thumbnail(trouser.trouser_variant_images.first().file, '120x160', crop='center', quality=99)
+            im = get_thumbnail(trouser.trouser_variant_images.first().file, '120x160', quality=99)
             stock = trouser.trouser_variant_meta.get(size=size).stock
             quantity = item['quantity'][i]
             total_price = item['total_price'][i]

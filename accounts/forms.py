@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, Div, MultiField, Field, HTML
-from crispy_forms.bootstrap import AppendedText, PrependedText
+from crispy_forms.bootstrap import AppendedText, PrependedText, PrependedAppendedText
 
 from accounts.models import EmailActivation, GuestEmail
 
@@ -125,7 +125,7 @@ class LoginForm(forms.Form):
         self.helper.form_tag = False
         self.helper.layout = Layout(
                 PrependedText('email', '<i class="fas fa-user-circle text-info"></i>', active=True, css_class="rounded-0"),
-                PrependedText('password', '<i class="fas fa-key text-info"></i>', active=True, css_class="rounded-0"),
+                PrependedAppendedText('password', '<i class="fas fa-key text-info"></i>', '<button @click="passwordshow($event)" class="btn btn-sm p-0"><i class="fas fa-eye-slash text-info"></i></button>', active=True, css_class="rounded-0 border-right-0"),
             )
         super(LoginForm, self).__init__(*args, **kwargs)
 

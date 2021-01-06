@@ -15,6 +15,7 @@
             <link rel="stylesheet" href="{% static 'css/animate.min.css' %}">
             <link rel="stylesheet" href="{% static 'css/vegas.min.css' %}">
             <link rel="stylesheet" href="{% static 'css/all.min.css' %}"> 
+            <link rel="stylesheet" href="{% static 'css/aos.css' %}"> 
             <link rel="stylesheet" href="{% static 'css/swiper.min.css' %}">
             {% comment %} <link rel="stylesheet" href="{% static 'css/jquery.mCustomScrollbar.min.css' %}"> {% endcomment %}
             {% else %}
@@ -23,6 +24,7 @@
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/5.4.5/css/swiper.min.css" integrity="sha512-uCQmAoax6aJTxC03VlH0uCEtE0iLi83TW1Qh6VezEZ5Y17rTrIE+8irz4H4ehM7Fbfbm8rb30OkxVkuwhXxrRg==" crossorigin="anonymous" />
+            <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
             {% comment %} <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css" integrity="sha512-6qkvBbDyl5TDJtNJiC8foyEVuB6gxMBkrKy67XpqnIDxyvLLPJzmTjAj1dRJfNdmXWqD10VbJoeN4pOQqDwvRA==" crossorigin="anonymous" /> {% endcomment %}
             {% endif %}
             <link rel="stylesheet" href="{% static 'css/base.css' %}">
@@ -116,7 +118,8 @@
         {% comment %} <script src="{% static 'js/jquery.mCustomScrollbar.concat.min.js' %}"></script> {% endcomment %}
         <script src="{% static 'js/bootstrap.min.js' %}"></script>
         <script src="{% static 'js/lodash.min.js' %}"></script>
-        <script src="{% static 'js/vue2.js' %}"></script>
+        <script src="{% static 'js/aos.js' %}"></script>
+        <script src="{% static 'js/vue.js' %}"></script>
         <script src="{% static 'js/vuex.js' %}"></script>
         {% else %}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
@@ -124,6 +127,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/vuex/3.5.1/vuex.min.js" integrity="sha512-n/iV5SyKXzLRbRczKU75fMgHO0A1DWJSWbK5llLNAqdcoxtUK3NfgfszYpjhvcEqS6nEXwu7gQ5bIkx6z8/lrA==" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.5.4/umd/popper.min.js"></script>
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
         {% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js" integrity="sha512-Yk47FuYNtuINE1w+t/KT4BQ7JaycTCcrvlSvdK/jry6Kcxqg5vN7/svVWCxZykVzzJHaxXk5T9jnFemZHSYgnw==" crossorigin="anonymous"></script> {% endcomment %}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js" integrity="sha512-90vH1Z83AJY9DmlWa8WkjkV79yfS2n2Oxhsi2dZbIv0nC4E6m5AbH8Nh156kkM7JePmqD6tcZsfad1ueoaovww==" crossorigin="anonymous"></script>
         {% endif %}

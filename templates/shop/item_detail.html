@@ -17,12 +17,11 @@
         margin-buttom:5px;
         border-top: 2px solid #969ca0;
     }
+    .opaque {
+        opacity: 0.4;
+    }
     .swiper-container {
         
-    }
-    .swiper-button-next:after, .swiper-button-prev:after{
-        font-size: 15px;
-        color: #ddd;
     }
     img {
         image-rendering: -webkit-optimize-contrast;
@@ -50,13 +49,14 @@
 <div id="trouserappdetail" class="container">
     <div v-if="has_content" class="mb-4">
         <div class="row no-gutters justify-content-between">
-            <div class="col-12 col-md-5 order-0" style="min-height:448px;">
+            <div class="col-12 col-md-5 order-0" style="min-height:400px;">
                 <div
-                    class="trouserimages pb-5 h-100"
+                    class="trouserimages h-100"
                     v-swiper:trouserimages="trouserimagesoptions"
                     @click-slide="onSwiperClickSlide"
                     @slide-change-transition-start="onSwiperSlideChangeTransitionStart"
                     v-if="change"
+                    data-aos="zoom-in"
                 >
                     <div class="swiper-wrapper">
                         <div class="swiper-slide text-center" v-for="(img, index) in selected_trouser.trouser_variant_images" :key="index">
@@ -66,21 +66,19 @@
                             </div>
                         </div>
                     </div>
-                    <div class="swiper-pagination main-detail swiper-pagination-bullets"></div>
+                    <div class="swiper-pagination main-detail swiper-pagination-bullets" v-show="selected_trouser_images_count > 1"></div>
                 </div>
             </div>
-            <div class="jumbotron py-0 mb-0 px-3 col-12 order-2 order-md-1 col-md-6 mt-3 overflow-auto" style="max-height:400px;">
+            <div class="jumbotron py-0 mb-0 px-3 col-12 order-2 order-md-1 col-md-6 mt-3 overflow-auto" data-aos="fade" style="max-height:400px;">
                 <div class="d-inline-block"><span v-html="description"></span></div>
             </div>
-            <div class="col-12 col-md-5 px-0 my-2 order-1 m-md-0 order-md-2">
-                <div v-if="trousers.length > 1">
-                    <div class="d-flex flex-wrap animate__fadeInLeftBig" v-bind:class="{animate__animated: !blur}">
-                        <div class="mr-2 p-1" v-for="(img, index) in trousers" style="cursor:pointer;" :class="{ 'border border-dark' : selectedVariant === index}" :key="index">
-                            <img :src="img.trouser_variant_images[0].thumbnail" @click="change_selected_trouser(index)">
-                        </div>
+            <div class="col-12 col-md-5 px-0 my-2 order-1 m-md-0 order-md-2 overflow-hidden">
+                <div class="d-flex flex-wrap animate__fadeInLeftBig" :class="{ 'animate__animated' : !blur }" v-if="trousers.length > 1">
+                    <div class="mr-2 p-1" v-for="(img, index) in trousers" style="cursor:pointer;" :class="{ 'border border-dark' : selectedVariant === index, opaque : selectedVariant !== index }" :key="index">
+                        <img :src="img.trouser_variant_images[0].thumbnail" @click="change_selected_trouser(index)">
                     </div>
                 </div>
-                <div class="my-4 font-weight-bold d-block" style="min-height:174px;">
+                <div class="mb-4 font-weight-bold d-block" style="min-height:174px;">
                     <transition enter-active-class="animate__animated animate__fadeIn">
                         <div v-if="!changeText" class="text-monospace">
                             <p> [[ selected_trouser.color ]]</p>
@@ -108,11 +106,12 @@
                     v-swiper:swiper="swiperOptions"
                     @click-slide="onSwiperClickSlide"
                     @slide-change-transition-start="onSwiperSlideChangeTransitionStart"
+                    data-aos="fade-up"
                 >
                     <div class="swiper-wrapper">
                         <div class="swiper-slide card bg-transparent border-0" v-for="trouser in similiar_trousers" :key="trouser.id">
-                            <div class="d-flex bg-transparent align-items-center justify-contents-center overflow-hidden" style="min-height:230px;">
-                                <a :href="trouser.url"><img :data-src="trouser.first_variant.first_image.file" class="swiper-lazy img-fluid img-responsive mx-auto card-img-top"></a>
+                            <div class="d-flex bg-transparent align-items-center justify-content-center overflow-hidden" style="min-height:230px;">
+                                <a :href="trouser.url"><img :data-src="trouser.first_variant.first_image.file" class="swiper-lazy img-fluid  mx-auto card-img-top"></a>
                                 <div class="swiper-lazy-preloader swiper-lazy-preloader-black"></div>
                             </div>
                             <div class="card-body text-monospace py-0">
@@ -227,6 +226,7 @@
             }
         },
         created(){
+            AOS.init();
             console.log("created")
 
         },
@@ -269,7 +269,7 @@
         },
         updated(){
             console.log("updated")
-            {% comment %} this.trouserimages.lazy.load(); {% endcomment %}
+            AOS.refreshHard();
 
         },
         beforeMount(){

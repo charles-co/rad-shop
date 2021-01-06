@@ -90,8 +90,8 @@ class TrouserSerializer(serializers.ModelSerializer):
 #DETAIL SERIALIZERS
 
 class ImageDetailSerializer(serializers.HyperlinkedModelSerializer):
-    file = HyperlinkedSorlImageField('300x400', options={"crop": "center", "quality": 99}, read_only=True)
-    thumbnail = HyperlinkedSorlImageField('60x60', options={"crop": "center", "quality": 99}, source='file', read_only=True)
+    file = HyperlinkedSorlImageField('300x400', options={"quality": 99}, read_only=True)
+    thumbnail = HyperlinkedSorlImageField('60x60', options={"quality": 99}, source='file', read_only=True)
     
     class Meta:
         model = Image

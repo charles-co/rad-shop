@@ -1,1 +1,1 @@
-A modern shop built with django & vue.js. Check out https://www.rad.pythonanywhere.com
+A modern shop built with django & vue.js. Check out https://rad.pythonanywhere.com

@@ -4,7 +4,7 @@
 {% block style %}
 <style>
     .wrapper{
-        background: -webkit-linear-gradient(to top left, #33ccff 0%, #ff99cc 100%)
+        background: -webkit-linear-gradient(to top left, #33ccff 0%, #ff99cc 100%);
         background: -o-linear-gradient(to top left, #33ccff 0%, #ff99cc 100%);
         background: -moz-linear-gradient(to top left, #33ccff 0%, #ff99cc 100%);
         background: linear-gradient(to top left, #33ccff 0%, #ff99cc 100%);
@@ -22,14 +22,19 @@
             background-position: 0% 50%;
         }
     }
+    #div_id_password .input-group-append .input-group-text {
+        border-left: 0;
+        border-radius: 0;
+    }
     .form-wrapper {
         background: black;
         opacity: .6;
         margin: 4rem 0;
     }
     .form-wrapper::before {
-        content: "";
-        font-family: "Font Awesome 5 Free"; font-weight:900; content: "\f2bd";
+        font-family: "Font Awesome 5 Free"; 
+        font-weight:900; 
+        content: "\f2bd";
         font-size: 6em;
         position: absolute;
         top: -77px;
@@ -87,6 +92,7 @@
             return {
                 showlogin: true,
                 showsignup: false,
+                showpassword: false,
             }
         },
         computed: {
@@ -95,12 +101,28 @@
                     return "Login"
                 }
                 return "Sign Up"
+            },
+            input: function(){
+                return document.getElementById("id_password");
             }
         },
         methods: {
             showform(){
                 this.showlogin = !this.showlogin
                 this.showsignup = !this.showsignup
+            },
+            passwordshow(e){
+                this.showpassword = !this.showpassword
+                if (this.showpassword){
+                    this.input.type = "text";
+                    e.target.classList.remove("fa-eye-slash")
+                    e.target.classList.add("fa-eye")
+                }
+                else{
+                    this.input.type = "password";
+                    e.target.classList.remove("fa-eye")
+                    e.target.classList.add("fa-eye-slash")
+                }
             }
         }
     });
