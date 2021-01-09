@@ -125,7 +125,7 @@ class LoginForm(forms.Form):
         self.helper.form_tag = False
         self.helper.layout = Layout(
                 PrependedText('email', '<i class="fas fa-user-circle text-info"></i>', active=True, css_class="rounded-0"),
-                PrependedAppendedText('password', '<i class="fas fa-key text-info"></i>', '<button type="button" @click="passwordshow($event)" class="btn btn-sm remove-outline p-0"><i class="fas fa-eye-slash text-info"></i></button>', active=True, css_class="rounded-0 border-right-0"),
+                PrependedAppendedText('password', '<i class="fas fa-key text-info"></i>', '<button type="button" @click="passwordshow($event)" class="btn btn-sm bg-transparent remove-outline p-0"><i class="fas fa-eye-slash text-info"></i></button>', active=True, css_class="rounded-0 border-right-0"),
             )
         super(LoginForm, self).__init__(*args, **kwargs)
 

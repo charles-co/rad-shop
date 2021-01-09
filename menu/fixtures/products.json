@@ -1,0 +1,609 @@
+[
+{
+  "model": "shop.product",
+  "pk": 1,
+  "fields": {
+    "created_at": "2021-01-06T23:40:54.644Z",
+    "updated_at": "2021-01-06T23:40:54.644Z",
+    "content_type": 9,
+    "object_id": 1
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 2,
+  "fields": {
+    "created_at": "2021-01-06T23:41:07.186Z",
+    "updated_at": "2021-01-06T23:41:07.186Z",
+    "content_type": 9,
+    "object_id": 3
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 3,
+  "fields": {
+    "created_at": "2021-01-06T23:41:17.984Z",
+    "updated_at": "2021-01-06T23:41:17.984Z",
+    "content_type": 9,
+    "object_id": 2
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 4,
+  "fields": {
+    "created_at": "2021-01-06T23:41:24.865Z",
+    "updated_at": "2021-01-06T23:41:24.865Z",
+    "content_type": 9,
+    "object_id": 9
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 5,
+  "fields": {
+    "created_at": "2021-01-06T23:41:31.016Z",
+    "updated_at": "2021-01-06T23:41:31.016Z",
+    "content_type": 9,
+    "object_id": 6
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 6,
+  "fields": {
+    "created_at": "2021-01-06T23:42:07.406Z",
+    "updated_at": "2021-01-06T23:42:07.406Z",
+    "content_type": 9,
+    "object_id": 8
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 7,
+  "fields": {
+    "created_at": "2021-01-06T23:42:13.238Z",
+    "updated_at": "2021-01-06T23:42:13.238Z",
+    "content_type": 9,
+    "object_id": 5
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 8,
+  "fields": {
+    "created_at": "2021-01-06T23:42:18.755Z",
+    "updated_at": "2021-01-06T23:42:18.755Z",
+    "content_type": 9,
+    "object_id": 4
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 9,
+  "fields": {
+    "created_at": "2021-01-06T23:42:29.858Z",
+    "updated_at": "2021-01-06T23:42:29.858Z",
+    "content_type": 9,
+    "object_id": 7
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 10,
+  "fields": {
+    "created_at": "2021-01-06T23:42:35.419Z",
+    "updated_at": "2021-01-06T23:42:35.419Z",
+    "content_type": 9,
+    "object_id": 10
+  }
+},
+{
+  "model": "shop.trouser",
+  "pk": 1,
+  "fields": {
+    "name": "C212 CARGO",
+    "slug": "c212-cargo",
+    "category": 4,
+    "description": "<p><span style=\"color: #34495e; font-family: 'comic sans ms', sans-serif; font-size: 16px;\">The LK2 Cargo Pants are designed with a customdeveloped synthetic fabric and featured a mesh lining, extended inseam for stacking throughout, with cargo pocket at side seam, an elastic waistband, and finished with % bungee cords that run halflength of the garment that each have 5 black plastic toggles to help with the stacking throughout. These pants also feature a zipper design around the knee, you can zip out the bungee lower part to change it as a pair of shorts.</span></p>\r\n<p><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\"><span style=\"box-sizing: border-box; font-weight: bolder;\">Details</span></span></p>\r\n<ul>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">relaxed fit</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">5 Pockets</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">100% nylon</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">elastic waistband</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">fits truetosize, go one size up for baggy fit</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">model is 5'11(180cm), 154 lbs(70kg) and wears a size 30</span></li>\r\n</ul>\r\n<p><em style=\"font-size: 10pt; text-align: justify; box-sizing: border-box;\"><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e;\">*for tight fit, please go for smaller</span></em></p>",
+    "is_bestseller": true,
+    "is_back": true,
+    "is_featured": true,
+    "is_discounted": false,
+    "available": true,
+    "created_at": "2020-10-25T20:26:48.109Z",
+    "updated_at": "2020-12-23T15:30:14.446Z"
+  }
+},
+{
+  "model": "shop.trouser",
+  "pk": 2,
+  "fields": {
+    "name": "C5 CARGO",
+    "slug": "c5-cargo",
+    "category": 4,
+    "description": "<p><span style=\"color: #34495e; font-family: 'comic sans ms', sans-serif; font-size: 16px;\">The LK2 Cargo Pants are designed with a customdeveloped synthetic fabric and featured a mesh lining, extended inseam for stacking throughout, with cargo pocket at side seam, an elastic waistband, and finished with % bungee cords that run halflength of the garment that each have 5 black plastic toggles to help with the stacking throughout. These pants also feature a zipper design around the knee, you can zip out the bungee lower part to change it as a pair of shorts.</span></p>\r\n<p><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\"><span style=\"box-sizing: border-box; font-weight: bolder;\">Details</span></span></p>\r\n<ul>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">relaxed fit</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">5 Pockets</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">100% nylon</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">elastic waistband</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">fits truetosize, go one size up for baggy fit</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">model is 5'11(180cm), 154 lbs(70kg) and wears a size 30</span></li>\r\n</ul>\r\n<p><em style=\"font-size: 10pt; text-align: justify; box-sizing: border-box;\"><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e;\">*for tight fit, please go for smaller</span></em></p>",
+    "is_bestseller": true,
+    "is_back": false,
+    "is_featured": true,
+    "is_discounted": false,
+    "available": true,
+    "created_at": "2020-10-26T00:05:17.804Z",
+    "updated_at": "2020-11-28T10:50:59.625Z"
+  }
+},
+{
+  "model": "shop.trouser",
+  "pk": 3,
+  "fields": {
+    "name": "C25 CARGO",
+    "slug": "c25-cargo",
+    "category": 4,
+    "description": "<p><span style=\"color: #34495e; font-family: 'comic sans ms', sans-serif; font-size: 16px;\">The LK2 Cargo Pants are designed with a customdeveloped synthetic fabric and featured a mesh lining, extended inseam for stacking throughout, with cargo pocket at side seam, an elastic waistband, and finished with % bungee cords that run halflength of the garment that each have 5 black plastic toggles to help with the stacking throughout. These pants also feature a zipper design around the knee, you can zip out the bungee lower part to change it as a pair of shorts.</span></p>\r\n<p><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\"><span style=\"box-sizing: border-box; font-weight: bolder;\">Details</span></span></p>\r\n<ul>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">relaxed fit</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">5 Pockets</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">100% nylon</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">elastic waistband</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">fits truetosize, go one size up for baggy fit</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">model is 5'11(180cm), 154 lbs(70kg) and wears a size 30</span></li>\r\n</ul>\r\n<p><em style=\"font-size: 10pt; text-align: justify; box-sizing: border-box;\"><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e;\">*for tight fit, please go for smaller</span></em></p>",
+    "is_bestseller": true,
+    "is_back": true,
+    "is_featured": false,
+    "is_discounted": false,
+    "available": true,
+    "created_at": "2020-11-24T00:15:09.637Z",
+    "updated_at": "2020-11-28T10:50:30.291Z"
+  }
+},
+{
+  "model": "shop.trouser",
+  "pk": 4,
+  "fields": {
+    "name": "N15 CARGO",
+    "slug": "n15-cargo",
+    "category": 6,
+    "description": "<p><span style=\"color: #34495e; font-family: 'comic sans ms', sans-serif; font-size: 16px;\">The LK2 Cargo Pants are designed with a customdeveloped synthetic fabric and featured a mesh lining, extended inseam for stacking throughout, with cargo pocket at side seam, an elastic waistband, and finished with % bungee cords that run halflength of the garment that each have 5 black plastic toggles to help with the stacking throughout. These pants also feature a zipper design around the knee, you can zip out the bungee lower part to change it as a pair of shorts.</span></p>\r\n<p><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\"><span style=\"box-sizing: border-box; font-weight: bolder;\">Details</span></span></p>\r\n<ul>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">relaxed fit</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">5 Pockets</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">100% nylon</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">elastic waistband</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">fits truetosize, go one size up for baggy fit</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">model is 5'11(180cm), 154 lbs(70kg) and wears a size 30</span></li>\r\n</ul>\r\n<p><em style=\"font-size: 10pt; text-align: justify; box-sizing: border-box;\"><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e;\">*for tight fit, please go for smaller</span></em></p>",
+    "is_bestseller": false,
+    "is_back": false,
+    "is_featured": true,
+    "is_discounted": false,
+    "available": true,
+    "created_at": "2020-11-24T00:17:38.096Z",
+    "updated_at": "2020-11-28T10:51:42.286Z"
+  }
+},
+{
+  "model": "shop.trouser",
+  "pk": 5,
+  "fields": {
+    "name": "N12 CARGO",
+    "slug": "n12-cargo",
+    "category": 6,
+    "description": "<p><span style=\"color: #34495e; font-family: 'comic sans ms', sans-serif; font-size: 16px;\">The LK2 Cargo Pants are designed with a customdeveloped synthetic fabric and featured a mesh lining, extended inseam for stacking throughout, with cargo pocket at side seam, an elastic waistband, and finished with % bungee cords that run halflength of the garment that each have 5 black plastic toggles to help with the stacking throughout. These pants also feature a zipper design around the knee, you can zip out the bungee lower part to change it as a pair of shorts.</span></p>\r\n<p><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\"><span style=\"box-sizing: border-box; font-weight: bolder;\">Details</span></span></p>\r\n<ul>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">relaxed fit</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">5 Pockets</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">100% nylon</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">elastic waistband</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">fits truetosize, go one size up for baggy fit</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">model is 5'11(180cm), 154 lbs(70kg) and wears a size 30</span></li>\r\n</ul>\r\n<p><em style=\"font-size: 10pt; text-align: justify; box-sizing: border-box;\"><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e;\">*for tight fit, please go for smaller</span></em></p>",
+    "is_bestseller": true,
+    "is_back": false,
+    "is_featured": true,
+    "is_discounted": false,
+    "available": true,
+    "created_at": "2020-11-24T00:20:06.457Z",
+    "updated_at": "2020-11-28T10:51:33.907Z"
+  }
+},
+{
+  "model": "shop.trouser",
+  "pk": 6,
+  "fields": {
+    "name": "C88 COTTON",
+    "slug": "c88-cotton",
+    "category": 5,
+    "description": "<p><span style=\"color: #34495e; font-family: 'comic sans ms', sans-serif; font-size: 16px;\">The LK2 Cargo Pants are designed with a customdeveloped synthetic fabric and featured a mesh lining, extended inseam for stacking throughout, with cargo pocket at side seam, an elastic waistband, and finished with % bungee cords that run halflength of the garment that each have 5 black plastic toggles to help with the stacking throughout. These pants also feature a zipper design around the knee, you can zip out the bungee lower part to change it as a pair of shorts.</span></p>\r\n<p><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\"><span style=\"box-sizing: border-box; font-weight: bolder;\">Details</span></span></p>\r\n<ul>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">relaxed fit</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">5 Pockets</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">100% nylon</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">elastic waistband</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">fits truetosize, go one size up for baggy fit</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">model is 5'11(180cm), 154 lbs(70kg) and wears a size 30</span></li>\r\n</ul>\r\n<p><em style=\"font-size: 10pt; text-align: justify; box-sizing: border-box;\"><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e;\">*for tight fit, please go for smaller</span></em></p>",
+    "is_bestseller": true,
+    "is_back": false,
+    "is_featured": false,
+    "is_discounted": false,
+    "available": true,
+    "created_at": "2020-11-24T00:21:23.821Z",
+    "updated_at": "2020-11-28T10:51:18.179Z"
+  }
+},
+{
+  "model": "shop.trouser",
+  "pk": 7,
+  "fields": {
+    "name": "N22 CARGO",
+    "slug": "n22-cargo",
+    "category": 5,
+    "description": "<p><span style=\"color: #34495e; font-family: 'comic sans ms', sans-serif; font-size: 16px;\">The LK2 Cargo Pants are designed with a customdeveloped synthetic fabric and featured a mesh lining, extended inseam for stacking throughout, with cargo pocket at side seam, an elastic waistband, and finished with % bungee cords that run halflength of the garment that each have 5 black plastic toggles to help with the stacking throughout. These pants also feature a zipper design around the knee, you can zip out the bungee lower part to change it as a pair of shorts.</span></p>\r\n<p><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\"><span style=\"box-sizing: border-box; font-weight: bolder;\">Details</span></span></p>\r\n<ul>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">relaxed fit</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">5 Pockets</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">100% nylon</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">elastic waistband</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">fits truetosize, go one size up for baggy fit</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">model is 5'11(180cm), 154 lbs(70kg) and wears a size 30</span></li>\r\n</ul>\r\n<p><em style=\"font-size: 10pt; text-align: justify; box-sizing: border-box;\"><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e;\">*for tight fit, please go for smaller\u007f\u007f</span></em></p>",
+    "is_bestseller": true,
+    "is_back": false,
+    "is_featured": true,
+    "is_discounted": false,
+    "available": true,
+    "created_at": "2020-11-24T00:27:19.392Z",
+    "updated_at": "2020-11-28T10:51:48.088Z"
+  }
+},
+{
+  "model": "shop.trouser",
+  "pk": 8,
+  "fields": {
+    "name": "CC13 CARGO",
+    "slug": "cc13-cargo",
+    "category": 5,
+    "description": "<p><span style=\"color: #34495e; font-family: 'comic sans ms', sans-serif; font-size: 16px;\">The LK2 Cargo Pants are designed with a customdeveloped synthetic fabric and featured a mesh lining, extended inseam for stacking throughout, with cargo pocket at side seam, an elastic waistband, and finished with % bungee cords that run halflength of the garment that each have 5 black plastic toggles to help with the stacking throughout. These pants also feature a zipper design around the knee, you can zip out the bungee lower part to change it as a pair of shorts.</span></p>\r\n<p><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\"><span style=\"box-sizing: border-box; font-weight: bolder;\">Details</span></span></p>\r\n<ul>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">relaxed fit</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">5 Pockets</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">100% nylon</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">elastic waistband</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">fits truetosize, go one size up for baggy fit</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">model is 5'11(180cm), 154 lbs(70kg) and wears a size 30</span></li>\r\n</ul>\r\n<p><em style=\"font-size: 10pt; text-align: justify; box-sizing: border-box;\"><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e;\">*for tight fit, please go for smaller</span></em></p>",
+    "is_bestseller": true,
+    "is_back": false,
+    "is_featured": true,
+    "is_discounted": false,
+    "available": true,
+    "created_at": "2020-11-24T00:28:53.085Z",
+    "updated_at": "2020-11-28T10:51:26.102Z"
+  }
+},
+{
+  "model": "shop.trouser",
+  "pk": 9,
+  "fields": {
+    "name": "C50 CARGO",
+    "slug": "c50-cargo",
+    "category": 4,
+    "description": "<p><span style=\"color: #34495e; font-family: 'comic sans ms', sans-serif; font-size: 16px;\">The LK2 Cargo Pants are designed with a customdeveloped synthetic fabric and featured a mesh lining, extended inseam for stacking throughout, with cargo pocket at side seam, an elastic waistband, and finished with % bungee cords that run halflength of the garment that each have 5 black plastic toggles to help with the stacking throughout. These pants also feature a zipper design around the knee, you can zip out the bungee lower part to change it as a pair of shorts.</span></p>\r\n<p><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\"><span style=\"box-sizing: border-box; font-weight: bolder;\">Details</span></span></p>\r\n<ul>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">relaxed fit</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">5 Pockets</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">100% nylon</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">elastic waistband</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">fits truetosize, go one size up for baggy fit</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">model is 5'11(180cm), 154 lbs(70kg) and wears a size 30</span></li>\r\n</ul>\r\n<p><em style=\"font-size: 10pt; text-align: justify; box-sizing: border-box;\"><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e;\">*for tight fit, please go for smaller</span></em></p>",
+    "is_bestseller": true,
+    "is_back": false,
+    "is_featured": false,
+    "is_discounted": true,
+    "available": true,
+    "created_at": "2020-11-24T00:29:57.199Z",
+    "updated_at": "2020-11-28T10:51:10.639Z"
+  }
+},
+{
+  "model": "shop.trouser",
+  "pk": 10,
+  "fields": {
+    "name": "T15 CARGO LTD",
+    "slug": "t15-cargo-ltd",
+    "category": 6,
+    "description": "<p><span style=\"color: #34495e; font-family: 'comic sans ms', sans-serif; font-size: 16px;\">The LK2 Cargo Pants are designed with a customdeveloped synthetic fabric and featured a mesh lining, extended inseam for stacking throughout, with cargo pocket at side seam, an elastic waistband, and finished with % bungee cords that run halflength of the garment that each have 5 black plastic toggles to help with the stacking throughout. These pants also feature a zipper design around the knee, you can zip out the bungee lower part to change it as a pair of shorts.</span></p>\r\n<p><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\"><span style=\"box-sizing: border-box; font-weight: bolder;\">Details</span></span></p>\r\n<ul>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">relaxed fit</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">5 Pockets</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">100% nylon</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">elastic waistband</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">fits truetosize, go one size up for baggy fit</span></li>\r\n<li><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e; font-size: 12pt;\">model is 5'11(180cm), 154 lbs(70kg) and wears a size 30</span></li>\r\n</ul>\r\n<p><em style=\"font-size: 10pt; text-align: justify; box-sizing: border-box;\"><span style=\"box-sizing: border-box; font-family: 'comic sans ms', sans-serif; color: #34495e;\">*for tight fit, please go for smaller\u007f\u007f\u007f</span></em></p>",
+    "is_bestseller": true,
+    "is_back": false,
+    "is_featured": true,
+    "is_discounted": false,
+    "available": true,
+    "created_at": "2020-11-24T00:31:05.934Z",
+    "updated_at": "2021-01-07T05:03:40.444Z"
+  }
+},
+{
+  "model": "shop.trouservariant",
+  "pk": 1,
+  "fields": {
+    "trouser": 1,
+    "color": "#FF0000",
+    "price": "2000.23",
+    "old_price": "0.00"
+  }
+},
+{
+  "model": "shop.trouservariant",
+  "pk": 2,
+  "fields": {
+    "trouser": 1,
+    "color": "#000000",
+    "price": "5000.00",
+    "old_price": "0.00"
+  }
+},
+{
+  "model": "shop.trouservariant",
+  "pk": 3,
+  "fields": {
+    "trouser": 2,
+    "color": "#DC143C",
+    "price": "4500.00",
+    "old_price": "0.00"
+  }
+},
+{
+  "model": "shop.trouservariant",
+  "pk": 4,
+  "fields": {
+    "trouser": 1,
+    "color": "#FFFFFF",
+    "price": "6000.00",
+    "old_price": "7000.00"
+  }
+},
+{
+  "model": "shop.trouservariant",
+  "pk": 5,
+  "fields": {
+    "trouser": 3,
+    "color": "#FFFF00",
+    "price": "5000.00",
+    "old_price": "0.00"
+  }
+},
+{
+  "model": "shop.trouservariant",
+  "pk": 6,
+  "fields": {
+    "trouser": 4,
+    "color": "#000080",
+    "price": "3000.00",
+    "old_price": "0.00"
+  }
+},
+{
+  "model": "shop.trouservariant",
+  "pk": 7,
+  "fields": {
+    "trouser": 5,
+    "color": "#FFD700",
+    "price": "6000.00",
+    "old_price": "0.00"
+  }
+},
+{
+  "model": "shop.trouservariant",
+  "pk": 8,
+  "fields": {
+    "trouser": 6,
+    "color": "#FFDAB9",
+    "price": "6500.00",
+    "old_price": "0.00"
+  }
+},
+{
+  "model": "shop.trouservariant",
+  "pk": 9,
+  "fields": {
+    "trouser": 5,
+    "color": "#BDB76B",
+    "price": "8000.00",
+    "old_price": "0.00"
+  }
+},
+{
+  "model": "shop.trouservariant",
+  "pk": 10,
+  "fields": {
+    "trouser": 7,
+    "color": "#E6E6FA",
+    "price": "4000.00",
+    "old_price": "0.00"
+  }
+},
+{
+  "model": "shop.trouservariant",
+  "pk": 11,
+  "fields": {
+    "trouser": 8,
+    "color": "#DA70D6",
+    "price": "6000.00",
+    "old_price": "0.00"
+  }
+},
+{
+  "model": "shop.trouservariant",
+  "pk": 12,
+  "fields": {
+    "trouser": 9,
+    "color": "#2E8B57",
+    "price": "1500.00",
+    "old_price": "0.00"
+  }
+},
+{
+  "model": "shop.trouservariant",
+  "pk": 13,
+  "fields": {
+    "trouser": 10,
+    "color": "#20B2AA",
+    "price": "4000.00",
+    "old_price": "0.00"
+  }
+},
+{
+  "model": "shop.trousermeta",
+  "pk": 1,
+  "fields": {
+    "trouser_variant": 1,
+    "size": "30",
+    "stock": 20
+  }
+},
+{
+  "model": "shop.trousermeta",
+  "pk": 2,
+  "fields": {
+    "trouser_variant": 1,
+    "size": "32",
+    "stock": 5
+  }
+},
+{
+  "model": "shop.trousermeta",
+  "pk": 3,
+  "fields": {
+    "trouser_variant": 1,
+    "size": "38",
+    "stock": 4
+  }
+},
+{
+  "model": "shop.trousermeta",
+  "pk": 4,
+  "fields": {
+    "trouser_variant": 1,
+    "size": "42",
+    "stock": 2
+  }
+},
+{
+  "model": "shop.trousermeta",
+  "pk": 5,
+  "fields": {
+    "trouser_variant": 2,
+    "size": "30",
+    "stock": 1
+  }
+},
+{
+  "model": "shop.trousermeta",
+  "pk": 6,
+  "fields": {
+    "trouser_variant": 2,
+    "size": "34",
+    "stock": 4
+  }
+},
+{
+  "model": "shop.trousermeta",
+  "pk": 7,
+  "fields": {
+    "trouser_variant": 2,
+    "size": "40",
+    "stock": 3
+  }
+},
+{
+  "model": "shop.trousermeta",
+  "pk": 8,
+  "fields": {
+    "trouser_variant": 3,
+    "size": "32",
+    "stock": 3
+  }
+},
+{
+  "model": "shop.trousermeta",
+  "pk": 9,
+  "fields": {
+    "trouser_variant": 4,
+    "size": "30",
+    "stock": 0
+  }
+},
+{
+  "model": "shop.trousermeta",
+  "pk": 10,
+  "fields": {
+    "trouser_variant": 4,
+    "size": "38",
+    "stock": 3
+  }
+},
+{
+  "model": "shop.trousermeta",
+  "pk": 11,
+  "fields": {
+    "trouser_variant": 4,
+    "size": "32",
+    "stock": 2
+  }
+},
+{
+  "model": "shop.trousermeta",
+  "pk": 12,
+  "fields": {
+    "trouser_variant": 4,
+    "size": "34",
+    "stock": 5
+  }
+},
+{
+  "model": "shop.trousermeta",
+  "pk": 13,
+  "fields": {
+    "trouser_variant": 3,
+    "size": "34",
+    "stock": 1
+  }
+},
+{
+  "model": "shop.trousermeta",
+  "pk": 14,
+  "fields": {
+    "trouser_variant": 1,
+    "size": "40",
+    "stock": 1
+  }
+},
+{
+  "model": "shop.trousermeta",
+  "pk": 15,
+  "fields": {
+    "trouser_variant": 5,
+    "size": "30",
+    "stock": 1
+  }
+},
+{
+  "model": "shop.trousermeta",
+  "pk": 16,
+  "fields": {
+    "trouser_variant": 6,
+    "size": "36",
+    "stock": 1
+  }
+},
+{
+  "model": "shop.trousermeta",
+  "pk": 17,
+  "fields": {
+    "trouser_variant": 7,
+    "size": "38",
+    "stock": 1
+  }
+},
+{
+  "model": "shop.trousermeta",
+  "pk": 18,
+  "fields": {
+    "trouser_variant": 8,
+    "size": "42",
+    "stock": 1
+  }
+},
+{
+  "model": "shop.trousermeta",
+  "pk": 19,
+  "fields": {
+    "trouser_variant": 10,
+    "size": "32",
+    "stock": 1
+  }
+},
+{
+  "model": "shop.trousermeta",
+  "pk": 20,
+  "fields": {
+    "trouser_variant": 11,
+    "size": "34",
+    "stock": 1
+  }
+},
+{
+  "model": "shop.trousermeta",
+  "pk": 21,
+  "fields": {
+    "trouser_variant": 12,
+    "size": "32",
+    "stock": 1
+  }
+},
+{
+  "model": "shop.trousermeta",
+  "pk": 22,
+  "fields": {
+    "trouser_variant": 13,
+    "size": "34",
+    "stock": 1
+  }
+},
+{
+  "model": "shop.trousermeta",
+  "pk": 23,
+  "fields": {
+    "trouser_variant": 9,
+    "size": "30",
+    "stock": 1
+  }
+}
+]

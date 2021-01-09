@@ -62,33 +62,33 @@
                 </div>
             </div>
             <div
-                class="swiper-first mx-0 pb-4 col-12"
+                class="swiper-first px-lg-5 mx-0 pb-4 col-12"
                 v-swiper:swiper-first="swiperOptions"
                 v-if="!bestSellerLoading"
                 key="bestseller"
                 data-aos="fade-up"
             >
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide card bg-transparent border-0" v-for="trouser in bestSellerTrousers" :key="trouser.id">
-                        <a :href="trouser.url">
-                            <div class="d-flex bg-transparent align-items-center justify-content-center overflow-hidden">
-                                <img :src="trouser.first_variant.first_image.file" class="img-fluid  mx-auto card-img-top" alt="image">
+                    <div class="swiper-slide card bg-transparent border-0" v-for="product in bestSellerProducts" :key="product.sku">
+                        <a :href="product.url" class="d-flex h-100 flex-column">
+                            <div class="d-flex flex-grow-1 bg-transparent best-seller-slideshow align-items-center justify-content-center overflow-hidden">
+                                <img :src="product.first_variant.first_image.file" class="img-fluid  mx-auto card-img-top" alt="image">
                             </div>
-                            <div class="card-body py-0">
-                                <p class="card-title mb-1  font-weight-bold" style="font-size:10px;">[[ trouser.first_variant.color ]]<br>[[ trouser.name ]]</p>
-                                <span class="d-flex col-8 col-md-12 px-0 flex-wrap justify-content-start" style="font-size:11px;font-weight:600;">
-                                    <del class="card-text flex-grow-0 text-danger small" v-if="trouser.first_variant.old_price != 0">[[ trouser.first_variant.old_price|currency ]]&nbsp;&nbsp;</del>
-                                    <p class="align-text-bottom card-text" v-if="trouser.first_variant.old_price == 0">[[ trouser.first_variant.price|currency ]]</p>
-                                    <p class="align-text-bottom text-warning card-text" v-else>[[ trouser.first_variant.price|currency ]]</p>
+                            <div class="card-body d-flex flex-column align-items-center flex-grow-0 py-0">
+                                <p class="card-title mb-1 text-center font-weight-bold" style="font-size:10px;">[[ product.first_variant.color ]]<br>[[ product.name ]]</p>
+                                <span class="d-flex col-8 col-md-12 px-0 flex-wrap justify-content-center" style="font-size:11px;font-weight:600;">
+                                    <del class="card-text flex-grow-0 text-danger small" v-if="product.first_variant.old_price != 0">[[ product.first_variant.old_price|currency ]]&nbsp;&nbsp;</del>
+                                    <p class="align-text-bottom card-text" v-if="product.first_variant.old_price == 0">[[ product.first_variant.price|currency ]]</p>
+                                    <p class="align-text-bottom text-warning card-text" v-else>[[ product.first_variant.price|currency ]]</p>
                                 </span>
                             </div>
                         </a>
                     </div>
                 </div>
-                <div class="d-none d-lg-block swiper-button-prev">
+                <div class="d-none d-lg-block remove-outline swiper-button-prev">
                     <i class="fas text-black-50 fa-2x fa-angle-left"></i>
                 </div>
-                <div class="d-none d-lg-block swiper-button-next">
+                <div class="d-none d-lg-block remove-outline swiper-button-next">
                     <i class="fas text-black-50 fa-2x fa-angle-right"></i>
                 </div>
                 <div class="swiper-pagination swiper-pagination-bullets"></div>
@@ -104,7 +104,7 @@
                     {% thumbnail feature.image "325x577" crop="center" as im %}
                         <source srcset="{{ im.url }}" type="image/svg+xml" media="(max-width: 991px)">
                     {% endthumbnail %}
-                    {% thumbnail feature.image "450x799" crop="center" as im %}
+                    {% thumbnail feature.image "450x799" crop="center" as im %}
                         <source srcset="{{ im.url }}" type="image/svg+xml" media="(min-width: 992px) and (max-width: 1199px)">
                     {% endthumbnail %}
                     {% thumbnail feature.image "260x453" crop="center" as im %}
@@ -117,8 +117,8 @@
                 {{ feature.get_markdown }}
                 <a style="font-size:11px;color:black;" class="btn py-2 bg-light mt-1 btn-sm btn-outline-white rounded-0 text-center small" href="{{ feature.url }}" role="button">SHOP NOW</a>
             </div>
-            <div class="card-body py-1 d-md-none d-flex flex-column text-white justify-content-center align-items-center">
-                <span style="color: rgba(0, 0, 0, 0.81)">{{ feature.get_markdown }}</span>
+            <div class="card-body pt-1 px-0 d-md-none d-flex flex-column text-white justify-content-center align-items-center">
+                <span class="text-center" style="color: rgba(0, 0, 0, 0.81)">{{ feature.get_markdown }}</span>
                 <a style="background-color:#1c1b1b;font-size:11px;" class="btn btn-block py-2 mt-1 btn-sm btn-outline-white rounded-0 text-center text-white small" href="{{ feature.url }}" role="button">SHOP NOW</a>
             </div>
         </div>
@@ -140,26 +140,26 @@
                 data-aos="fade-up"
             >
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide card bg-transparent border-0" v-for="trouser in newArrivalTrousers" :key="trouser.id">
-                        <a :href="trouser.url">
-                            <div class="d-flex bg-transparent align-items-center justify-content-center overflow-hidden">
-                                <img :src="trouser.first_variant.first_image.file" class="img-fluid  mx-auto card-img-top" alt="image">
+                    <div class="swiper-slide card bg-transparent border-0" v-for="product in newArrivalProducts" :key="product.sku">
+                        <a :href="product.url" class="d-flex h-100 flex-column">
+                            <div class="d-flex flex-grow-1 bg-transparent best-seller-slideshow align-items-center justify-content-center overflow-hidden">
+                                <img :src="product.first_variant.first_image.file" class="img-fluid  mx-auto card-img-top" alt="image">
                             </div>
-                            <div class="card-body py-0">
-                                <p class="card-title font-weight-bold mb-1" style="font-size:10px;">[[ trouser.first_variant.color ]]<br>[[ trouser.name ]]</p>
-                                <span class="d-flex col-8 col-md-12 px-0 flex-wrap justify-content-start" style="font-size:11px;font-weight:600;">
-                                    <del class="card-text flex-grow-0 text-danger small" v-if="trouser.first_variant.old_price != 0">[[ trouser.first_variant.old_price|currency ]]&nbsp;&nbsp;</del>
-                                    <p class="align-text-bottom card-text" v-if="trouser.first_variant.old_price == 0">[[ trouser.first_variant.price|currency ]]</p>
-                                    <p class="align-text-bottom text-warning card-text" v-else>[[ trouser.first_variant.price|currency ]]</p>
+                            <div class="card-body d-flex flex-column align-items-center flex-grow-0 py-0">
+                                <p class="card-title mb-1 text-center font-weight-bold" style="font-size:10px;">[[ product.first_variant.color ]]<br>[[ product.name ]]</p>
+                                <span class="d-flex col-8 col-md-12 px-0 flex-wrap justify-content-center" style="font-size:11px;font-weight:600;">
+                                    <del class="card-text flex-grow-0 text-danger small" v-if="product.first_variant.old_price != 0">[[ product.first_variant.old_price|currency ]]&nbsp;&nbsp;</del>
+                                    <p class="align-text-bottom card-text" v-if="product.first_variant.old_price == 0">[[ product.first_variant.price|currency ]]</p>
+                                    <p class="align-text-bottom text-warning card-text" v-else>[[ product.first_variant.price|currency ]]</p>
                                 </span>
                             </div>
                         </a>
                     </div>
                 </div>
-                <div class="d-none d-lg-block swiper-button-prev">
+                <div class="d-none d-lg-block remove-outline swiper-button-prev">
                     <i class="fas text-black-50 fa-2x fa-angle-left"></i>
                 </div>
-                <div class="d-none d-lg-block swiper-button-next">
+                <div class="d-none d-lg-block remove-outline swiper-button-next">
                     <i class="fas text-black-50 fa-2x fa-angle-right"></i>
                 </div>
                 <div class="swiper-pagination swiper-pagination-bullets"></div>
@@ -264,8 +264,8 @@
                         },
                     },
                 }, {% endcomment %}
-                newArrivalTrousers: [],
-                bestSellerTrousers: [],
+                newArrivalProducts: [],
+                bestSellerProducts: [],
                 newArrivalLoading: true,
                 bestSellerLoading: true,
             }
@@ -306,7 +306,7 @@
                     return response.json();
                 })
                 .then((results) => {
-                    this.newArrivalTrousers = results;
+                    this.newArrivalProducts = _.map(results, 'item');
                     setTimeout( function(){
                         this.newArrivalLoading = false;
                     }.bind(this), 1000);
@@ -328,7 +328,7 @@
                     return response.json();
                 })
                 .then((results) => {
-                    this.bestSellerTrousers = results;
+                    this.bestSellerProducts = _.map(results, 'item');
                     setTimeout( function(){
                         this.bestSellerLoading = false;
                     }.bind(this), 1000);

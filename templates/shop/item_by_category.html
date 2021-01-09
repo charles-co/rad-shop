@@ -93,7 +93,7 @@
                                     <label for="colors">Colors</label>
                                     <colors-dropdown
                                         v-bind:colors="colors"
-                                        v-on:sort="sortTrousers"
+                                        v-on:sort="sortProducts"
                                     ></colors-dropdown>
                                 </div>    
                             </div>
@@ -133,23 +133,23 @@
             <transition-group appear tag="div" v-bind:css="false" v-on:before-enter="beforeEnter" v-on:enter="enter" class="row no-gutters">
                 <trouser-card
                     v-if="sortedShouldRender && !loading"
-                    v-for="(trouser, index) in sortedTrousers"
-                    v-bind:key="trouser.first_variant.id"
-                    v-bind:id="trouser.first_variant.id"
+                    v-for="(trouser, index) in sortedProducts"
+                    v-bind:key="trouser.sku"
+                    v-bind:id="trouser.id"
                     v-bind:name="trouser.name"
-                    v-bind:price="trouser.first_variant.price"
+                    v-bind:price="trouser.price || trouser.first_variant.price"
                     {% comment %} v-bind:oldprice="trouser.old_price" {% endcomment %}
                     v-bind:color="trouser.first_variant.color"
                     v-bind:slug="trouser.slug"
                     v-bind:image="trouser.first_variant.first_image.file"
-                    v-bind:size="trouser.first_variant.first_meta.size"
-                    v-bind:stock="trouser.first_variant.first_meta.stock"
+                    {% comment %} v-bind:size="trouser.first_variant.first_meta.size"
+                    v-bind:stock="trouser.first_variant.first_meta.stock"{% endcomment %}
                     v-bind:data-index="index"
                 ></trouser-card>
 
                 <trouser-card
                     v-if="colorSort && !loading"
-                    v-for="(trouser, index) in sortedOrderTrousers"
+                    v-for="(trouser, index) in sortedOrderProducts"
                     v-bind:key="trouser.first_variant.id"
                     v-bind:id="trouser.first_variant.id"
                     v-bind:name="trouser.name"
@@ -165,7 +165,7 @@
 
                 <trouser-card
                     v-if="orderShouldRender && !loading"
-                    v-for="(trouser, index) in orderTrousers"
+                    v-for="(trouser, index) in orderProducts"
                     v-bind:key="trouser.first_variant.id"
                     v-bind:id="trouser.first_variant.id"
                     v-bind:name="trouser.name"
@@ -174,8 +174,8 @@
                     v-bind:color="trouser.first_variant.color"
                     v-bind:slug="trouser.slug"
                     v-bind:image="trouser.first_variant.first_image.file"
-                    v-bind:size="trouser.first_variant.first_meta.size"
-                    v-bind:stock="trouser.first_variant.first_meta.stock"
+                    {% comment %} v-bind:size="trouser.first_variant.first_meta.size"
+                    v-bind:stock="trouser.first_variant.first_meta.stock"{% endcomment %}
                     v-bind:data-index="index"
                 ></trouser-card>
             </transition-group>
@@ -305,8 +305,8 @@
         }, 
         template: `                        
                     <div id="" class="col-6 col-md-4 col-lg-3">
-                        <a :href=url class=""> 
-                            <div data-aos="zoom-in" class="card border-0 bg-transparent d-flex justify-content-center align-items-center lazy-container" style="min-height:210px;">
+                        <a :href=url class="d-flex flex-column"> 
+                            <div data-aos="zoom-in" class="card flex-grow-1 border-0 bg-transparent d-flex justify-content-center align-items-center lazy-container" style="min-height:210px;">
                                 <img :data-src="image" class="card-img-top img-fluid lazy-image">
                                 <div class="lds-ellipsis text-dark spinner">
                                     <div></div>
@@ -315,7 +315,7 @@
                                     <div></div>
                                 </div>
                             </div>
-                            <div class="card-body p-0">
+                            <div class="card-body p-0 flex-grow-0">
                                 <p class="card-title mb-0 text-monospace" style="font-size:10px;font-weight:600;">  
                                     [[ color ]]
                                     <br> [[ name ]] <br>
@@ -346,10 +346,10 @@
         store: store,
         data (){
             return {
-                trousers: [],
-                sortedTrousers: [],
-                sortedOrderTrousers: [],  
-                orderTrousers: [],
+                products: [],
+                sortedProducts: [],
+                sortedOrderProducts: [],  
+                orderProducts: [],
                 colors: null,
                 next: "{% if sub_category_slug %}{% url 'shop:listing' category_slug sub_category_slug %}{% else %}{% url 'shop:listing' category_slug %}{% endif %}",
                 previous: null,
@@ -374,7 +374,7 @@
         beforeUpdate(){
             if (this.orderShouldRender && this.sortedShouldRender || this.orderShouldRender && this.colorSort || this.colorSort && this.sortedShouldRender){
                 this.colorSort = this.colorSortfn()
-                this.sortedOrderTrousers = this.sortedOrderTrousersfn()
+                this.sortedOrderProducts = this.sortedOrderProductsfn()
             }
         },
         mounted(){
@@ -399,11 +399,11 @@
                 }
             }, 
             has_contjent: function(){
-                return this.trousers.length > 0
+                return this.products.length > 0
             }
         },
         methods: {
-            sortTrousers(e){
+            sortProducts(e){
                 this.loading = true
                 let c
                 try {
@@ -414,10 +414,10 @@
                 }
                 this.selectedColor = c
                 if(c !== "all"){
-                    let s = _.filter(this.trousers, ({ first_variant }) => first_variant.color === c)
-                    this.sortedTrousers= s
+                    let s = _.filter(this.products, ({ first_variant }) => first_variant.color === c)
+                    this.sortedProducts= s
                 }else if (c === "all") {
-                    this.sortedTrousers = this.trousers
+                    this.sortedProducts = this.products
                 }
                 this.sortedShouldRender = true
                 setTimeout( function (){
@@ -435,29 +435,29 @@
                 }
                 this.selectedSort = c
                 if(c === "-name"){
-                    let s = _.orderBy(this.trousers, ['name'], ['desc'])
-                    this.orderTrousers = s
+                    let s = _.orderBy(this.products, ['name'], ['desc'])
+                    this.orderProducts = s
                 }else if(c === "name") {
-                    let s = _.orderBy(this.trousers, ['name'], ['asc'])
-                    this.orderTrousers = s
+                    let s = _.orderBy(this.products, ['name'], ['asc'])
+                    this.orderProducts = s
                 }else if(c === "-price") {
-                    let s = _.orderBy(this.trousers, ['first_variant.price'], ['desc'])
-                    this.orderTrousers = s
+                    let s = _.orderBy(this.products, ['first_variant.price'], ['desc'])
+                    this.orderProducts = s
                 }else if(c === "price") {
-                    let s = _.orderBy(this.trousers, ['first_variant.price'], ['asc'])
-                    this.orderTrousers = s
+                    let s = _.orderBy(this.products, ['first_variant.price'], ['asc'])
+                    this.orderProducts = s
                 }else if(c === "date") {
-                    let s = _.orderBy(this.trousers, ['created'], ['asc'])
-                    this.orderTrousers = s
+                    let s = _.orderBy(this.products, ['created'], ['asc'])
+                    this.orderProducts = s
                 }else if(c === "-date") {
-                    let s = _.orderBy(this.trousers, ['created'], ['desc'])
-                    this.orderTrousers = s
+                    let s = _.orderBy(this.products, ['created'], ['desc'])
+                    this.orderProducts = s
                 }else if(c === "featured") {
-                    let s = _.filter(this.trousers, ({ is_featured }) => is_featured === true)
-                    this.orderTrousers = s
+                    let s = _.filter(this.products, ({ is_featured }) => is_featured === true)
+                    this.orderProducts = s
                 }else if(c === "bestseller") {
-                    let s = _.filter(this.trousers, ({ is_bestseller }) => is_bestseller === true)
-                    this.orderTrousers = s
+                    let s = _.filter(this.products, ({ is_bestseller }) => is_bestseller === true)
+                    this.orderProducts = s
                 }
                 if (c === null){
                   this.orderShouldRender = false  
@@ -472,9 +472,9 @@
                 c = this.selectedColor
                 if(c !== "all"){
                     let s = _.filter(obj, ({ first_variant }) => first_variant.color === c)
-                    this.sortedTrousers= this.sortedTrousers.concat(s)
+                    this.sortedProducts= this.sortedProducts.concat(s)
                 }else if (c === "all") {
-                    this.sortedTrousers= this.sortedTrousers.concat(obj)
+                    this.sortedProducts= this.sortedProducts.concat(obj)
                 }
                 this.sortedShouldRender = true
             },
@@ -482,31 +482,31 @@
                 c = this.selectedSort
                 if(c === "-name"){
                     let s = _.orderBy(obj, ['name'], ['desc'])
-                    this.orderTrousers = this.orderTrousers.concat(s)
+                    this.orderProducts = this.orderProducts.concat(s)
                 }else if(c === "name") {
                     let s = _.orderBy(obj, ['name'], ['asc'])
-                    this.orderTrousers = this.orderTrousers.concat(s)
+                    this.orderProducts = this.orderProducts.concat(s)
                 }else if(c === "-price") {
                     let s = _.orderBy(obj, ['first_variant.price'], ['desc'])
-                    this.orderTrousers = this.orderTrousers.concat(s)
+                    this.orderProducts = this.orderProducts.concat(s)
                 }else if(c === "price") {
                     let s = _.orderBy(obj, ['first_variant.price'], ['asc'])
-                    this.orderTrousers = this.orderTrousers.concat(s)
+                    this.orderProducts = this.orderProducts.concat(s)
                 }else if(c === "date") {
                     let s = _.orderBy(obj, ['created'], ['asc'])
-                    this.orderTrousers = this.orderTrousers.concat(s)
+                    this.orderProducts = this.orderProducts.concat(s)
                 }else if(c === "-date") {
                     let s = _.orderBy(obj, ['created'], ['desc'])
-                    this.orderTrousers = this.orderTrousers.concat(s)
+                    this.orderProducts = this.orderProducts.concat(s)
                 }else if(c === "featured") {
                     let s = _.filter(obj, ({ is_featured }) => is_featured === true)
-                    this.orderTrousers = this.orderTrousers.concat(s)
+                    this.orderProducts = this.orderProducts.concat(s)
                 }else if(c === "bestseller") {
                     let s = _.filter(obj, ({ is_bestseller }) => is_bestseller === true)
-                    this.orderTrousers = this.orderTrousers.concat(s)
+                    this.orderProducts = this.orderProducts.concat(s)
                 }
                 if (c === null){
-                    this.orderTrousers = this.orderTrousers.concat(obj)
+                    this.orderProducts = this.orderProducts.concat(obj)
                     this.orderShouldRender = false  
                 }
             },
@@ -525,17 +525,24 @@
                     })
                     .then((jsonData) => {
                         if (jsonData["detail"] != "Not found."){
-                            this.trousers = this.trousers.concat(jsonData.results)
-                            this.colors = _.sortedUniq(_.map(this.trousers, 'first_variant.color'))
-                            temp = jsonData.results
+                            if (jsonData.page === "new-arrivals" || jsonData.page === "best-sellers" || jsonData.page === "is-back"){
+                                this.products = this.products.concat(_.map(jsonData.results, 'item'))
+                                temp = _.map(jsonData.results, 'item')
+                                this.colors = _.sortedUniq(_.map(this.products, 'first_variant.color').concat(_.map(this.products, 'color')))
+                            }
+                            else{
+                                this.products = this.products.concat(jsonData.results)
+                                temp = jsonData.results
+                                this.colors = _.sortedUniq(_.map(this.products, 'first_variant.color'))
+                            }
                             this.next = jsonData.next
                             this.counter += jsonData.count
                             setTimeout( function(){
                                 this.sortTemp(temp)
                                 this.orderTemp(temp)
-                                if (this.sortedShouldRender && this.sortedTrousers.length === 0 && this.has_next){
+                                if (this.sortedShouldRender && this.sortedProducts.length === 0 && this.has_next){
                                     this.loadMore()
-                                }else if (this.orderShouldRender && this.orderTrousers.length === 0 && this.has_next){
+                                }else if (this.orderShouldRender && this.orderProducts.length === 0 && this.has_next){
                                     this.loadMore()
                                 }
                                 this.loading = false
@@ -561,10 +568,10 @@
                     return false
                 }
             },
-            sortedOrderTrousersfn(){
+            sortedOrderProductsfn(){
                 if (this.colorSort){
                     let s
-                    temp = _.clone(this.orderTrousers)
+                    temp = _.clone(this.orderProducts)
                     if (this.selectedColor !== "all"){
                         s = _.filter(temp, ({ first_variant }) => first_variant.color === this.selectedColor)
                     }
@@ -576,14 +583,14 @@
                 return []
             },
             reset(){
-                this.sortedTrousers = []
-                this.sortedOrderTrousers = []  
-                this.orderTrousers = []
+                this.sortedProducts = []
+                this.sortedOrderProducts = []  
+                this.orderProducts = []
                 this.sortedShouldRender = false
                 this.orderShouldRender = false
                 this.colorSort = false
                 this.selectedSort = null
-                this.sortTrousers("all")
+                this.sortProducts("all")
             },
             beforeEnter: function (el) {
                 el.style.opacity = 0
@@ -631,7 +638,6 @@
                 }
             },
         },
-
         
     });
 </script>

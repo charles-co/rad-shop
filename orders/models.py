@@ -2,6 +2,9 @@ import datetime
 import math
 
 from django.conf import settings
+from django.contrib.contenttypes.fields import (GenericForeignKey,
+                                                GenericRelation)
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models import Avg, Count, Sum
 from django.db.models.signals import post_save, pre_save
@@ -108,6 +111,9 @@ class Order(models.Model):
     billing_profile     = models.ForeignKey(BillingProfile, null=True, blank=True, on_delete=models.SET_NULL)
     order_id            = models.CharField(max_length=120, blank=True) # AB31DE3
     shipping_address    = models.ForeignKey(Address, related_name="shipping_address", null=True, blank=True, on_delete=models.SET_NULL)
+    content_type        = models.ForeignKey(ContentType, on_delete=models.CASCADE, limit_choices_to={'model__in':('trouservariant','wavecapvariant')})
+    object_id           = models.PositiveIntegerField()
+    item                = GenericForeignKey('content_type', 'object_id')
     shipping_address_final = models.TextField(blank=True, null=True)
     status              = models.CharField(max_length=120, default='created', choices=ORDER_STATUS_CHOICES)
     shipping_total      = models.DecimalField(default=1000.00, max_digits=100, decimal_places=2)
@@ -212,7 +218,6 @@ class Order(models.Model):
 class OrderItem(models.Model):
     order               = models.ForeignKey(Order, related_name="orders", on_delete=models.CASCADE)
     billing_profile     = models.ForeignKey(BillingProfile, null=True, blank=True, on_delete=models.SET_NULL, related_name="billing_profiles")
-    trouser             = models.ForeignKey(TrouserVariant, related_name="trousers", null=True, blank=True, on_delete=models.SET_NULL)
     price               = models.DecimalField(default=0.00, max_digits=100, decimal_places=2)
     quantity               = models.PositiveIntegerField(default=1)
     size               = models.CharField(max_length=2,default="32")

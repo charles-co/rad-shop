@@ -11,12 +11,12 @@ from django.views.generic.list import ListView
 import webcolors
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 
-from contents.models import Image, ShopIndex
+from contents.models import ShopIndex
 from menu.models import Menu
-from shop.models import Trouser, TrouserVariant
+from shop.models import Image, Product, Trouser, TrouserVariant, Wavecap, WavecapVariant
 
 from .pagination import StandardResultsSetPagination
-from .serializers import TrouserDetailSerializer, TrouserSearchSerializer, TrouserSerializer, IndexTrouserSerializer
+from .serializers import ProductSerializer, TrouserDetailSerializer, TrouserSearchSerializer, TrouserSerializer, WavecapSerializer
 
 class CSRFExemptMixin(object):
     @method_decorator(csrf_exempt)
@@ -37,20 +37,20 @@ class HomeView(TemplateView):
         return context
 
 class NewArrivalsListing(ListAPIView):
-    serializer_class = IndexTrouserSerializer
+    serializer_class = ProductSerializer
 
     def get_queryset(self):
-        queryList = Trouser.objects.order_by("-created_at")[:10]
+        queryList = Product.objects.new_arrivals(num=10)
         return queryList
 
 class BestSellerListing(ListAPIView):
-    serializer_class = IndexTrouserSerializer
+    serializer_class = ProductSerializer
 
     def get_queryset(self):
-        queryList = Trouser.objects.filter(is_bestseller=True)[:10]
+        queryList = Product.objects.bestseller(num=10)
         return queryList
 
-class TrouserByCategory(TemplateView):
+class ProductByCategory(TemplateView):
     template_name = 'shop/item_by_category.html'  
     
     def get_context_data(self, *args, **kwargs):
@@ -81,21 +81,36 @@ class TrouserByCategory(TemplateView):
         context['category_slug'] = category_slug
         return context
 
-class TrouserListing(ListAPIView):
+class ProductListing(ListAPIView):
     pagination_class = StandardResultsSetPagination
-    serializer_class = TrouserSerializer
+
+    def get_serializer_class(self):
+        if self.kwargs["first_slug"] == 'new-arrivals' or self.kwargs["first_slug"] == 'best-sellers' or self.kwargs["first_slug"] == 'is-back':
+            return ProductSerializer
+        elif self.kwargs["first_slug"] == 'wavecao-collections':
+            return WavecapSerializer
+        else:
+            return TrouserSerializer
+        return super().get_serializer_class()
+
+    def list(self, request, *args, **kwargs):
+        response = super().list(request, args, kwargs)
+        response.data['page'] = self.kwargs["first_slug"]
+        return response
 
     def get_queryset(self):
-        if self.request.is_ajax():
+        if self.request.is_ajax() or True:
             category_slug = self.kwargs["first_slug"]
             if category_slug == 'new-arrivals' or category_slug == 'best-sellers' or category_slug == 'back-in-stock':
                 if category_slug == 'new-arrivals':
-                    queryList = Trouser.objects.order_by("-created_at").prefetch_related('variant', 'variant__trouser_variant_meta', 'variant__trouser_variant_images')
+                    queryList = Product.objects.new_arrivals()
                 else:
                     if category_slug == 'best-sellers':
-                        queryList = Trouser.objects.filter(is_bestseller=True).prefetch_related('variant', 'variant__trouser_variant_meta', 'variant__trouser_variant_images')
+                        queryList = Product.objects.bestseller()
                     else:
-                        queryList = Trouser.objects.filter(is_back=True).prefetch_related('variant', 'variant__trouser_variant_meta', 'variant__trouser_variant_images')
+                        queryList = Product.objects.is_back()
+            elif category_slug == 'wavecap-collections':
+                queryList = Wavecap.objects.filter(available=True)
             else:            
                 try:
                     sub_category_slug = self.kwargs["second_slug"]
@@ -108,7 +123,7 @@ class TrouserListing(ListAPIView):
                     except ObjectDoesNotExist:
                         raise Http404()
                     else:
-                        queryList = Trouser.objects.filter(category=sub_category).prefetch_related('variant', 'variant__trouser_variant_meta', 'variant__trouser_variant_images')
+                        queryList = Trouser.objects.filter(category=sub_category).prefetch_related('trouser_variants', 'trouser_variants__trouser_variant_meta', 'variant__trouser_variant_images')
                 elif category_slug == 'collections':
                     queryList = Trouser.objects.all().prefetch_related('variant', 'variant__trouser_variant_meta', 'variant__trouser_variant_images')
                 else:

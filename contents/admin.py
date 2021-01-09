@@ -14,16 +14,16 @@ from contents.models import ShopIndex, ShopIndexFeature
 #     model = ShopPageImage
 #     extra = 1
 
-class FeaturesInline(AdminImageMixin, admin.StackedInline):
-    model = ShopIndexFeature
-    extra = 0
+# class FeaturesInline(AdminImageMixin, admin.StackedInline):
+#     model = ShopIndexFeature
+#     extra = 1
 
 # class ShopIndexFeaturesAdmin(admin.ModelAdmin):
 #     inlines = [ImageInline,]
 #     extra = 1
 
 class ShopIndexAdmin(AdminImageMixin, admin.ModelAdmin):
-    inlines = [FeaturesInline,]
+    pass
 
 admin.site.register(ShopIndex, ShopIndexAdmin)
 admin.site.register(ShopIndexFeature)

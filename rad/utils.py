@@ -95,18 +95,10 @@ def shop_index_directory_path(instance, filename):
                     str(uuid.uuid4().hex + ".png")])
 
 def images_directory_path(instance, filename):
-    if (instance.__class__.__name__).lower() == 'image':
-        return '/'.join(['trouser_images', 
-                        str(instance.trouser_variant.trouser.name),
+        return '/'.join([str(instance.__class__.__name__.lower() + "s"),
+                        str(instance.item.__class__.__name__.lower().split("V")[0] + "s"), 
+                        str(instance.__str__()),
                         str(uuid.uuid4().hex + ".png")])
-    else:    
-        ext = filename.split(".")[-1]
-        return '/'.join(['upload', str(instance.__class__.__name__).lower(), 
-                        str(instance.item.name), 
-                        str(uuid.uuid4().hex + "." + ext)])
-
-def random_string_generator(size=10, chars=string.ascii_lowercase + string.digits):
-    return ''.join(random.choice(chars) for _ in range(size))
 
 def unique_slug_generator(instance, new_slug=None, m=None):
     if new_slug is not None:

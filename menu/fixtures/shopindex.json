@@ -1,0 +1,13 @@
+[
+{
+  "model": "contents.shopindex",
+  "pk": 1,
+  "fields": {
+    "top_text": "<p><span style=\"font-family: 'comic sans ms', sans-serif; color: #ffffff;\"><strong><span style=\"font-size: 10pt;\">CARGO WEARS ESSENTIALS&nbsp;</span></strong></span></p>\r\n<p><span style=\"font-family: 'comic sans ms', sans-serif; color: #ffffff;\"><strong><span style=\"font-size: 14pt;\">GIFT FOR SOMEONE YOU LOVE&nbsp;</span></strong></span></p>",
+    "info_text": "<p style=\"text-align: center; line-height: 1;\"><span style=\"font-family: 'andale mono', monospace;\"><strong><span style=\"font-size: 10pt;\"><span style=\"color: #222222; white-space: pre-wrap;\">ORDERS ARE SHIPPED AS USUAL</span></span></strong></span></p>\r\n<p style=\"text-align: center; line-height: 1;\"><span style=\"color: #222222; font-family: 'andale mono', monospace; font-size: 10pt; white-space: pre-wrap;\">Despite challenges presented by COVID-19, our online store is still open, with orders shipped everyday. </span><span style=\"color: #222222; font-family: 'andale mono', monospace; font-size: 10pt; white-space: pre-wrap;\">Our logistics team is taking extraordinary precaution with each order to ensure the safety of our customers and employees.</span></p>\r\n<p style=\"text-align: center; line-height: 1;\"><span style=\"font-family: 'andale mono', monospace; font-size: 10pt;\">Thank you for your support of all small businesses like ours. Stay safe, stay healthy.</span></p>",
+    "image1": "ShopIndex/images/5e3a1748b2c54e81ab088191422d0aad.png",
+    "image2": "ShopIndex/images/c193e169c6724b639c532ffac07efcd6.png",
+    "image3": "ShopIndex/images/2743c6adb3da457bbd2f2598a1f5bb00.png"
+  }
+}
+]

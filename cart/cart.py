@@ -20,11 +20,11 @@ class Cart(object):
         Iterate over the items in the cart and get the products
         from the database.
         """
-        # trouser_ids = self.cart.keys()
-        # # get the trouser objects and add them to the cart
-        # trousers = TrouserVariant.objects.filter(id__in=trouser_ids).prefetch_related('trouser_variant_meta', 'trouser_variant_images')
-        # for trouser in trousers:
-        #     self.cart[str(trouser.id)]['trouser'] = trouser
+        # product_ids = self.cart.keys()
+        # # get the product objects and add them to the cart
+        # products = TrouserVariant.objects.filter(id__in=product_ids).prefetch_related('product_variant_meta', 'product_variant_images')
+        # for product in products:
+        #     self.cart[str(product.id)]['product'] = product
         for item in self.cart.values():
             item['price'] = float(item['price'])
             item['total_price'] = []
@@ -38,43 +38,43 @@ class Cart(object):
         """
         return sum(sum(item['quantity']) for item in self.cart.values())
     
-    def add(self, trouser, size, quantity=1, update_quantity=False):
+    def add(self, product, size=None, quantity=1, update_quantity=False):
         """
-        Add a trouser to the cart or update its quantity.
+        Add a product to the cart or update its quantity.
         """
-        trouser_id = str(trouser.id)      
+        product_id = str(product.id)      
         size = str(size)
-        if trouser_id not in self.cart:
-            temp = {trouser_id: {'size': [str(size)], 'quantity': [0], 'price': str(trouser.price)}}
+        if product_id not in self.cart:
+            temp = {product_id: {'size': [str(size)], 'quantity': [0], 'price': str(product.price)}}
             temp.update(self.cart)
             self.cart = temp
-        elif trouser_id in self.cart and str(size) not in self.cart[trouser_id]["size"]:
-            self.cart[trouser_id]['size'].append(str(size))
-            self.cart[trouser_id]['quantity'].append(0)
+        elif product_id in self.cart and str(size) not in self.cart[product_id]["size"]:
+            self.cart[product_id]['size'].append(str(size))
+            self.cart[product_id]['quantity'].append(0)
             
-        index = self.cart[trouser_id]['size'].index(size)
+        index = self.cart[product_id]['size'].index(size)
    
         if update_quantity:
-            self.cart[trouser_id]['quantity'][index] = quantity
+            self.cart[product_id]['quantity'][index] = quantity
         else:
-            self.cart[trouser_id]['quantity'][index] += quantity
+            self.cart[product_id]['quantity'][index] += quantity
         self.save()
     
-    def remove(self, trouser, size):
+    def remove(self, product, size):
         """
-        Remove a trouser from the cart.
+        Remove a product from the cart.
         """
         size = str(size)
-        trouser_id = str(trouser.id)
-        if trouser_id in self.cart and size in self.cart[trouser_id]["size"]:
-            if len(self.cart[trouser_id]["size"]) > 1:
-                index = self.cart[trouser_id]['size'].index(size)
-                quantity = self.cart[trouser_id]['quantity'][index]
-                self.cart[trouser_id]['size'].remove(size) 
-                self.cart[trouser_id]['quantity'].remove(quantity)
+        product_id = str(product.id)
+        if product_id in self.cart and size in self.cart[product_id]["size"]:
+            if len(self.cart[product_id]["size"]) > 1:
+                index = self.cart[product_id]['size'].index(size)
+                quantity = self.cart[product_id]['quantity'][index]
+                self.cart[product_id]['size'].remove(size) 
+                self.cart[product_id]['quantity'].remove(quantity)
                 self.save()
             else:
-                del self.cart[trouser_id]
+                del self.cart[product_id]
                 self.save()
     
     def get_total_price(self):

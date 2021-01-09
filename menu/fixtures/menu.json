@@ -25,7 +25,7 @@
     "is_active": true,
     "lft": 1,
     "rght": 2,
-    "tree_id": 3,
+    "tree_id": 4,
     "level": 0
   }
 },
@@ -100,7 +100,22 @@
     "is_active": true,
     "lft": 1,
     "rght": 2,
-    "tree_id": 4,
+    "tree_id": 5,
+    "level": 0
+  }
+},
+{
+  "model": "menu.menu",
+  "pk": 9,
+  "fields": {
+    "name": "WAVECAP COLLECTIONS",
+    "slug": "wavecap-collections",
+    "app": "SH",
+    "parent": null,
+    "is_active": true,
+    "lft": 1,
+    "rght": 2,
+    "tree_id": 3,
     "level": 0
   }
 }
