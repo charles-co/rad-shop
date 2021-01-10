@@ -5,8 +5,8 @@
 <li class="clone d-lg-none {% if node.slug in request.path %}active {% endif %}list-group-item menu-list bg-transparent">
     {% if not node.is_leaf_node %}
     <a href="{{ node|form_url }}" class="d-inline-block text-capitalize">{{ node.name }}</a>
-    <button class="p-0 float-right menu-data-toggle d-inline-block bg-transparent text-decoration-none border-0 data-toggle" aria-haspopup="true" data-target="#{{ node.name }}Submenu" aria-controls="{{ node.name }}Submenu" aria-expanded="false" data-toggle="collapse" role="button" ><i class="fas fa-xs fa-plus text-white-50"></i></button>
-    <ul class="border-left collapse list-unstyled bg-transparent p-0 list-group list-group-flush" id="{{ node.name }}Submenu">
+    <button class="p-0 float-right menu-data-toggle d-inline-block bg-transparent text-decoration-none border-0 data-toggle" aria-haspopup="true" data-target="#{{ node.slug }}-submenu" aria-controls="{{ node.slug }}-submenu" aria-expanded="false" data-toggle="collapse" role="button" ><i class="fas fa-xs fa-plus text-white-50"></i></button>
+    <ul class="border-left collapse list-unstyled bg-transparent p-0 list-group list-group-flush" id="{{ node.slug }}-submenu">
         {{ children }}
     </ul>
     {% else %}

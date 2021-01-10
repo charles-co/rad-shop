@@ -35,7 +35,7 @@ class BaseVariantSerializer(serializers.ModelSerializer):
     
     def get_first_image(self, obj):
         item_type = ContentType.objects.get_for_model(obj)
-        first_image = Image.objects.filter(content_type__pk=item_type.id, object_id=obj.id).latest('id')
+        first_image = Image.objects.filter(content_type__pk=item_type.id, object_id=obj.id).earliest('id')
         first_image_serializer = ImageSerializer(first_image)
         return first_image_serializer.data
 
@@ -47,7 +47,7 @@ class BaseSerializer(serializers.ModelSerializer):
     product = serializers.CharField(source='get_product_name', read_only=True)
     
     class Meta:
-        fields = ("id", "name", "url", "category", "sku", "product", "first_variant", "is_featured", "is_bestseller", "created_at")
+        fields = ("id", "name", "url", "category", "sku", "slug", "product", "first_variant", "is_featured", "is_bestseller", "created_at")
 
 class TrouserVariantSerializer(BaseVariantSerializer):
     color = serializers.CharField(source='get_color_name', read_only=True)
@@ -107,23 +107,25 @@ class BaseVariantDetailSerializer(serializers.ModelSerializer):
     color = serializers.CharField(source='get_color_name', read_only=True)
 
 class TrouserVariantDetailSerializer(BaseVariantDetailSerializer):
-    product_variant_meta = TrouserMETASerializer(many=True)
+    metas = TrouserMETASerializer(many=True)
+    images = ImageDetailSerializer(many=True)
 
     class Meta:
         model = TrouserVariant
-        fields = ("id", "product_variant_images", "product_variant_meta", "price", "color")
+        fields = ("id", "images", "metas", "price", "color")
 
 class BaseDetailSerializer(serializers.ModelSerializer):
     description = serializers.CharField(source='get_markdown', read_only=True)
+    product = serializers.CharField(source='get_product_name', read_only=True)
 
     class Meta:
-        fields = ("id", "name", "slug", "description", "variant", "similiar_products")
+        fields = ("id", "name", "slug", "product", "description", "variants", "similiar_products")
 
 class TrouserDetailSerializer(BaseDetailSerializer):
-    variant = TrouserVariantDetailSerializer(many=True, read_only=True)
+    variants = TrouserVariantDetailSerializer(many=True, read_only=True)
     similiar_products = serializers.SerializerMethodField()
 
-    class Meta:
+    class Meta(BaseDetailSerializer.Meta):
         model = Trouser
 
     def get_similiar_products(self, obj):
@@ -132,16 +134,16 @@ class TrouserDetailSerializer(BaseDetailSerializer):
         return similiar_trousers_serializer.data
 
 class WavecapVariantDetailSerializer(BaseVariantDetailSerializer):
-
+    images = ImageDetailSerializer(many=True)
     class Meta:
         model = WavecapVariant
-        fields = ("id", "product_variant_images", "stock", "price", "color")
+        fields = ("id", "images", "stock", "price", "color")
 
-class WavecapDetailSerializer(serializers.ModelSerializer):
-    variant = WavecapVariantDetailSerializer(many=True, read_only=True)
+class WavecapDetailSerializer(BaseDetailSerializer):
+    variants = WavecapVariantDetailSerializer(many=True, read_only=True)
     similiar_products = serializers.SerializerMethodField()
 
-    class Meta:
+    class Meta(BaseDetailSerializer.Meta):
         model = Wavecap
 
     def get_similiar_products(self, obj):

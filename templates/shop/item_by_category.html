@@ -71,7 +71,7 @@
     </style>
 {% endblock style %}
 {% block content %}
-<div id="trouserapp" class="container d-flex flex-column flex-grow-1">
+<div id="productapp" class="container d-flex flex-column flex-grow-1">
     <div v-if="has_content" class="mb-4">
         <div class="my-4">
             <span >{{ title }}</span>
@@ -130,54 +130,51 @@
         </div>
 
         <div class="container-fluid" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy">
-            <transition-group appear tag="div" v-bind:css="false" v-on:before-enter="beforeEnter" v-on:enter="enter" class="row no-gutters">
-                <trouser-card
+            <transition-group appear tag="div" v-bind:css="false" v-on:before-enter="beforeEnter" v-on:enter="enter" class="row no-gutters justify-content-md-around">
+                <product-card
                     v-if="sortedShouldRender && !loading"
-                    v-for="(trouser, index) in sortedProducts"
-                    v-bind:key="trouser.sku"
-                    v-bind:id="trouser.id"
-                    v-bind:name="trouser.name"
-                    v-bind:price="trouser.price || trouser.first_variant.price"
-                    {% comment %} v-bind:oldprice="trouser.old_price" {% endcomment %}
-                    v-bind:color="trouser.first_variant.color"
-                    v-bind:slug="trouser.slug"
-                    v-bind:image="trouser.first_variant.first_image.file"
-                    {% comment %} v-bind:size="trouser.first_variant.first_meta.size"
-                    v-bind:stock="trouser.first_variant.first_meta.stock"{% endcomment %}
+                    v-for="(product, index) in sortedProducts"
+                    v-bind:key="product.sku"
+                    v-bind:id="product.id"
+                    v-bind:name="product.name"
+                    v-bind:price="product.first_variant.price"
+                    {% comment %} v-bind:oldprice="product.old_price" {% endcomment %}
+                    v-bind:color="product.first_variant.color"
+                    v-bind:slug="product.slug"
+                    v-bind:product="product.product"
+                    v-bind:image="product.first_variant.first_image.file"
                     v-bind:data-index="index"
-                ></trouser-card>
+                ></product-card>
 
-                <trouser-card
+                <product-card
                     v-if="colorSort && !loading"
-                    v-for="(trouser, index) in sortedOrderProducts"
-                    v-bind:key="trouser.first_variant.id"
-                    v-bind:id="trouser.first_variant.id"
-                    v-bind:name="trouser.name"
-                    v-bind:price="trouser.first_variant.price"
-                    {% comment %} v-bind:oldprice="trouser.old_price" {% endcomment %}
-                    v-bind:color="trouser.first_variant.color"
-                    v-bind:slug="trouser.slug"
-                    v-bind:image="trouser.first_variant.first_image.file"
-                    v-bind:size="trouser.first_variant.first_meta.size"
-                    v-bind:stock="trouser.first_variant.first_meta.stock"
+                    v-for="(product, index) in sortedOrderProducts"
+                    v-bind:key="product.first_variant.id"
+                    v-bind:id="product.first_variant.id"
+                    v-bind:name="product.name"
+                    v-bind:price="product.first_variant.price"
+                    {% comment %} v-bind:oldprice="product.old_price" {% endcomment %}
+                    v-bind:color="product.first_variant.color"
+                    v-bind:slug="product.slug"
+                    v-bind:product="product.product"
+                    v-bind:image="product.first_variant.first_image.file"
                     v-bind:data-index="index"
-                ></trouser-card>
+                ></product-card>
 
-                <trouser-card
+                <product-card
                     v-if="orderShouldRender && !loading"
-                    v-for="(trouser, index) in orderProducts"
-                    v-bind:key="trouser.first_variant.id"
-                    v-bind:id="trouser.first_variant.id"
-                    v-bind:name="trouser.name"
-                    v-bind:price="trouser.first_variant.price"
-                    {% comment %} v-bind:oldprice="trouser.old_price" {% endcomment %}
-                    v-bind:color="trouser.first_variant.color"
-                    v-bind:slug="trouser.slug"
-                    v-bind:image="trouser.first_variant.first_image.file"
-                    {% comment %} v-bind:size="trouser.first_variant.first_meta.size"
-                    v-bind:stock="trouser.first_variant.first_meta.stock"{% endcomment %}
+                    v-for="(product, index) in orderProducts"
+                    v-bind:key="product.first_variant.id"
+                    v-bind:id="product.first_variant.id"
+                    v-bind:name="product.name"
+                    v-bind:price="product.first_variant.price"
+                    {% comment %} v-bind:oldprice="product.old_price" {% endcomment %}
+                    v-bind:color="product.first_variant.color"
+                    v-bind:slug="product.slug"
+                    v-bind:product="product.product"
+                    v-bind:image="product.first_variant.first_image.file"
                     v-bind:data-index="index"
-                ></trouser-card>
+                ></product-card>
             </transition-group>
 
             <div class="d-flex justify-content-center" style="display:none;" v-if="busy">
@@ -233,7 +230,7 @@
 
     })
 
-    Vue.component('trouser-card', {
+    Vue.component('product-card', {
         delimiters: ['[[', ']]'],
         store: store,
         props: ["id", 
@@ -244,14 +241,15 @@
                 "image",
                 "color",
                 "size", 
-                "stock", 
+                "stock",
+                "product", 
             ],
         data: function(){
             return {
                 showMessage: false,
                 cartItems: {{ request.session.cart|jsonify }},
                 carted: false,
-                url: "{% if sub_category_slug %}{% url 'shop:sub-collection-detail' category_slug sub_category_slug 0 %}".replace(0, this.slug) + "{% else %}{% url 'shop:collection-detail' category_slug 0 %}{% endif %}".replace(0, this.slug),
+                url: "{% if sub_category_slug %}{% url 'shop:sub-collection-detail' category_slug sub_category_slug 1 0 %}".replace(0, this.slug).replace(1, this.product.toLowerCase()) + "{% else %}{% url 'shop:collection-detail' category_slug 1 0 %}{% endif %}".replace(0, this.slug).replace(1, this.product.toLowerCase()),
             }            
         },
         computed: {
@@ -274,38 +272,10 @@
         mounted() {
         },
         methods: {
-            addToCart(trouser_id, size){
-                let data = {'trouser_id':trouser_id,
-                            'size': size,
-                            'update': false,
-                            'quantity': 1,
-                        };
-                fetch("{% url 'cart:cart-add' %}", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    }, 
-                    credentials: 'same-origin',
-                    body: JSON.stringify(data)
-                })
-                .then((response) => {
-                    this.showMessage = true;
-                    this.carted = true;
-                    store.commit('increment', 1)
-                    setTimeout(()=>{
-                        this.showMessage = false
-                    }, 2000)
-                })
-                .catch(function (error){
-                    console.log(error);
-                })
-            },
         }, 
         template: `                        
-                    <div id="" class="col-6 col-md-4 col-lg-3">
-                        <a :href=url class="d-flex flex-column"> 
+                    <div id="" class="px-1 col-6 col-md-3 col-lg-2">
+                        <a :href=url class="d-flex h-100 flex-column"> 
                             <div data-aos="zoom-in" class="card flex-grow-1 border-0 bg-transparent d-flex justify-content-center align-items-center lazy-container" style="min-height:210px;">
                                 <img :data-src="image" class="card-img-top img-fluid lazy-image">
                                 <div class="lds-ellipsis text-dark spinner">
@@ -323,26 +293,13 @@
                                 </p>
                             </div>
                         </a>
-                        {% comment %} <div v-if="!inCart && !carted">
-                            <button @click="addToCart(id, size)" class="btn btn-transparent add-to-cart btn-outline-transparent text-danger rounded-0 pl-0">Add to cart <i class="fas fa-cart-plus"></i></button>
-                        </div>
-                        <div v-else>
-                            <span class="text-success">Trouser in cart</span>
-                        </div>
-                        <div class="message position-absolute" style="z-index:1000;">
-                            <transition enter-active-class="animate__animated animate__slideInDown" leave-active-class="animate__animated animate__bounceOut">
-                                <div class="alert alert-success p-1 rounded-0 text-center" role="alert" v-if="showMessage">
-                                    <p class="m-0">Added to cart :)</p>
-                                </div>
-                            </transition>
-                        </div> {% endcomment %}
                     </div>                    
                 `
     })
 
-    const trouserapp = new Vue({
+    const productapp = new Vue({
         delimiters: ['[[', ']]'],
-        el: '#trouserapp',
+        el: '#productapp',
         store: store,
         data (){
             return {
@@ -525,16 +482,15 @@
                     })
                     .then((jsonData) => {
                         if (jsonData["detail"] != "Not found."){
-                            if (jsonData.page === "new-arrivals" || jsonData.page === "best-sellers" || jsonData.page === "is-back"){
+                            if (jsonData.page === "new-arrivals" || jsonData.page === "best-sellers" || jsonData.page === "back-in-stock"){
                                 this.products = this.products.concat(_.map(jsonData.results, 'item'))
                                 temp = _.map(jsonData.results, 'item')
-                                this.colors = _.sortedUniq(_.map(this.products, 'first_variant.color').concat(_.map(this.products, 'color')))
                             }
                             else{
                                 this.products = this.products.concat(jsonData.results)
                                 temp = jsonData.results
-                                this.colors = _.sortedUniq(_.map(this.products, 'first_variant.color'))
                             }
+                            this.colors = _.sortedUniq(_.map(this.products, 'first_variant.color'))
                             this.next = jsonData.next
                             this.counter += jsonData.count
                             setTimeout( function(){

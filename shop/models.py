@@ -46,32 +46,31 @@ class Image(ItemBase):
         return self.item.__str__()
 
 class ProductQuerySet(models.query.QuerySet):
-    # def active(self):
-    #     return self.filter(available=True)
+    
+    def active(self):
+        lookups = Q(wavecap__available=True) | Q(trouser__available=True)
+        return self.filter(lookups).prefetch_related('item')
 
     def new_arrivals(self, num):
-        lookups = Q(wavecap__available=True) | Q(trouser__available=True)
-        if num > 0:
-            return self.filter(lookups).order_by("-created_at").prefetch_related('item')[:num]
-        return self.filter(lookups).order_by("-created_at").prefetch_related('item')
+        return self.order_by("-created_at")
 
     def featured(self):
-        lookups = Q(wavecap__is_featured=True) & Q(wavecap__available=True) | Q(trouser__is_featured=True) & Q(trouser__available=True)
-        return self.filter(lookups).prefetch_related('item').distinct()
+        lookups = Q(wavecap__is_featured=True) | Q(trouser__is_featured=True)
+        return self.filter(lookups)
     
     def is_back(self):
-        lookups = Q(wavecap__is_back=True) & Q(wavecap__available=True) | Q(trouser__is_back=True) & Q(trouser__available=True)
-        return self.filter(lookups).prefetch_related('item').distinct()
+        lookups = Q(wavecap__is_back=True) | Q(trouser__is_back=True)
+        return self.filter(lookups)
     
     def is_bestseller(self, num):
-        lookups = Q(wavecap__is_bestseller=True) & Q(wavecap__available=True) | Q(trouser__is_bestseller=True) & Q(trouser__available=True)
+        lookups = Q(wavecap__is_bestseller=True) | Q(trouser__is_bestseller=True)
         if num > 0:    
-            return self.filter(lookups).prefetch_related('item').distinct()[:num]
-        return self.filter(lookups).prefetch_related('item').distinct()
+            return self.filter(lookups)[:num]
+        return self.filter(lookups)
     
     def is_discounted(self):
         lookups = (Q(wavecap__is_discounted=True) | Q(trouser__is_discounted=True))
-        return self.filter(lookups).prefetch_related('item').distinct()
+        return self.filter(lookups)
 
     
 
@@ -89,19 +88,20 @@ class ProductManager(models.Manager):
     def get_queryset(self):
         return ProductQuerySet(self.model, using=self._db)
 
-    # def all(self):
-    #     return self.get_queryset().active()
+    def all(self):
+        return self.get_queryset().active()
+
     def new_arrivals(self, num=0):
-        return self.get_queryset().new_arrivals(num)
+        return self.get_queryset().active().new_arrivals(num)
 
     def featured(self):
-        return self.get_queryset().featured()
+        return self.get_queryset().active().featured()
     
     def bestseller(self, num=0):
-        return self.get_queryset().is_bestseller(num)
+        return self.get_queryset().active().is_bestseller(num)
 
     def is_back(self):
-        return self.get_queryset().is_back()
+        return self.get_queryset().active().is_back()
 
     def discounted(self):
         return self.get_queryset().is_discounted()
@@ -132,14 +132,12 @@ class Product(models.Model):
         return self.item.name
 
 class BrandQuerySet(models.query.QuerySet):
-    def active(self):
-        return self.filter(available=True)
 
     def featured(self):
         return self.filter(is_featured=True)
 
     def by_category(self, category):
-        return self.filter(category=category).prefetch_related('variants', 'variants__metas')
+        return self.filter(category=category)
 
     def search(self, query):
         lookups = (Q(name__icontains=query) | 
@@ -149,18 +147,15 @@ class BrandQuerySet(models.query.QuerySet):
                   Q(tags__name__icontains=query)
                   )
         # tshirt, t-shirt, t shirt, red, green, blue,
-        return self.filter(lookups).prefetch_related('trouser_variants').distinct()
+        return self.filter(lookups).distinct()
 
 class BrandManager(models.Manager):
-
-    def get_queryset(self):
-        return BrandQuerySet(self.model, using=self._db)
 
     def all(self):
         return self.get_queryset().active()
 
     def featured(self): #Trouser.objects.featured() 
-        return self.get_queryset().featured()
+        return self.get_queryset().active().featured()
     
     def by_category(self, category):
         return self.get_queryset().active().by_category(category)
@@ -189,7 +184,6 @@ class Brand(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     tags = TaggableManager(blank=True)
-    objects = BrandManager()
 
     class MPTTMeta:
         abstract = True
@@ -202,7 +196,7 @@ class Brand(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('shop:detail', args=[self.slug])
+        return reverse('shop:detail', args=[self.get_product_name(), self.slug])
     
     def sale_price(self):
         if self.old_price > self.price:
@@ -224,14 +218,13 @@ class Brand(models.Model):
         return str(self.id) + self.__class__.__name__
     
     def get_product_name(self):
-        return self.__class__.__name__
+        return self.__class__.__name__.lower()
 
 class BrandVariant(models.Model):
 
     color = ColorField()
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     old_price = models.DecimalField(max_digits=9, decimal_places=2, blank=True, default=0.00)
-    image = GenericRelation(Image, related_query_name="%(class)ss")
 
     class Meta:
         abstract = True
@@ -257,11 +250,24 @@ class BrandMETA(models.Model):
         abstract = True
         ordering = ['size',]
 
+class TrouserQuerySet(BrandQuerySet):
+
+    def active(self):
+        return self.filter(available=True).prefetch_related('variants', 'variants__metas')
+
+class TrouserManager(BrandManager):
+    
+    def get_queryset(self):
+        return TrouserQuerySet(self.model, using=self._db)
+
 class Trouser(Brand):
     products = GenericRelation(Product, related_query_name="%(class)s")
 
+    objects = TrouserManager()
+
 class TrouserVariant(BrandVariant):
     trouser = models.ForeignKey(Trouser, on_delete=models.CASCADE, related_name="variants")
+    images = GenericRelation(Image, related_query_name="%(class)s")
 
     class Meta(BrandVariant.Meta):
         constraints = [
@@ -282,11 +288,23 @@ class TrouserMETA(BrandMETA):
     def __str__(self):
         return self.trouser_variant.__str__()
 
+class WavecapQuerySet(BrandQuerySet):
+    def active(self):
+        return self.filter(available=True).prefetch_related('variants')
+
+class WavecapManager(BrandManager):
+    
+    def get_queryset(self):
+        return WavecapQuerySet(self.model, using=self._db)
+
 class Wavecap(Brand):
     products = GenericRelation(Product, related_query_name="%(class)s")
 
+    objects = WavecapManager()
+
 class WavecapVariant(BrandVariant):
     wavecap = models.ForeignKey(Wavecap, on_delete=models.CASCADE, related_name="variants")
+    images = GenericRelation(Image, related_query_name="%(class)s")
     stock = models.PositiveIntegerField(default=1)
 
     class Meta(BrandVariant.Meta):

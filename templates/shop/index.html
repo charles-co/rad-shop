@@ -55,7 +55,7 @@
 <div class="container" id="index">
     <div class="row mb-4 no-gutters best-seller overflow-hidden" style="min-height:300px;">
         <span class="text-uppercase mb-4 font-weight-light col-12">BEST SELLERS</span>
-        <transition mode="out-in" enter-active-class="animate__animated animate__fadeInRight animate__slow" leave-active-class="animate__animated animate__fadeOut">
+        <transition mode="out-in" enter-active-class="animate__animated animate__fadeInRight" leave-active-class="animate__animated animate__fadeOut">
             <div v-if="bestSellerLoading" key="loadingbestseller" class="col-12 d-flex flex-column justify-content-center align-items-center" style="min-height:300px;">
                 <div class="spinner-border text-secondary" role="status">
                     <span class="sr-only">Loading...</span>
@@ -228,15 +228,17 @@
                         prevEl: '.swiper-button-prev'
                     },
                     breakpoints: {
-                        1024: {
-                            slidesPerView: 4,
+                        1200: {
+                            slidesPerView: 5,
+                            spaceBetween: 10
                         },
                         768: {
-                            slidesPerView: 3,
+                            slidesPerView: 4,
+                            spaceBetween: 10
                         },
                         320: {
                             slidesPerView: 2,
-                            {% comment %} spaceBetween: 10 {% endcomment %}
+                            spaceBetween: 10
                         },
                     }
                 },

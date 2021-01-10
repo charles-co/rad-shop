@@ -46,56 +46,56 @@
 </style>
 {% endblock style %}
 {% block content %}
-<div id="trouserappdetail" class="container">
+<div id="productappdetail" class="container">
     <div v-if="has_content" class="mb-4">
         <div class="row no-gutters justify-content-between">
             <div class="col-12 col-md-5 order-0" style="min-height:400px;">
                 <div
-                    class="trouserimages h-100"
-                    v-swiper:trouserimages="trouserimagesoptions"
+                    class="productimages h-100"
+                    v-swiper:productimages="productimagesoptions"
                     @click-slide="onSwiperClickSlide"
                     @slide-change-transition-start="onSwiperSlideChangeTransitionStart"
                     v-if="change"
                     data-aos="zoom-in"
                 >
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide text-center" v-for="(img, index) in selected_trouser.trouser_variant_images" :key="index">
+                        <div class="swiper-slide text-center" v-for="(img, index) in selected_product.images" :key="index">
                             <div class="swiper-zoom-container">
                                 <img :data-src="img.file" class="swiper-lazy">
                                 <div class="swiper-lazy-preloader swiper-lazy-preloader-black"></div>
                             </div>
                         </div>
                     </div>
-                    <div class="swiper-pagination main-detail swiper-pagination-bullets" v-show="selected_trouser_images_count > 1"></div>
+                    <div class="swiper-pagination main-detail swiper-pagination-bullets" v-show="selected_product_images_count > 1"></div>
                 </div>
             </div>
             <div class="jumbotron py-0 mb-0 px-3 col-12 order-2 order-md-1 col-md-6 mt-3 overflow-auto" data-aos="fade" style="max-height:400px;">
                 <div class="d-inline-block"><span v-html="description"></span></div>
             </div>
             <div class="col-12 col-md-5 px-0 my-2 order-1 m-md-0 order-md-2 overflow-hidden">
-                <div class="d-flex flex-wrap animate__fadeInLeftBig" :class="{ 'animate__animated' : !blur }" v-if="trousers.length > 1">
-                    <div class="mr-2 p-1" v-for="(img, index) in trousers" style="cursor:pointer;" :class="{ 'border border-dark' : selectedVariant === index, opaque : selectedVariant !== index }" :key="index">
-                        <img :src="img.trouser_variant_images[0].thumbnail" @click="change_selected_trouser(index)">
+                <div class="d-flex flex-wrap animate__fadeInLeftBig" :class="{ 'animate__animated' : !blur }" v-if="products.length > 1">
+                    <div class="mr-2 p-1" v-for="(img, index) in products" style="cursor:pointer;" :class="{ 'border border-dark' : selectedVariant === index, opaque : selectedVariant !== index }" :key="index">
+                        <img :src="img.images[0].thumbnail" @click="change_selected_product(index)">
                     </div>
                 </div>
                 <div class="mb-4 font-weight-bold d-block" style="min-height:174px;">
                     <transition enter-active-class="animate__animated animate__fadeIn">
                         <div v-if="!changeText" class="text-monospace">
-                            <p> [[ selected_trouser.color ]]</p>
+                            <p> [[ selected_product.color ]]</p>
                             <p class=""> [[ name ]]</p>
-                            <p class="mb-0"> [[ selected_trouser.price|currency ]]</p>
+                            <p class="mb-0"> [[ selected_product.price|currency ]]</p>
                             <small class="text-muted"> VAT not included </small> 
-                            <div class="d-flex flex-wrap my-2">
-                                <button v-for="(size, index) in selected_trouser.trouser_variant_meta" class="btn btn-transparent btn-outline-dark rounded-0 mr-2" :class="{active : currentSize == size.size}" @click="changeSize(index)">
+                            <div class="d-flex flex-wrap my-2" v-if="product_name !== 'wavecap'">
+                                <button v-for="(size, index) in selected_product.metas" class="btn btn-transparent btn-outline-dark rounded-0 mr-2" :class="{active : currentSize == size.size}" @click="changeSize(index)">
                                     [[ size.size ]]
                                 </button>
                             </div>
                         </div>
                     </transition>
                 </div>
-                <button class="btn btn-lg col-12 rounded-0" v-if="!inCart" :class="{'btn-warning': outofstock, 'btn-success': !inCart}" :style="{cursor:cssCursor}" :disabled="outofstock || disabled" v-html="message" @click="addToCart(selected_trouser.id)">
+                <button class="btn btn-lg col-12 rounded-0" v-if="!inCart" :class="{'btn-warning': outofstock, 'btn-success': !inCart}" :style="{cursor:cssCursor}" :disabled="outofstock || disabled" v-html="message" @click="addToCart(selected_product.id)">
                 </button>
-                <button class="btn btn-lg col-12 btn-danger rounded-0" v-if="inCart" :disabled="disabled" @click="removeFromCart(selected_trouser.id)">
+                <button class="btn btn-lg col-12 btn-danger rounded-0" v-if="inCart" :disabled="disabled" @click="removeFromCart(selected_product.id)">
                     Remove from cart <i class="fas fa-trash-alt text-white"></i> ([[ quantity ]])
                 </button>
             </div>
@@ -109,16 +109,16 @@
                     data-aos="fade-up"
                 >
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide card bg-transparent border-0" v-for="trouser in similiar_trousers" :key="trouser.id">
+                        <div class="swiper-slide card bg-transparent border-0" v-for="product in similiar_products" :key="product.id">
                             <div class="d-flex bg-transparent align-items-center justify-content-center overflow-hidden" style="min-height:230px;">
-                                <a :href="trouser.url"><img :data-src="trouser.first_variant.first_image.file" class="swiper-lazy img-fluid  mx-auto card-img-top"></a>
+                                <a :href="product.url"><img :data-src="product.first_variant.first_image.file" class="swiper-lazy img-fluid  mx-auto card-img-top"></a>
                                 <div class="swiper-lazy-preloader swiper-lazy-preloader-black"></div>
                             </div>
                             <div class="card-body text-monospace py-0">
-                                <h5 class="card-title text-center mb-0 small">[[ trouser.name ]]</h5>
+                                <h5 class="card-title text-center mb-0 small">[[ product.name ]]</h5>
                                 <span class="d-flex justify-content-center" style="font-size:10px;">
-                                    <del class="card-text text-danger" v-if="trouser.first_variant.old_price"></del>
-                                    <p class="align-text-bottom card-text font-weight-bolder">&nbsp;[[ trouser.first_variant.price|currency ]]</p>
+                                    <del class="card-text text-danger" v-if="product.first_variant.old_price"></del>
+                                    <p class="align-text-bottom card-text font-weight-bolder">&nbsp;[[ product.first_variant.price|currency ]]</p>
                                 </span>
                             </div>
                         </div>
@@ -150,9 +150,9 @@
 <script src="{% static 'js/vue-awesome-swiper.js' %}"></script>
 <script>
     Vue.use(VueAwesomeSwiper)
-    const trouserappdetail = new Vue({
+    const productappdetail = new Vue({
         delimiters: ['[[', ']]'],
-        el: '#trouserappdetail',
+        el: '#productappdetail',
         store: store,
         data (){
             return {
@@ -163,13 +163,14 @@
                 name: "",
                 blur: false,
                 has_content: true,
-                trousers: [],
-                selected_trouser: [],
-                similiar_trousers: [],
+                product_name: "",
+                products: [],
+                selected_product: [],
+                similiar_products: [],
                 cssCursor: "pointer",
                 disabled: false,
                 inCart: undefined,
-                selected_trouser_images_count: 0,
+                selected_product_images_count: 0,
                 description: "",
                 cartItems: {{ request.session.cart|jsonify }},
                 currentSize: "",
@@ -194,17 +195,19 @@
                     breakpoints: {
                         1024: {
                             slidesPerView: 3,
+                            spaceBetween: 10
                         },
                         768: {
                             slidesPerView: 2,
+                            spaceBetween: 10
                         },
                         320: {
                             slidesPerView: 2,
-                            {% comment %} spaceBetween: 10 {% endcomment %}
+                            spaceBetween: 10
                         },
                     }
                 },
-                trouserimagesoptions: {
+                productimagesoptions: {
                     grabCursor: true,
                     lazy: true,
                     preloadImages: false,
@@ -239,7 +242,7 @@
         },
         mounted(){
             console.log("mounted");
-            fetch("{% url 'shop:api-detail' slug %}", {
+            fetch("{% url 'shop:api-detail' product_slug slug %}", {
                     method: 'GET'
             })
             .then((response) => {
@@ -248,16 +251,20 @@
             .then((jsonData) => {
                 if (jsonData["detail"] != "Not found."){
                     this.name = jsonData.name
-                    this.trousers = jsonData.variant
-                    this.selected_trouser = this.trousers[0]
-                    this.similiar_trousers = jsonData.similiar_trousers
+                    this.product_name = jsonData.product.toLowerCase()
+                    this.products = jsonData.variants
+                    this.selected_product = this.products[0]
+                    this.similiar_products = jsonData.similiar_products
                     this.description = jsonData.description
-                    this.selected_trouser_images_count = this.selected_trouser.trouser_variant_images.length
-                    this.currentSize = this.selected_trouser.trouser_variant_meta[0].size
+                    this.selected_product_images_count = this.selected_product.images.length
+                    if (this.product_name !== 'wavecap'){
+                        this.currentSize = this.selected_product.metas[0].size
+                    }
                     setTimeout( function(){
-                        this.trouserimages.lazy.load();
+                        this.productimages.lazy.load();
+                        this.swiper.lazy.load();
                         this.blur = true;
-                    }.bind(this), 2000);
+                    }.bind(this), 1000);
                 }
                 else{
                     this.has_content = false
@@ -270,7 +277,6 @@
         updated(){
             console.log("updated")
             AOS.refreshHard();
-
         },
         beforeMount(){
             console.log("omo")
@@ -286,13 +292,19 @@
         },
         computed: {
             outofstock: function(){
-                if(this.selected_trouser.length !== 0){
-                    for(let i=0; i < this.selected_trouser.trouser_variant_meta.length; i++){
-                        if (this.selected_trouser.trouser_variant_meta[i]['size'] === this.currentSize){
-                            if(this.selected_trouser.trouser_variant_meta[i].stock <= 0){
-                                return true
+                if(this.selected_product.length !== 0){
+                    if (this.product_name !== 'wavecap'){
+                        for(let i=0; i < this.selected_product.metas.length; i++){
+                            if (this.selected_product.metas[i]['size'] === this.currentSize){
+                                if(this.selected_product.metas[i].stock <= 0){
+                                    return true
+                                }    
                             }
                         }
+                    }else{
+                        if(this.selected_product.stock <= 0){
+                                return true
+                            }
                     }
                     return false
                 }
@@ -312,9 +324,9 @@
             }
         },
         methods: {
-            addToCart(trouser_id){
+            addToCart(product_id){
                 this.disabled = true
-                let data = {'trouser_id': trouser_id,
+                let data = {'product_id': product_id,
                             'size': this.currentSize,
                             'update': false,
                             'quantity': 1
@@ -330,11 +342,11 @@
                 })
                 .then((response) => {
                     store.commit('increment', 1)
-                    if (this.selected_trouser.id in this.cartItems) {
-                        this.cartItems[this.selected_trouser.id]["size"].push(this.currentSize)
-                        this.cartItems[this.selected_trouser.id]["quantity"].push(1)
+                    if (this.selected_product.id in this.cartItems) {
+                        this.cartItems[this.selected_product.id]["size"].push(this.currentSize)
+                        this.cartItems[this.selected_product.id]["quantity"].push(1)
                     }else{
-                        this.cartItems[this.selected_trouser.id] = {"size": [this.currentSize], "quantity": [1], "price": this.selected_trouser.price}
+                        this.cartItems[this.selected_product.id] = {"size": [this.currentSize], "quantity": [1], "price": this.selected_product.price}
                     }
                     setTimeout( function(){
                         this.inCartMethod()
@@ -345,9 +357,9 @@
                     console.log(error);
                 })
             },
-            removeFromCart(trouser_id){
+            removeFromCart(product_id){
                 this.disabled = true
-                let data = {'trouser_id': trouser_id,
+                let data = {'product_id': product_id,
                             'size': this.currentSize, 
                             'quantity': parseInt(this.quantity),
                 };
@@ -362,9 +374,9 @@
                     body: JSON.stringify(data)
                 })
                 .then((response) => {
-                    index = this.cartItems[trouser_id]['size'].indexOf(this.currentSize)
-                    this.cartItems[trouser_id]['size'].splice(index, 1)
-                    this.cartItems[trouser_id]['quantity'].splice(index, 1)
+                    index = this.cartItems[product_id]['size'].indexOf(this.currentSize)
+                    this.cartItems[product_id]['size'].splice(index, 1)
+                    this.cartItems[product_id]['quantity'].splice(index, 1)
                     console.log("removed!")
                     setTimeout( function(){
                         this.inCartMethod()
@@ -376,9 +388,9 @@
                 })
             },
             {% comment %} changeMainImage(key){
-                if (this.selected_trouser.trouser_variant_images[key].file !== this.mainImage){
+                if (this.selected_product.images[key].file !== this.mainImage){
                     this.change = false
-                    this.mainImage = this.selected_trouser.trouser_variant_images[key].file
+                    this.mainImage = this.selected_product.images[key].file
                     this.selectedThumbnail = key
                     setTimeout( function(){
                         this.change = true
@@ -386,15 +398,15 @@
                 }
             }, {% endcomment %}
             changeSize(index){
-                if (this.selected_trouser.trouser_variant_meta[index].size !== this.currentSize){
-                    this.currentSize = this.selected_trouser.trouser_variant_meta[index].size
+                if (this.selected_product.metas[index].size !== this.currentSize){
+                    this.currentSize = this.selected_product.metas[index].size
                 }
             },
             inCartMethod(){
-                if(this.selected_trouser.id in this.cartItems){
-                    size = (_.get(this.cartItems, this.selected_trouser.id))['size']
+                if(this.selected_product.id in this.cartItems){
+                    size = (_.get(this.cartItems, this.selected_product.id))['size']
                     if (size.includes(this.currentSize)){
-                        this.quantity = (_.get(this.cartItems, this.selected_trouser.id))['quantity'][size.indexOf(this.currentSize)]
+                        this.quantity = (_.get(this.cartItems, this.selected_product.id))['quantity'][size.indexOf(this.currentSize)]
                         this.inCart = true
                     }else{
                         this.inCart = false
@@ -403,13 +415,13 @@
                     this.inCart = false
                 }
             },
-            change_selected_trouser(index){
-               if (this.trousers[index] !== this.selected_trouser){
+            change_selected_product(index){
+               if (this.products[index] !== this.selected_product){
                     this.change = false
                     this.changeText = true
-                    this.selected_trouser = this.trousers[index]
-                    this.currentSize = this.selected_trouser.trouser_variant_meta[0].size
-                    this.selected_trouser_images_count = this.selected_trouser.trouser_variant_images.length
+                    this.selected_product = this.products[index]
+                    this.currentSize = this.selected_product.metas[0].size
+                    this.selected_product_images_count = this.selected_product.images.length
                     this.selectedVariant = index
                     setTimeout( function(){
                         this.changeText = false
