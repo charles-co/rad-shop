@@ -55,28 +55,40 @@
             </div>
         </div>
     </nav>
-    <nav class="navbar navbar-expand-lg fixed-top d-none d-lg-block navbar-light inverse bg-light">
+    <nav class="navbar navbar-expand-lg fixed-top d-none d-lg-block navbar-light py-0 px-5 inverse bg-light">
         <div class="container-fluid px-lg-0">
             <div class="collapse navbar-collapse d-flex" id="navbarSupportedContent">
-                <div class="animate__animated animate__backInDown animate__slow d-inline-block">
-                    <a href="/"><img src="{% static 'image/favicon.ico' %}" class="logo-image" /></a>
-                </div>
-                <ul class="flex-grow-1 mx-lg-2 d-flex justify-content-between justify-content-lg-around animate__animated animate__fadeInDownBig animate__slow list-unstyled desktop font-weight-bold list-group list-group-horizontal">
-                    <li class="border-0 px-1 d-lg-none d-xl-block {% if 'categories/' not in request.path and 'account/' not in request.path and 'cart/' not in request.path %}active {% endif %}list-group-item bg-transparent">
-                        <a href="/"><i class="fas fa-home"></i>&nbsp;HOME</a>
+                <ul class="flex-grow-0 mx-lg-2 d-flex justify-content-between justify-content-lg-around animate__animated animate__fadeInDownBig animate__slow list-unstyled desktop font-weight-bold list-group list-group-horizontal">
+                    <li class="border-0 px-2 mx-2 shop list-group-item bg-transparent">
+                        <a href="{% url 'menu:product_by_category' 'all-products' %}"></i>SHOP</a>
+                        <div class="bg-light collapse position-absolute ml-n5 p-3" style="top:49px;width:60vw;">
+                            <div class="d-flex align-items-start justify-content-around" style="font-size:.8rem;">
+                                {% menu "desktop" %}
+                            </div>
+                        </div>
                     </li>
-                    {% menu "desktop" %}
+                    <li class="border-0 mx-2 px-2 list-group-item bg-transparent">
+                        <a href="#"></i>ABOUT</a>
+                    </li>
+                    {% comment %} {% menu "desktop" %} {% endcomment %}
                 </ul>
+                <div class="animate__animated animate__backInDown animate__slow flex-grow-1 d-flex justify-content-center">
+                    <a href="/" class="font-weight-bold"><img src="{% static 'image/favicon.ico' %}" class="logo-image mr-2" /><span class="">RAD.</span></a>
+                </div>
                 <ul class="list-unstyled desktop-menu-right animate__animated animate__fadeInDownBig animate__slow list-group font-weight-bold list-group-horizontal" style="color: rgba(15, 15, 15, 0.63);">
-                    <li id="cartnav" class="px-0 list-group-item border-0 bg-transparent d-flex"> 
-                        <a id="" href="{% url 'cart:cart-detail' %}" class="{% if 'cart/' in request.path %}active {% endif %} cart my-auto">
-                            <i class="fas fa-box-open text-primary position-relative align-middle text-center"></i>&nbsp;CART&nbsp;(&nbsp;<span v-if="numItems > 0">[[ numItems ]]</span><span v-else>0</span>&nbsp;)
-                        </a>&nbsp;<span class="my-auto">|</span>
+                    <li class="px-2 py-0 d-flex align-items-center border-0 list-group-item bg-transparent" style="">
+                        <a href="{% url 'accounts:account-home' %}" class="{% if 'login/' in request.path %}active {% endif %}text-center d-flex align-items-center my-auto" style="font-size: 1.7em;">{% include "../svg/person.svg" %}</a>
                     </li>
-                    <li class="list-group-item bg-transparent border-0 px-2 px-xl-4 d-flex">
-                        <a href="javascript:void(0);" role="button" class="px-0 font-weight-bold text-decoration-none" data-toggle="modal" data-target="#searchModal"><i class="fas fa-search text-success"></i>&nbsp;SEARCH</a>&nbsp;<span class="my-auto">|</span>
+                    <li class="list-group-item bg-transparent d-flex align-items-center py-0 border-0 px-2">
+                        <a href="javascript:void(0);" role="button" class="px-0 text-decoration-none d-flex text-center align-items-center font-weight-bold remove-outline" data-toggle="modal" data-target="#searchModal"style="font-size: 1.5em;">{% include "../svg/search.svg" %}</a>
                     </li>
-                    {% if not request.user.is_authenticated %}
+                    <li id="cartnav" class="px-2 py-0 d-flex align-items-center list-group-item border-0 bg-transparent d-flex"> 
+                        <a id="" href="{% url 'cart:cart-detail' %}" class="{% if 'cart/' in request.path %}active {% endif %}d-flex text-center align-items-center cart my-auto" style="font-size: 1.5em;">{% include "../svg/bag.svg" %}
+                        </a>
+                    </li>
+                    
+                    
+                    {% comment %} {% if not request.user.is_authenticated %}
                     <li class="px-0 d-flex align-items-center border-0 list-group-item bg-transparent" style="">
                         <a href="{% url 'accounts:login' %}" class="{% if 'login/' in request.path %}active {% endif %}text-center align-text-bottom my-auto">LOGIN</a>&nbsp;<span class="text-warning">|</span>&nbsp;<a href="{% url 'accounts:signup' %}" class="{% if 'signup/' in request.path %}active {% endif %}text-center my-auto">SIGN UP</a>
                     </li>
@@ -84,7 +96,7 @@
                     <li class="d-flex align-items-center px-0 border-0 list-group-item bg-transparent" style="">
                         <a href="{% url 'accounts:account-home' %}" class="{% if 'account/dashboard/' in request.path %}active {% endif %}text-center my-auto">MY ACCOUNT</a>&nbsp;<span class="text-warning">|</span>&nbsp;<a href="{% url 'accounts:logout' %}" class="text-center my-auto">LOGOUT</a>
                     </li>
-                    {% endif %}
+                    {% endif %} {% endcomment %}
                 </ul>
             </div>
         </div>

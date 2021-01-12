@@ -75,12 +75,12 @@ class ProductListing(ListAPIView):
     pagination_class = StandardResultsSetPagination
 
     def get_serializer_class(self):
-        if self.kwargs["first_slug"] == 'new-arrivals' or self.kwargs["first_slug"] == 'best-sellers' or self.kwargs["first_slug"] == 'back-in-stock':
-            return ProductSerializer
+        if self.kwargs["first_slug"] == 'cargo-collections':
+            return TrouserSerializer
         elif self.kwargs["first_slug"] == 'wave-cap-collections':
             return WavecapSerializer
         else:
-            return TrouserSerializer
+            return ProductSerializer
         return super().get_serializer_class()
 
     def list(self, request, *args, **kwargs):
@@ -89,16 +89,19 @@ class ProductListing(ListAPIView):
         return response
 
     def get_queryset(self):
-        if self.request.is_ajax() or True:
+        if self.request.is_ajax():
             category_slug = self.kwargs["first_slug"]
-            if category_slug == 'new-arrivals' or category_slug == 'best-sellers' or category_slug == 'back-in-stock':
+            if category_slug == 'new-arrivals' or category_slug == 'best-sellers' or category_slug == 'back-in-stock' or category_slug == "all-products":
                 if category_slug == 'new-arrivals':
                     queryList = Product.objects.new_arrivals()
                 else:
                     if category_slug == 'best-sellers':
                         queryList = Product.objects.bestseller()
                     else:
-                        queryList = Product.objects.is_back()
+                        if category_slug == 'back-in-stock':
+                            queryList = Product.objects.is_back()
+                        else:
+                            queryList = Product.objects.all()
             elif category_slug == 'wave-cap-collections':
                 queryList = Wavecap.objects.all()
             else:            

@@ -36,6 +36,40 @@
 .swiper-first .swiper-pagination-bullet-active, .swiper .swiper-pagination-bullet-active{
     background: #000;
 }
+
+.hint-after::after{
+    content: "";
+    position: absolute;
+    border-bottom: 2px solid crimson;
+    top: 50%;
+    margin-top: -1px;
+    margin-left: 5px;
+    border-radius: 2px;
+    width: 5%;
+    transition: all 1.5s ease-in-out;
+}
+
+.swiper-slide:hover {
+    width: 178px;
+}
+.slide-show:hover .hint-after::after{
+    width: 100%;
+}
+
+.slide-show:hover::after .hint-after::after{
+    width: 100%;
+}
+
+.hint-before::before{
+    content: "";
+    position: absolute;
+    border: 1px solid crimson;
+    top: 50%;
+    margin-top: -1px;
+    margin-right: 5px;
+    border-radius: 2px;
+    width: 100%;
+}
 </style>
 {% endblock style %}
 
@@ -46,15 +80,15 @@
             <div class=" d-flex flex-column align-items-start">
                 {{ home.get_markdown_top }}
                 <div class="d-flex align-items-center justify-content-center">
-                    <a class="btn btn-primary bg-white rounded-0 text-center text-dark btn-outline-light" href="{% url 'menu:trouser_by_category' 'collections' %}" role="button">SHOP NOW</a>
+                    <a class="btn btn-primary bg-white rounded-0 text-center text-dark btn-outline-light" href="{% url 'menu:product_by_category' 'collections' %}" role="button">SHOP NOW</a>
                 </div>
             </div>
         </div>
     </div>
 </section>
 <div class="container" id="index">
-    <div class="row mb-4 no-gutters best-seller overflow-hidden" style="min-height:300px;">
-        <span class="text-uppercase mb-4 font-weight-light col-12">BEST SELLERS</span>
+    <div class="row mb-4 no-gutters slide-show best-seller overflow-hidden" style="min-height:300px;">
+        <span class="text-uppercase hint-after mb-4 font-weight-light col-12">BEST SELLERS</span>
         <transition mode="out-in" enter-active-class="animate__animated animate__fadeInRight" leave-active-class="animate__animated animate__fadeOut">
             <div v-if="bestSellerLoading" key="loadingbestseller" class="col-12 d-flex flex-column justify-content-center align-items-center" style="min-height:300px;">
                 <div class="spinner-border text-secondary" role="status">
@@ -85,16 +119,16 @@
                         </a>
                     </div>
                 </div>
-                <div class="d-none d-lg-block remove-outline swiper-button-prev">
+                <div class="d-none d-lg-flex justify-content-start align-items-center remove-outline swiper-button-prev">
                     <i class="fas text-black-50 fa-2x fa-angle-left"></i>
                 </div>
-                <div class="d-none d-lg-block remove-outline swiper-button-next">
+                <div class="d-none d-lg-flex justify-content-end align-items-center remove-outline swiper-button-next">
                     <i class="fas text-black-50 fa-2x fa-angle-right"></i>
                 </div>
                 <div class="swiper-pagination swiper-pagination-bullets"></div>
             </div>
         </transition>
-        <a href="{% url 'menu:trouser_by_category' 'best-sellers' %}" class="btn btn-lg home-button px-5 btn-outline-danger py-3 font-weight-bold rounded-0 text-center mx-auto" role="button">VIEW ALL PRODUCTS</a>
+        <a href="{% url 'menu:product_by_category' 'best-sellers' %}" class="btn btn-lg home-button px-5 btn-outline-danger py-3 font-weight-bold rounded-0 text-center mx-auto" role="button">VIEW ALL PRODUCTS</a>
     </div>
     <div class="row mb-4 back-in-stock-md justify-content-between">
         {% for feature in home.features.all %}
@@ -124,8 +158,8 @@
         </div>
         {% endfor %}
     </div>
-    <div class="row mb-4 no-gutters new-arrivals overflow-hidden" style="min-height:300px;">
-        <span class="text-uppercase mb-4 font-weight-light col-12">NEW ARRIVALS</span>
+    <div class="row mb-4 no-gutters slide-show new-arrivals overflow-hidden" style="min-height:300px;">
+        <span class="text-uppercase hint-after mb-4 font-weight-light col-12" @mouseover="slideshowhover">NEW ARRIVALS</span>
         <transition mode="out-in" enter-active-class="animate__animated animate__fadeInRight" leave-active-class="animate__animated animate__fadeOut">
             <div v-if="newArrivalLoading" key="loadingnewaarival" class="col-12 d-flex flex-column justify-content-center align-items-center" style="height:300px;">
                 <div class="spinner-border text-secondary" role="status">
@@ -135,7 +169,7 @@
             <div
                 v-if="!newArrivalLoading"
                 key="newarrival"
-                class="swiper mx-0 pb-4 col-12"
+                class="swiper mx-0 pb-4 px-lg-5 col-12"
                 v-swiper:swiper="swiperOptions"
                 data-aos="fade-up"
             >
@@ -156,16 +190,16 @@
                         </a>
                     </div>
                 </div>
-                <div class="d-none d-lg-block remove-outline swiper-button-prev">
+                <div class="d-none d-lg-flex justify-content-start align-items-center remove-outline swiper-button-prev">
                     <i class="fas text-black-50 fa-2x fa-angle-left"></i>
                 </div>
-                <div class="d-none d-lg-block remove-outline swiper-button-next">
+                <div class="d-none d-lg-flex justify-content-end align-items-center remove-outline swiper-button-next">
                     <i class="fas text-black-50 fa-2x fa-angle-right"></i>
                 </div>
                 <div class="swiper-pagination swiper-pagination-bullets"></div>
             </div>
         </transition>
-            <a href="{% url 'menu:trouser_by_category' 'new-arrivals' %}" class="btn btn-lg rounded-0 home-button px-5 btn-outline-danger py-3 font-weight-bold text-center mx-auto" role="button">VIEW ALL PRODUCTS</a>
+            <a href="{% url 'menu:product_by_category' 'new-arrivals' %}" class="btn btn-lg rounded-0 home-button px-5 btn-outline-danger py-3 font-weight-bold text-center mx-auto" role="button">VIEW ALL PRODUCTS</a>
     </div>
     <div class="row no-gutters mb-4" data-aos="zoom-in-up">
         <div class="col-12 px-3">
@@ -208,6 +242,7 @@
     });
     $('.vegas-timer').addClass('d-none')
     $('.vegas-content-scrollable').addClass('d-flex align-items-end justify-content-start p-md-5 py-5 px-4 w-100')
+
 
     Vue.use(VueAwesomeSwiper)
     const index = new Vue({
@@ -339,6 +374,9 @@
                     console.log(error);
                 })
             },
+            slideshowhover(){
+                console.log("hover")
+            }
             
         }
 

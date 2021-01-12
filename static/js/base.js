@@ -41,7 +41,7 @@ $(document).ready(function () {
     $('#COLLECTIONSSubmenu').parent().on('hide.bs.collapse', function () {
         $('.menu-data-toggle i').removeClass('fa-minus').addClass('fa-plus');
     });
-    $('.list-group.desktop .list-group-item').hover(function() {
+    $('.list-group.desktop .shop').hover(function() {
         $(this).find('.collapse').collapse('show');
         $(this).addClass('text-dark');
     }, function() {

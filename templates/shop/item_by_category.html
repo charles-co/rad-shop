@@ -482,7 +482,7 @@
                     })
                     .then((jsonData) => {
                         if (jsonData["detail"] != "Not found."){
-                            if (jsonData.page === "new-arrivals" || jsonData.page === "best-sellers" || jsonData.page === "back-in-stock"){
+                            if (jsonData.page === "all-products" || jsonData.page === "new-arrivals" || jsonData.page === "best-sellers" || jsonData.page === "back-in-stock"){
                                 this.products = this.products.concat(_.map(jsonData.results, 'item'))
                                 temp = _.map(jsonData.results, 'item')
                             }

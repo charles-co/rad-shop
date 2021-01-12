@@ -166,6 +166,23 @@ a:focus {
 .list-group-horizontal.desktop .list-group-item.active {
     position: relative;
 }
+
+.list-group-horizontal.desktop .list-group-item::after {
+    position: absolute;
+    top: 100%;
+    width: 0;
+    content: '';
+    margin-top: -2px;
+    left: 0;
+    border-radius: 10%;
+    border-top: 2px solid rgb(207, 91, 91) !important;
+    transition: all .5s ease;
+}
+
+.list-group-horizontal.desktop .list-group-item:hover::after{
+    width: 100%;
+}
+
 .list-group-horizontal.desktop .list-group-item.active:before {
     position: absolute;
     top: 34px;
@@ -427,10 +444,10 @@ ul ul a {
 }
 @media (min-width: 1024px) {
     .main-wrapper {
-        padding-top: 79px !important;
+        padding-top: 48px !important;
     }
     .payment-overlay {
-        top: 79px;
+        top: 48px;
     }
 }
 @media (max-width: 991px) {

@@ -36,7 +36,7 @@ register = template.Library()
 def form_url(obj):
     tempr = obj.get_ancestors(include_self=True)
     args = [temp.slug for temp in tempr]
-    return reverse('menu:trouser_by_category', args=args)
+    return reverse('menu:product_by_category', args=args)
 
 @register.filter
 def color_name(hexcode):
@@ -88,7 +88,6 @@ def addfloatt(value, arg):
 
 @register.simple_tag
 def settings(name):
-    print("here")
     print(getattr(settings, "DEBUG", ""))
     return getattr(settings, name, "")
     

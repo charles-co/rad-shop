@@ -20,6 +20,7 @@ class Menu(MPTTModel):
     app = models.CharField(max_length=2, choices=APP, default=SHOP)
     parent = TreeForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='children', db_index=True)
     is_active = models.BooleanField(default=True)
+    show_all = models.BooleanField('All products', default=False)
     
     class MPTTMeta:
         order_insertion_by = ['app', 'name']
@@ -29,3 +30,7 @@ class Menu(MPTTModel):
         
     def __str__(self):
         return self.name
+        
+    @property
+    def show_all_products(self):
+        return self.show_all

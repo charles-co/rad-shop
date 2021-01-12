@@ -67,10 +67,10 @@
                         <div class="col-md-6">
                             <h4 class="footer-heading">Menu -</h4>
                             <ul class="list-group list-unstyled list-group-flush">
-                                <a href="{% url 'menu:trouser_by_category' 'new-arrivals' %}" class="list-group-item list-group-item-action font-weight-bold links bg-transparent small">NEW ARRIVALS</a>
-                                <a href="{% url 'menu:trouser_by_category' 'collections' %}" class="list-group-item list-group-item-action font-weight-bold links bg-transparent small">COLLECTIONS</a>
-                                <a href="{% url 'menu:trouser_by_category' 'back-in-stock' %}" class="list-group-item list-group-item-action font-weight-bold links bg-transparent small">BACK IN STOCK</a>
-                                <a href="{% url 'menu:trouser_by_category' 'bestsellers' %}" class="list-group-item list-group-item-action font-weight-bold links bg-transparent small">BEST SELLERS</a>
+                                <a href="{% url 'menu:product_by_category' 'new-arrivals' %}" class="list-group-item list-group-item-action font-weight-bold links bg-transparent small">NEW ARRIVALS</a>
+                                <a href="{% url 'menu:product_by_category' 'collections' %}" class="list-group-item list-group-item-action font-weight-bold links bg-transparent small">COLLECTIONS</a>
+                                <a href="{% url 'menu:product_by_category' 'back-in-stock' %}" class="list-group-item list-group-item-action font-weight-bold links bg-transparent small">BACK IN STOCK</a>
+                                <a href="{% url 'menu:product_by_category' 'bestsellers' %}" class="list-group-item list-group-item-action font-weight-bold links bg-transparent small">BEST SELLERS</a>
                             </ul>
                         </div>
                         <div class="col-md-6">
@@ -118,6 +118,7 @@
         {% comment %} <script src="{% static 'js/jquery.mCustomScrollbar.concat.min.js' %}"></script> {% endcomment %}
         <script src="{% static 'js/bootstrap.min.js' %}"></script>
         <script src="{% static 'js/lodash.min.js' %}"></script>
+        <script src="{% static 'js/anime.min.js' %}"></script>
         <script src="{% static 'js/aos.js' %}"></script>
         <script src="{% static 'js/vue.js' %}"></script>
         <script src="{% static 'js/vuex.js' %}"></script>
@@ -129,6 +130,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.5.4/umd/popper.min.js"></script>
         <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
         {% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js" integrity="sha512-Yk47FuYNtuINE1w+t/KT4BQ7JaycTCcrvlSvdK/jry6Kcxqg5vN7/svVWCxZykVzzJHaxXk5T9jnFemZHSYgnw==" crossorigin="anonymous"></script> {% endcomment %}
         {% endif %}
         <script src="{% static 'js/base.js' %}"></script>
