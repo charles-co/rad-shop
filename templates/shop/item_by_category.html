@@ -305,10 +305,10 @@
             return {
                 products: [],
                 sortedProducts: [],
-                sortedOrderProducts: [],  
+                sortedOrderProducts: [],
                 orderProducts: [],
                 colors: null,
-                next: "{% if sub_category_slug %}{% url 'shop:listing' category_slug sub_category_slug %}{% else %}{% url 'shop:listing' category_slug %}{% endif %}",
+                endpoint: "{% if sub_category_slug %}{% url 'shop:listing' category_slug sub_category_slug %}{% else %}{% url 'shop:listing' category_slug %}{% endif %}",
                 previous: null,
                 counter: 0,
                 loading: true,
@@ -317,7 +317,7 @@
                 orderShouldRender: false,
                 colorSort: false,
                 selectedColor: "all",
-                selectedSort: null,
+                selectedSort: "name",
                 has_content: true,
                 lazyLoading: true,
             }
@@ -335,6 +335,7 @@
             }
         },
         mounted(){
+            this.getproducts()
             console.log("mounted")
         },
         computed: {
@@ -370,13 +371,6 @@
                     c = e
                 }
                 this.selectedColor = c
-                if(c !== "all"){
-                    let s = _.filter(this.products, ({ first_variant }) => first_variant.color === c)
-                    this.sortedProducts= s
-                }else if (c === "all") {
-                    this.sortedProducts = this.products
-                }
-                this.sortedShouldRender = true
                 setTimeout( function (){
                     this.loading = false
                 }.bind(this), 1000)
@@ -391,84 +385,52 @@
                     c = e
                 }
                 this.selectedSort = c
-                if(c === "-name"){
-                    let s = _.orderBy(this.products, ['name'], ['desc'])
-                    this.orderProducts = s
-                }else if(c === "name") {
-                    let s = _.orderBy(this.products, ['name'], ['asc'])
-                    this.orderProducts = s
-                }else if(c === "-price") {
-                    let s = _.orderBy(this.products, ['first_variant.price'], ['desc'])
-                    this.orderProducts = s
-                }else if(c === "price") {
-                    let s = _.orderBy(this.products, ['first_variant.price'], ['asc'])
-                    this.orderProducts = s
-                }else if(c === "date") {
-                    let s = _.orderBy(this.products, ['created'], ['asc'])
-                    this.orderProducts = s
-                }else if(c === "-date") {
-                    let s = _.orderBy(this.products, ['created'], ['desc'])
-                    this.orderProducts = s
-                }else if(c === "featured") {
-                    let s = _.filter(this.products, ({ is_featured }) => is_featured === true)
-                    this.orderProducts = s
-                }else if(c === "bestseller") {
-                    let s = _.filter(this.products, ({ is_bestseller }) => is_bestseller === true)
-                    this.orderProducts = s
-                }
-                if (c === null){
-                  this.orderShouldRender = false  
-                }else{
-                    this.orderShouldRender = true
-                }
                 setTimeout( function (){
                     this.loading = false
                 }.bind(this), 1000)
             },
-            sortTemp(obj){
-                c = this.selectedColor
-                if(c !== "all"){
-                    let s = _.filter(obj, ({ first_variant }) => first_variant.color === c)
-                    this.sortedProducts= this.sortedProducts.concat(s)
-                }else if (c === "all") {
-                    this.sortedProducts= this.sortedProducts.concat(obj)
-                }
-                this.sortedShouldRender = true
-            },
-            orderTemp(obj){
-                c = this.selectedSort
-                if(c === "-name"){
-                    let s = _.orderBy(obj, ['name'], ['desc'])
-                    this.orderProducts = this.orderProducts.concat(s)
-                }else if(c === "name") {
-                    let s = _.orderBy(obj, ['name'], ['asc'])
-                    this.orderProducts = this.orderProducts.concat(s)
-                }else if(c === "-price") {
-                    let s = _.orderBy(obj, ['first_variant.price'], ['desc'])
-                    this.orderProducts = this.orderProducts.concat(s)
-                }else if(c === "price") {
-                    let s = _.orderBy(obj, ['first_variant.price'], ['asc'])
-                    this.orderProducts = this.orderProducts.concat(s)
-                }else if(c === "date") {
-                    let s = _.orderBy(obj, ['created'], ['asc'])
-                    this.orderProducts = this.orderProducts.concat(s)
-                }else if(c === "-date") {
-                    let s = _.orderBy(obj, ['created'], ['desc'])
-                    this.orderProducts = this.orderProducts.concat(s)
-                }else if(c === "featured") {
-                    let s = _.filter(obj, ({ is_featured }) => is_featured === true)
-                    this.orderProducts = this.orderProducts.concat(s)
-                }else if(c === "bestseller") {
-                    let s = _.filter(obj, ({ is_bestseller }) => is_bestseller === true)
-                    this.orderProducts = this.orderProducts.concat(s)
-                }
-                if (c === null){
-                    this.orderProducts = this.orderProducts.concat(obj)
-                    this.orderShouldRender = false  
-                }
+            getproducts(){
+                this.loading = true
+                let url = this.endpoint + "?&sort_by=" + this.selectedColor + "&order_by="= this.selectedSort
+                console.log(url)
+                fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then((response) => {
+                    return response.json();
+                })
+                .then((jsonData) => {
+                    if (jsonData["detail"] != "Not found."){
+                        if (jsonData.page === "all-products" || jsonData.page === "new-arrivals" || jsonData.page === "best-sellers" || jsonData.page === "back-in-stock"){
+                            this.products = this.products.concat(_.map(jsonData.results, 'item'))
+                            temp = _.map(jsonData.results, 'item')
+                        }
+                        else{
+                            this.products = this.products.concat(jsonData.results)
+                            temp = jsonData.results
+                        }
+                        this.colors = _.sortedUniq(_.map(this.products, 'first_variant.color'))
+                        this.next = jsonData.next
+                        this.counter += jsonData.count
+                        setTimeout( function(){
+                            this.loading = false
+                            window.addEventListener("scroll", _.debounce(this.lazyLoad, 200));
+                        }.bind(this), 2000)
+                    }
+                    else{
+                        this.has_content = false
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
             },
             loadMore(){
-                if (this.has_next === true ){
+                if (this.has_next === true && false){
                     this.busy = true;
                     fetch(this.next, {
                         method: 'GET',
@@ -503,7 +465,7 @@
                                 }
                                 this.loading = false
                                 this.busy = false
-                                window.addEventListener("scroll", this.lazyLoad);
+                                window.addEventListener("scroll", _.debounce(this.lazyLoad, 200));
                             }.bind(this), 2000)
                         }
                         else{
@@ -514,29 +476,6 @@
                         console.log(error);
                     })
                 }
-            },
-            colorSortfn(){
-                if ((this.sortedShouldRender == this.orderShouldRender || this.colorSort == this.orderShouldRender || this.colorSort == this.sortedShouldRender)){
-                    this.sortedShouldRender = false
-                    this.orderShouldRender = false
-                    return true
-                }else{
-                    return false
-                }
-            },
-            sortedOrderProductsfn(){
-                if (this.colorSort){
-                    let s
-                    temp = _.clone(this.orderProducts)
-                    if (this.selectedColor !== "all"){
-                        s = _.filter(temp, ({ first_variant }) => first_variant.color === this.selectedColor)
-                    }
-                    else{
-                        s = temp
-                    }
-                    return s
-                }
-                return []
             },
             reset(){
                 this.sortedProducts = []
@@ -558,6 +497,9 @@
                     el.style.opacity = 1
                     el.classList.add("animate__animated", "animate__jackInTheBox")    
                 }, delay)
+                el.addEventListener('animationend', ()=> {
+                    el.classList.remove('animate__animated', 'animated__fadInUp');
+                })
             },
             lazyLoad(){
                 let lazyImages = [].slice.call(document.querySelectorAll("div.lazy-container"));

@@ -90,7 +90,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ("item", "created_at")
+        fields = ("item",)
 
 # DETAIL SERIALIZERS
 

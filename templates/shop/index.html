@@ -50,7 +50,10 @@
 }
 
 .swiper-slide:hover {
-    width: 178px;
+    transform: scale(1.1)
+}
+.swiper-slide:hover {
+    transition: transform .5s ease;
 }
 .slide-show:hover .hint-after::after{
     width: 100%;
@@ -159,7 +162,7 @@
         {% endfor %}
     </div>
     <div class="row mb-4 no-gutters slide-show new-arrivals overflow-hidden" style="min-height:300px;">
-        <span class="text-uppercase hint-after mb-4 font-weight-light col-12" @mouseover="slideshowhover">NEW ARRIVALS</span>
+        <span class="text-uppercase hint-after mb-4 font-weight-light col-12">NEW ARRIVALS</span>
         <transition mode="out-in" enter-active-class="animate__animated animate__fadeInRight" leave-active-class="animate__animated animate__fadeOut">
             <div v-if="newArrivalLoading" key="loadingnewaarival" class="col-12 d-flex flex-column justify-content-center align-items-center" style="height:300px;">
                 <div class="spinner-border text-secondary" role="status">
@@ -277,30 +280,6 @@
                         },
                     }
                 },
-                {% comment %} swiperoptionsmid: {
-                    grabCursor: true,
-                    loop: false,
-                    pagination: {
-                        el: '.swiper-pagination',
-                    },
-                    navigation: {
-                        nextEl: '.swiper-button-next',
-                        prevEl: '.swiper-button-prev'
-                    },
-                    breakpoints: {
-                        1024: {
-                            slidesPerView: 3,
-                            spaceBetween: 10
-                        },
-                        768: {
-                            slidesPerView: 3,
-                            spaceBetween: 10,
-                        },
-                        320: {
-                            slidesPerView: 1,
-                        },
-                    },
-                }, {% endcomment %}
                 newArrivalProducts: [],
                 bestSellerProducts: [],
                 newArrivalLoading: true,
@@ -374,8 +353,7 @@
                     console.log(error);
                 })
             },
-            slideshowhover(){
-                console.log("hover")
+            slideshowhover(e){
             }
             
         }

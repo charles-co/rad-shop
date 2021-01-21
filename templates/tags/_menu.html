@@ -22,7 +22,7 @@
     </div>
 </div>
 {% else %}
-<a href="{{ node|form_url }}" class="text-capitalize text-center my-3">{{ node.name }}</a>
+<a href="{{ node|form_url }}" class="text-capitalize text-center {% if node.is_child_node %}my-3{% endif %}">{{ node.name }}</a>
 {% endif %}
 {% endif %}
 {% endrecursetree %}
