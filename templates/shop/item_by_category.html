@@ -101,15 +101,13 @@
                                 <div class="form-group">
                                     <label for="sort">Sort</label>
                                     <select class="form-control" @change="order($event)" id="sort_by">
-                                        <option disabled="disabled" selected value = "none">Choose option</option>
-                                        <option value='featured'>FEATURED</option>
-                                        <option value='bestseller'>BESTSELLER</option>
-                                        <option value='name'>ALPHABETICALLY, A-Z</option>
-                                        <option value='-name'>ALPHABETICALLY, Z-A</option>
-                                        <option value='price'>PRICE, LOW TO HIGH</option>
-                                        <option value='-price'>PRICE, HIGH TO LOW</option>
-                                        <option value='date'>DATE, OLD TO NEW</option>
-                                        <option value='-date'>DATE, NEW TO OLD</option>
+                                        <option class="small" disabled="disabled" selected value="none">Choose option</option>
+                                        <option class="small" value='name'>ALPHABETICALLY, A-Z</option>
+                                        <option class="small" value='-name'>ALPHABETICALLY, Z-A</option>
+                                        <option class="small" value='variants__price'>PRICE, LOW TO HIGH</option>
+                                        <option class="small" value='-variants__price'>PRICE, HIGH TO LOW</option>
+                                        <option class="small" value='created_at'>DATE, OLD TO NEW</option>
+                                        <option class="small" value='-created_at'>DATE, NEW TO OLD</option>
                                     </select>
                                 </div>
                             </div>
@@ -132,8 +130,8 @@
         <div class="container-fluid" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy">
             <transition-group appear tag="div" v-bind:css="false" v-on:before-enter="beforeEnter" v-on:enter="enter" class="row no-gutters justify-content-md-around">
                 <product-card
-                    v-if="sortedShouldRender && !loading"
-                    v-for="(product, index) in sortedProducts"
+                    v-if="!loading"
+                    v-for="(product, index) in products"
                     v-bind:key="product.sku"
                     v-bind:id="product.id"
                     v-bind:name="product.name"
@@ -217,14 +215,13 @@
         },
         props: [
             "colors",
-            "selectedsort",
         ],
         mounted(){
         },
         template: `
                     <select class="form-control" id="colors" @change="$emit('sort', ($event))">
-                        <option selected="true" value="all">All</option>
-                        <option v-for="color in colors" :value="color" :style="{backgroundColor: color}"><p>[[color]]</p></option>
+                        <option selected="true" class="small" value="all">All</option>
+                        <option v-for="color in colors" :value="color" class="small" :style="{backgroundColor: color}"><p>[[color]]</p></option>
                     </select>
                 `
 
@@ -308,7 +305,6 @@
                 sortedOrderProducts: [],
                 orderProducts: [],
                 colors: null,
-                endpoint: "{% if sub_category_slug %}{% url 'shop:listing' category_slug sub_category_slug %}{% else %}{% url 'shop:listing' category_slug %}{% endif %}",
                 previous: null,
                 counter: 0,
                 loading: true,
@@ -317,13 +313,14 @@
                 orderShouldRender: false,
                 colorSort: false,
                 selectedColor: "all",
-                selectedSort: "name",
+                selectedOrder: "name",
                 has_content: true,
                 lazyLoading: true,
             }
         },
         created(){
             AOS.init();
+            this.getFilters();
         },
         updated(){
             AOS.refreshHard();
@@ -336,7 +333,6 @@
         },
         mounted(){
             this.getproducts()
-            console.log("mounted")
         },
         computed: {
             get_total_price: function(){
@@ -358,6 +354,28 @@
             }, 
             has_contjent: function(){
                 return this.products.length > 0
+            },
+            endpoint: function(){
+                var x = window.location.href.split("/")
+                var y = x.slice(5, (x.length - 1))
+               if (y[0] === 'all-products'){
+                    if (y.length > 1){
+                        return "/shop/api/" + y[0] + "/category/" + y[1]
+                    }
+                    return "/shop/api/" + y[0]
+               }
+               else if (y[0] === 'wave-cap-collections'){
+                    if (y.length > 1){
+                        return "/shop/api/wavecaps/category/" + y[1]
+                    }
+                    return "/shop/api/wavecaps"
+               }
+               else if (y[0] === 'cargo-collections'){
+                    if (y.length > 1){
+                        return "/shop/api/trousers/category/" + y[1]
+                    }
+                    return "/shop/api/trousers"
+               }
             }
         },
         methods: {
@@ -371,9 +389,8 @@
                     c = e
                 }
                 this.selectedColor = c
-                setTimeout( function (){
-                    this.loading = false
-                }.bind(this), 1000)
+                this.getproducts()
+
             },
             order(e){
                 this.loading = true
@@ -384,15 +401,12 @@
                 catch(err){
                     c = e
                 }
-                this.selectedSort = c
-                setTimeout( function (){
-                    this.loading = false
-                }.bind(this), 1000)
+                this.selectedOrder = c
+                this.getproducts()
             },
             getproducts(){
                 this.loading = true
-                let url = this.endpoint + "?&sort_by=" + this.selectedColor + "&order_by="= this.selectedSort
-                console.log(url)
+                let url = this.endpoint + "?color=" + this.selectedColor + "&order_by=" + this.selectedOrder
                 fetch(url, {
                     method: 'GET',
                     headers: {
@@ -400,20 +414,12 @@
                         'Content-Type': 'application/json',
                     },
                 })
-                .then((response) => {
+                .then(response => {
                     return response.json();
                 })
-                .then((jsonData) => {
-                    if (jsonData["detail"] != "Not found."){
-                        if (jsonData.page === "all-products" || jsonData.page === "new-arrivals" || jsonData.page === "best-sellers" || jsonData.page === "back-in-stock"){
-                            this.products = this.products.concat(_.map(jsonData.results, 'item'))
-                            temp = _.map(jsonData.results, 'item')
-                        }
-                        else{
-                            this.products = this.products.concat(jsonData.results)
-                            temp = jsonData.results
-                        }
-                        this.colors = _.sortedUniq(_.map(this.products, 'first_variant.color'))
+                .then(jsonData => {
+                    if (jsonData["detail"] === undefined){
+                        this.products = jsonData.results
                         this.next = jsonData.next
                         this.counter += jsonData.count
                         setTimeout( function(){
@@ -477,6 +483,18 @@
                     })
                 }
             },
+            getFilters(){
+                fetch('/shop/api/colors/')
+                .then(res => {
+                    return res.json()
+                })
+                .then(response => {
+                    this.colors = response
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+            },
             reset(){
                 this.sortedProducts = []
                 this.sortedOrderProducts = []  
@@ -484,7 +502,7 @@
                 this.sortedShouldRender = false
                 this.orderShouldRender = false
                 this.colorSort = false
-                this.selectedSort = null
+                this.selectedOrder = null
                 this.sortProducts("all")
             },
             beforeEnter: function (el) {

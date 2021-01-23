@@ -6,7 +6,7 @@ from sorl_thumbnail_serializer.fields import HyperlinkedSorlImageField
 
 from menu.models import Menu
 
-from .models import Image, Product, Trouser, TrouserMETA, TrouserVariant, Wavecap, WavecapVariant
+from shop.models import Image, Product, Trouser, TrouserMETA, TrouserVariant, Wavecap, WavecapVariant
 
 
 class CategorySerializer(serializers.ModelSerializer):

@@ -137,6 +137,7 @@ class BrandQuerySet(models.query.QuerySet):
         return self.filter(is_featured=True)
 
     def by_category(self, category):
+        category = Menu.objects.filter(slug=category).first()
         return self.filter(category=category)
 
     def search(self, query):

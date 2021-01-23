@@ -50,7 +50,7 @@
 }
 
 .swiper-slide:hover {
-    transform: scale(1.1)
+    transform: scale(1.05)
 }
 .swiper-slide:hover {
     transition: transform .5s ease;
@@ -93,7 +93,7 @@
     <div class="row mb-4 no-gutters slide-show best-seller overflow-hidden" style="min-height:300px;">
         <span class="text-uppercase hint-after mb-4 font-weight-light col-12">BEST SELLERS</span>
         <transition mode="out-in" enter-active-class="animate__animated animate__fadeInRight" leave-active-class="animate__animated animate__fadeOut">
-            <div v-if="bestSellerLoading" key="loadingbestseller" class="col-12 d-flex flex-column justify-content-center align-items-center" style="min-height:300px;">
+            <div v-if="slideshowloading" key="loadingbestseller" class="col-12 d-flex flex-column justify-content-center align-items-center" style="min-height:300px;">
                 <div class="spinner-border text-secondary" role="status">
                     <span class="sr-only">Loading...</span>
                 </div>
@@ -101,7 +101,7 @@
             <div
                 class="swiper-first px-lg-5 mx-0 pb-4 col-12"
                 v-swiper:swiper-first="swiperOptions"
-                v-if="!bestSellerLoading"
+                v-if="!slideshowloading"
                 key="bestseller"
                 data-aos="fade-up"
             >
@@ -164,13 +164,13 @@
     <div class="row mb-4 no-gutters slide-show new-arrivals overflow-hidden" style="min-height:300px;">
         <span class="text-uppercase hint-after mb-4 font-weight-light col-12">NEW ARRIVALS</span>
         <transition mode="out-in" enter-active-class="animate__animated animate__fadeInRight" leave-active-class="animate__animated animate__fadeOut">
-            <div v-if="newArrivalLoading" key="loadingnewaarival" class="col-12 d-flex flex-column justify-content-center align-items-center" style="height:300px;">
+            <div v-if="slideshowloading" key="loadingnewaarival" class="col-12 d-flex flex-column justify-content-center align-items-center" style="height:300px;">
                 <div class="spinner-border text-secondary" role="status">
                     <span class="sr-only">Loading...</span>
                 </div>
             </div>
             <div
-                v-if="!newArrivalLoading"
+                v-if="!slideshowloading"
                 key="newarrival"
                 class="swiper mx-0 pb-4 px-lg-5 col-12"
                 v-swiper:swiper="swiperOptions"
@@ -241,7 +241,6 @@
         shuffle: true,
         transitionDuration: 2000,
         overlay: "{% static '/js/overlays/03.png' %}"
-        {% comment %} animation: 'kenburnsDownRight' {% endcomment %}
     });
     $('.vegas-timer').addClass('d-none')
     $('.vegas-content-scrollable').addClass('d-flex align-items-end justify-content-start p-md-5 py-5 px-4 w-100')
@@ -282,19 +281,18 @@
                 },
                 newArrivalProducts: [],
                 bestSellerProducts: [],
-                newArrivalLoading: true,
-                bestSellerLoading: true,
+                slideshowloading: true,
             }
         },
         created(){
             AOS.init();
+            this.slideshows();
         },
         updated(){
             AOS.refreshHard();
         },
         mounted(){
-            this.newArrival();
-            this.bestSeller();
+            
         },
         filters: {
             currency: function(value){
@@ -304,49 +302,18 @@
             },
         },
         computed: {
-            numItems: function(){
-                return store.state.numItems;
-            },
         },
         methods: {
-            newArrival(){
-                fetch("{% url 'shop:api-new-arrivals' %}", {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    }, 
-                    credentials: 'same-origin',
-                })
-                .then((response) => { 
-                    return response.json();
-                })
-                .then((results) => {
-                    this.newArrivalProducts = _.map(results, 'item');
+            slideshows(){
+                Promise.all([
+                    fetch('api/products/slideshow/new-arrivals/').then(res => res.ok && res.json() || Promise.reject(res)),
+                    fetch('api/products/slideshow/best-sellers/').then(res => res.ok && res.json() || Promise.reject(res))
+                ])
+                .then(response => {
+                    this.newArrivalProducts = response[0];
+                    this.bestSellerProducts = response[1];
                     setTimeout( function(){
-                        this.newArrivalLoading = false;
-                    }.bind(this), 1000);
-                })
-                .catch(function (error){
-                    console.log(error);
-                })
-            },
-            bestSeller(){
-                fetch("{% url 'shop:api-best-sellers' %}", {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    }, 
-                    credentials: 'same-origin',
-                })
-                .then((response) => { 
-                    return response.json();
-                })
-                .then((results) => {
-                    this.bestSellerProducts = _.map(results, 'item');
-                    setTimeout( function(){
-                        this.bestSellerLoading = false;
+                        this.slideshowloading = false;
                     }.bind(this), 1000);
                 })
                 .catch(function (error){

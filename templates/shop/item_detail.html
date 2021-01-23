@@ -230,8 +230,6 @@
         },
         created(){
             AOS.init();
-            console.log("created")
-
         },
         filters: {
             currency: function(value){
@@ -241,14 +239,11 @@
             },
         },
         mounted(){
-            console.log("mounted");
-            fetch("{% url 'shop:api-detail' product_slug slug %}", {
-                    method: 'GET'
-            })
+            fetch(this.endpoint)
             .then((response) => {
                 return response.json();
             })
-            .then((jsonData) => {
+            .then(jsonData => {
                 if (jsonData["detail"] != "Not found."){
                     this.name = jsonData.name
                     this.product_name = jsonData.product.toLowerCase()
@@ -321,6 +316,10 @@
                     this.cssCursor = "pointer"
                     return "Add to cart <i class='fas fa-cart-plus'></i>"
                 }
+            },
+            endpoint: function(){
+                var x = window.location.href.split("/").splice(-3, 2)
+                return "/shop/api/" + x[0] + "s/" + x[1]
             }
         },
         methods: {
@@ -387,16 +386,6 @@
                     console.log(error);
                 })
             },
-            {% comment %} changeMainImage(key){
-                if (this.selected_product.images[key].file !== this.mainImage){
-                    this.change = false
-                    this.mainImage = this.selected_product.images[key].file
-                    this.selectedThumbnail = key
-                    setTimeout( function(){
-                        this.change = true
-                    }.bind(this), 1000)
-                }
-            }, {% endcomment %}
             changeSize(index){
                 if (this.selected_product.metas[index].size !== this.currentSize){
                     this.currentSize = this.selected_product.metas[index].size
