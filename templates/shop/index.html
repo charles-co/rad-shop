@@ -306,8 +306,8 @@
         methods: {
             slideshows(){
                 Promise.all([
-                    fetch('api/products/slideshow/new-arrivals/').then(res => res.ok && res.json() || Promise.reject(res)),
-                    fetch('api/products/slideshow/best-sellers/').then(res => res.ok && res.json() || Promise.reject(res))
+                    fetch('api/all-products/slideshow/new-arrivals/').then(res => res.ok && res.json() || Promise.reject(res)),
+                    fetch('api/all-products/slideshow/best-sellers/').then(res => res.ok && res.json() || Promise.reject(res))
                 ])
                 .then(response => {
                     this.newArrivalProducts = response[0];

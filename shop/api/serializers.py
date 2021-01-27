@@ -61,7 +61,7 @@ class TrouserSerializer(BaseSerializer):
         model = Trouser
 
     def get_first_variant(self, obj):
-        first_variant = TrouserVariant.objects.filter(trouser=obj).latest('id')
+        first_variant = TrouserVariant.objects.filter(trouser=obj).earliest('id')
         first_variant_serializer = TrouserVariantSerializer(first_variant)
         return first_variant_serializer.data
 
@@ -77,7 +77,7 @@ class WavecapSerializer(BaseSerializer):
         model = Wavecap
 
     def get_first_variant(self, obj):
-        first_variant = WavecapVariant.objects.filter(wavecap=obj).latest('id')
+        first_variant = WavecapVariant.objects.filter(wavecap=obj).earliest('id')
         first_variant_serializer = WavecapVariantSerializer(first_variant)
         return first_variant_serializer.data
 

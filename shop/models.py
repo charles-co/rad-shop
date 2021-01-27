@@ -48,29 +48,22 @@ class Image(ItemBase):
 class ProductQuerySet(models.query.QuerySet):
     
     def active(self):
-        lookups = Q(wavecap__available=True) | Q(trouser__available=True)
-        return self.filter(lookups).prefetch_related('item')
+        return self.filter(available=True).prefetch_related('item')
 
     def new_arrivals(self, num):
-        return self.order_by("-created_at")
+        return self.order_by("-created_at")[:num]
 
     def featured(self):
-        lookups = Q(wavecap__is_featured=True) | Q(trouser__is_featured=True)
-        return self.filter(lookups)
+        return self.filter(is_featured=True)
     
     def is_back(self):
-        lookups = Q(wavecap__is_back=True) | Q(trouser__is_back=True)
-        return self.filter(lookups)
+        return self.filter(is_back=True)
     
     def is_bestseller(self, num):
-        lookups = Q(wavecap__is_bestseller=True) | Q(trouser__is_bestseller=True)
-        if num > 0:    
-            return self.filter(lookups)[:num]
-        return self.filter(lookups)
+        return self.filter(is_bestseller=True)[:num]
     
     def is_discounted(self):
-        lookups = (Q(wavecap__is_discounted=True) | Q(trouser__is_discounted=True))
-        return self.filter(lookups)
+        return self.filter(is_discounted=True)
 
     
 
@@ -91,13 +84,13 @@ class ProductManager(models.Manager):
     def all(self):
         return self.get_queryset().active()
 
-    def new_arrivals(self, num=0):
+    def new_arrivals(self, num=-1):
         return self.get_queryset().active().new_arrivals(num)
 
     def featured(self):
         return self.get_queryset().active().featured()
     
-    def bestseller(self, num=0):
+    def bestseller(self, num=-1):
         return self.get_queryset().active().is_bestseller(num)
 
     def is_back(self):
@@ -117,8 +110,18 @@ class ProductManager(models.Manager):
 
 class Product(models.Model):
 
+    name = models.CharField(max_length=50, null=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    
+    is_bestseller = models.BooleanField(default=False)
+    is_back = models.BooleanField(default=False)
+    is_featured = models.BooleanField(default=False)
+    is_discounted = models.BooleanField(default=False)
+    available = models.BooleanField(default=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, limit_choices_to={'model__in':('trouser','wavecap')})
     object_id = models.PositiveIntegerField()
     item = GenericForeignKey('content_type', 'object_id')
@@ -254,7 +257,7 @@ class BrandMETA(models.Model):
 class TrouserQuerySet(BrandQuerySet):
 
     def active(self):
-        return self.filter(available=True).prefetch_related('variants', 'variants__metas')
+        return self.filter(available=True).prefetch_related('variants', 'variants__metas', 'images')
 
 class TrouserManager(BrandManager):
     
@@ -290,8 +293,9 @@ class TrouserMETA(BrandMETA):
         return self.trouser_variant.__str__()
 
 class WavecapQuerySet(BrandQuerySet):
+
     def active(self):
-        return self.filter(available=True).prefetch_related('variants')
+        return self.filter(available=True).prefetch_related('variants', 'images')
 
 class WavecapManager(BrandManager):
     

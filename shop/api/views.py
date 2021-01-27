@@ -37,18 +37,18 @@ class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ProductSerializer
     pagination_class = StandardResultsSetPagination
 
-    def get_queryset(self):
-        if self.action == 'list':
-            color = self.request.GET.get('color', 'all')
-            order = self.request.GET.get('order_by', 'name')
-            if color == 'all':
-                queryList = Products.objects.order_by(order)
-            else:
-                color_hex = webcolors.name_to_hex(color).upper()
-                queryList = Products.objects.filter(Q(wavecap__variants__color=color_hex) | Q(trouser__variants__color=color_hex)).order_by(order)
-        else:
-            queryList = Products.objects.all()
-        return queryList
+    # def get_queryset(self):
+    #     if self.action == 'list':
+    #         color = self.request.GET.get('color', 'all')
+    #         order = self.request.GET.get('order_by', 'name')
+    #         if color == 'all':
+    #             queryList = Products.objects.order_by(order)
+    #         else:
+    #             color_hex = webcolors.name_to_hex(color).upper()
+    #             queryList = Product.objects.filter(Q(wavecap__variants__color=color_hex) | Q(trouser__variants__color=color_hex)).order_by(order)
+    #     else:
+    #         queryList = Products.objects.all()
+    #     return queryList
 
     def paginate(func):
 
