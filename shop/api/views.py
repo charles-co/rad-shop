@@ -11,7 +11,7 @@ from rest_framework.response import Response
 from shop.models import Product, Trouser, TrouserVariant, Wavecap, WavecapVariant
 
 from .pagination import StandardResultsSetPagination
-from .serializers import ProductSerializer, TrouserDetailSerializer, TrouserSearchSerializer, TrouserSerializer, WavecapSerializer, WavecapDetailSerializer
+from .serializers import ProductSerializer, TrouserDetailSerializer, TrouserSerializer, WavecapSerializer, WavecapDetailSerializer
 
 import webcolors 
 
@@ -33,22 +33,9 @@ def paginate(func):
 
 class ProductViewSet(viewsets.ReadOnlyModelViewSet):
 
-    queryset = Product.objects.all()
+    # queryset = Product.objects.all()
     serializer_class = ProductSerializer
     pagination_class = StandardResultsSetPagination
-
-    # def get_queryset(self):
-    #     if self.action == 'list':
-    #         color = self.request.GET.get('color', 'all')
-    #         order = self.request.GET.get('order_by', 'name')
-    #         if color == 'all':
-    #             queryList = Products.objects.order_by(order)
-    #         else:
-    #             color_hex = webcolors.name_to_hex(color).upper()
-    #             queryList = Product.objects.filter(Q(wavecap__variants__color=color_hex) | Q(trouser__variants__color=color_hex)).order_by(order)
-    #     else:
-    #         queryList = Products.objects.all()
-    #     return queryList
 
     def paginate(func):
 
@@ -68,6 +55,20 @@ class ProductViewSet(viewsets.ReadOnlyModelViewSet):
             return Response(products_obj)
         return inner
     
+    def get_queryset(self):
+        if self.action == 'list':
+            color = self.request.GET.get('color', 'all')
+            order = self.request.GET.get('order_by', 'name')
+            order= "".join(order.split('variants__'))
+            if color == 'all':
+                queryList = Product.objects.order_by(order)
+            else:
+                color_hex = webcolors.name_to_hex(color).upper()
+                queryList = Product.objects.filter(Q(trouser__variants__color=color_hex) | Q(wavecap__variants__color=color_hex)).order_by(order)
+        else:
+            queryList = Product.objects.all()
+        return queryList
+
     @paginate
     def list(self, request):
         print(request.GET)
@@ -77,13 +78,28 @@ class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     @paginate
     @action(methods=['get'], detail=False)
     def new_arrivals(self, request):
-        queryset = Product.objects.new_arrivals()
+        color = self.request.GET.get('color', 'all')
+        order = self.request.GET.get('order_by', 'name')
+        order= "".join(order.split('variants__'))
+        if color == 'all':
+            queryset = Product.objects.new_arrivals().order_by(order)[:20]
+        else:
+            color_hex = webcolors.name_to_hex(color).upper()
+            queryset = Product.objects.new_arrivals().filter(Q(trouser__variants__color=color_hex) | Q(wavecap__variants__color=color_hex)).order_by(order)[:20]
+        
         return queryset
 
     @paginate
     @action(methods=['get'], detail=False)
     def bestsellers(self, request):
-        queryset = Product.objects.bestseller()
+        color = self.request.GET.get('color', 'all')
+        order = self.request.GET.get('order_by', 'name')
+        order= "".join(order.split('variants__'))
+        if color == 'all':
+            queryset = Product.objects.bestseller().order_by(order)
+        else:
+            color_hex = webcolors.name_to_hex(color).upper()
+            queryset = Product.objects.bestseller().filter(Q(trouser__variants__color=color_hex) | Q(wavecap__variants__color=color_hex)).order_by(order)
         return queryset
     
     @paginate
@@ -95,7 +111,14 @@ class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     @paginate
     @action(methods=['get'], detail=False)
     def back_in_stock(self, request):
-        queryset = Product.objects.is_back()
+        color = self.request.GET.get('color', 'all')
+        order = self.request.GET.get('order_by', 'name')
+        order= "".join(order.split('variants__'))
+        if color == 'all':
+            queryset = Product.objects.is_back().order_by(order)
+        else:
+            color_hex = webcolors.name_to_hex(color).upper()
+            queryset = Product.objects.is_back().filter(Q(trouser__variants__color=color_hex) | Q(wavecap__variants__color=color_hex)).order_by(order)
         return queryset
 
     @action(methods=['get'], detail=False, url_path="category/(?P<first_slug>[-\w]+)(?:/(?P<second_slug>[-\w]+))?")
@@ -240,20 +263,20 @@ class ProductDetailAPI(RetrieveAPIView):
             queryList = Wavecap.objects.all()
         return queryList
 
-class TrouserSearchList(ListAPIView):
-    # pagination_class = StandardResultsSetPagination
-    serializer_class = TrouserSearchSerializer
+# class TrouserSearchList(ListAPIView):
+#     # pagination_class = StandardResultsSetPagination
+#     serializer_class = TrouserSearchSerializer
 
-    def get_queryset(self):
-        request = self.request
-        if request.is_ajax():
-            query = request.GET.get("query", None)
-            query = query.strip()
-            if query is not None and query != "":
-                queryList = Trouser.objects.search(query)
-            else:
-                queryList = Trouser.objects.featured().prefetch_related('variant')
-            return queryList
+#     def get_queryset(self):
+#         request = self.request
+#         if request.is_ajax():
+#             query = request.GET.get("query", None)
+#             query = query.strip()
+#             if query is not None and query != "":
+#                 queryList = Trouser.objects.search(query)
+#             else:
+#                 queryList = Trouser.objects.featured().prefetch_related('variant')
+#             return queryList
 
 def getColors(request):
         trousers = list(TrouserVariant.objects.all().values_list('color', flat=True).distinct())

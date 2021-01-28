@@ -45,9 +45,10 @@ class BaseSerializer(serializers.ModelSerializer):
     first_variant = serializers.SerializerMethodField()
     sku = serializers.CharField(source='get_random_char', read_only=True)
     product = serializers.CharField(source='get_product_name', read_only=True)
-    
+    colors = serializers.SlugRelatedField(source='variants', slug_field='color', read_only=True, many=True)
+
     class Meta:
-        fields = ("id", "name", "url", "category", "sku", "slug", "product", "first_variant", "is_featured", "is_bestseller", "created_at")
+        fields = ("id", "name", "url", "category", "sku", "slug", "product", "colors", "first_variant", "is_featured", "is_bestseller", "created_at")
 
 class TrouserVariantSerializer(BaseVariantSerializer):
     color = serializers.CharField(source='get_color_name', read_only=True)
@@ -153,31 +154,32 @@ class WavecapDetailSerializer(BaseDetailSerializer):
 
 #SEARCH SERIALIZER
 
-class ImageSearchSerializer(serializers.HyperlinkedModelSerializer):
-    file = HyperlinkedSorlImageField('90x120', options={"quality": 99, "format": "PNG"}, read_only=True)
-    file_sm = HyperlinkedSorlImageField('60x80', options={"quality": 99, "format": "PNG"}, source='file', read_only=True)
+# class ImageSearchSerializer(serializers.HyperlinkedModelSerializer):
+#     file = HyperlinkedSorlImageField('90x120', options={"quality": 99, "format": "PNG"}, read_only=True)
+#     file_sm = HyperlinkedSorlImageField('60x80', options={"quality": 99, "format": "PNG"}, source='file', read_only=True)
 
-    class Meta:
-        model = Image
-        fields = ("id", "file", "file_sm")
+#     class Meta:
+#         model = Image
+#         fields = ("id", "file", "file_sm")
 
-class TrouserVariantSearchSerializer(serializers.ModelSerializer):
-    first_image = serializers.SerializerMethodField()
-    color = serializers.CharField(source='get_color_name', read_only=True)
+# class TrouserVariantSearchSerializer(serializers.ModelSerializer):
+#     first_image = serializers.SerializerMethodField()
+#     color = serializers.CharField(source='get_color_name', read_only=True)
+#     other_colors = serializers.CharField(source='get_color_name', read_only=True)
 
-    class Meta:
-        model = TrouserVariant
-        fields = ("id", "price", "color", "first_image",)
+#     class Meta:
+#         model = TrouserVariant
+#         fields = ("id", "price", "color", "first_image",)
     
-    def get_first_image(self, obj):
-        first_image = Image_Trouser.objects.filter(trouser_variant=obj).earliest('id')
-        first_image_serializer = ImageSearchSerializer(first_image)
-        return first_image_serializer.data
+#     def get_first_image(self, obj):
+#         first_image = Image_Trouser.objects.filter(trouser_variant=obj).earliest('id')
+#         first_image_serializer = ImageSearchSerializer(first_image)
+#         return first_image_serializer.data
     
-class TrouserSearchSerializer(serializers.ModelSerializer):
-    variant = TrouserVariantSearchSerializer(many=True, read_only=True)
-    url = serializers.CharField(source='get_absolute_url')
+# class TrouserSearchSerializer(serializers.ModelSerializer):
+#     variant = TrouserVariantSearchSerializer(many=True, read_only=True)
+#     url = serializers.CharField(source='get_absolute_url')
 
-    class Meta:
-        model = Trouser
-        fields = ("id", "name", "url", "variant")
+#     class Meta:
+#         model = Trouser
+#         fields = ("id", "name", "url", "variant")

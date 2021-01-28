@@ -40,6 +40,14 @@
             left: 56px;
             animation: lds-ellipsis3 0.6s infinite;
         }
+
+        .swiper-slide:hover {
+            transform: scale(1.05)
+        }
+        .swiper-slide:hover {
+            transition: transform .5s ease;
+        }
+
         @keyframes lds-ellipsis1 {
             0% {
                 transform: scale(0);
@@ -137,42 +145,13 @@
                     v-bind:name="product.name"
                     v-bind:price="product.first_variant.price"
                     {% comment %} v-bind:oldprice="product.old_price" {% endcomment %}
+                    v-bind:colors="product.colors"
                     v-bind:color="product.first_variant.color"
                     v-bind:slug="product.slug"
                     v-bind:product="product.product"
                     v-bind:image="product.first_variant.first_image.file"
                     v-bind:data-index="index"
-                ></product-card>
-
-                <product-card
-                    v-if="colorSort && !loading"
-                    v-for="(product, index) in sortedOrderProducts"
-                    v-bind:key="product.first_variant.id"
-                    v-bind:id="product.first_variant.id"
-                    v-bind:name="product.name"
-                    v-bind:price="product.first_variant.price"
-                    {% comment %} v-bind:oldprice="product.old_price" {% endcomment %}
-                    v-bind:color="product.first_variant.color"
-                    v-bind:slug="product.slug"
-                    v-bind:product="product.product"
-                    v-bind:image="product.first_variant.first_image.file"
-                    v-bind:data-index="index"
-                ></product-card>
-
-                <product-card
-                    v-if="orderShouldRender && !loading"
-                    v-for="(product, index) in orderProducts"
-                    v-bind:key="product.first_variant.id"
-                    v-bind:id="product.first_variant.id"
-                    v-bind:name="product.name"
-                    v-bind:price="product.first_variant.price"
-                    {% comment %} v-bind:oldprice="product.old_price" {% endcomment %}
-                    v-bind:color="product.first_variant.color"
-                    v-bind:slug="product.slug"
-                    v-bind:product="product.product"
-                    v-bind:image="product.first_variant.first_image.file"
-                    v-bind:data-index="index"
-                ></product-card>
+                ></product-card>    
             </transition-group>
 
             <div class="d-flex justify-content-center" style="display:none;" v-if="busy">
@@ -237,6 +216,7 @@
                 "oldprice", 
                 "image",
                 "color",
+                "colors",
                 "size", 
                 "stock",
                 "product", 
@@ -244,20 +224,10 @@
         data: function(){
             return {
                 showMessage: false,
-                cartItems: {{ request.session.cart|jsonify }},
-                carted: false,
                 url: "{% if sub_category_slug %}{% url 'shop:sub-collection-detail' category_slug sub_category_slug 1 0 %}".replace(0, this.slug).replace(1, this.product.toLowerCase()) + "{% else %}{% url 'shop:collection-detail' category_slug 1 0 %}{% endif %}".replace(0, this.slug).replace(1, this.product.toLowerCase()),
             }            
         },
-        computed: {
-            inCart: function(){
-                for(let i=0; i<=(_.keys(this.cartItems)).length;i++){
-                    if ((_.keys(this.cartItems))[i] == this.id){
-                        return true
-                    }
-                }
-                return false
-            } 
+        computed: { 
         },
         filters: {
             currency: function(value){
@@ -281,14 +251,17 @@
                                     <div></div>
                                     <div></div>
                                 </div>
-                            </div>
-                            <div class="card-body p-0 flex-grow-0">
-                                <p class="card-title mb-0 text-monospace" style="font-size:10px;font-weight:600;">  
-                                    [[ color ]]
-                                    <br> [[ name ]] <br>
-                                    [[ price|currency ]]  
-                                </p>
-                            </div>
+                                <div class="card-body mt-2 p-0 w-100 flex-grow-0">
+                                    <div class="d-flex mb-2 justify-content-start">
+                                        <span v-for="color, index in colors" :key="color" class="" :class="{'mx-1' : index !== 0}" style="height:7px;width:7px;" :style="{backgroundColor : color}"></span>
+                                    </div>
+                                    <p class="card-title mb-0 text-monospace" style="font-size:10px;font-weight:600;">  
+                                        [[ color ]]
+                                        <br> [[ name ]] <br>
+                                        [[ price|currency ]]  
+                                    </p>
+                                </div>
+                            </div>    
                         </a>
                     </div>                    
                 `
@@ -302,16 +275,11 @@
             return {
                 products: [],
                 sortedProducts: [],
-                sortedOrderProducts: [],
-                orderProducts: [],
                 colors: null,
                 previous: null,
                 counter: 0,
                 loading: true,
                 busy: false,
-                sortedShouldRender: false,
-                orderShouldRender: false,
-                colorSort: false,
                 selectedColor: "all",
                 selectedOrder: "name",
                 has_content: true,
@@ -321,18 +289,14 @@
         created(){
             AOS.init();
             this.getFilters();
+            this.getproducts()
         },
         updated(){
             AOS.refreshHard();
         },
         beforeUpdate(){
-            if (this.orderShouldRender && this.sortedShouldRender || this.orderShouldRender && this.colorSort || this.colorSort && this.sortedShouldRender){
-                this.colorSort = this.colorSortfn()
-                this.sortedOrderProducts = this.sortedOrderProductsfn()
-            }
         },
         mounted(){
-            this.getproducts()
         },
         computed: {
             get_total_price: function(){
@@ -380,28 +344,12 @@
         },
         methods: {
             sortProducts(e){
-                this.loading = true
-                let c
-                try {
-                    c = e.target.value
-                }
-                catch(err){
-                    c = e
-                }
-                this.selectedColor = c
+                this.selectedColor = e.target.value
                 this.getproducts()
 
             },
             order(e){
-                this.loading = true
-                let c
-                try {
-                    c = e.target.value
-                }
-                catch(err){
-                    c = e
-                }
-                this.selectedOrder = c
+                this.selectedOrder = e.target.value
                 this.getproducts()
             },
             getproducts(){
@@ -450,15 +398,8 @@
                     })
                     .then((jsonData) => {
                         if (jsonData["detail"] != "Not found."){
-                            if (jsonData.page === "all-products" || jsonData.page === "new-arrivals" || jsonData.page === "best-sellers" || jsonData.page === "back-in-stock"){
-                                this.products = this.products.concat(_.map(jsonData.results, 'item'))
-                                temp = _.map(jsonData.results, 'item')
-                            }
-                            else{
-                                this.products = this.products.concat(jsonData.results)
-                                temp = jsonData.results
-                            }
-                            this.colors = _.sortedUniq(_.map(this.products, 'first_variant.color'))
+                            this.products = this.products.concat(jsonData.results)
+                            temp = jsonData.results
                             this.next = jsonData.next
                             this.counter += jsonData.count
                             setTimeout( function(){
@@ -496,13 +437,6 @@
                 })
             },
             reset(){
-                this.sortedProducts = []
-                this.sortedOrderProducts = []  
-                this.orderProducts = []
-                this.sortedShouldRender = false
-                this.orderShouldRender = false
-                this.colorSort = false
-                this.selectedOrder = null
                 this.sortProducts("all")
             },
             beforeEnter: function (el) {
@@ -513,11 +447,11 @@
                 var delay = el.dataset.index * 100
                 setTimeout(function(){
                     el.style.opacity = 1
-                    el.classList.add("animate__animated", "animate__jackInTheBox")    
+                    el.classList.add("animate__animated", "animate__jackInTheBox")
+                    el.addEventListener('animationend', ()=> {
+                        el.classList.remove('animate__animated', 'animate__jackInTheBox');
+                    })    
                 }, delay)
-                el.addEventListener('animationend', ()=> {
-                    el.classList.remove('animate__animated', 'animated__fadInUp');
-                })
             },
             lazyLoad(){
                 let lazyImages = [].slice.call(document.querySelectorAll("div.lazy-container"));

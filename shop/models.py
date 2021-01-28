@@ -51,6 +51,8 @@ class ProductQuerySet(models.query.QuerySet):
         return self.filter(available=True).prefetch_related('item')
 
     def new_arrivals(self, num):
+        if num == -1:
+            return self.order_by("-created_at")
         return self.order_by("-created_at")[:num]
 
     def featured(self):
@@ -60,6 +62,8 @@ class ProductQuerySet(models.query.QuerySet):
         return self.filter(is_back=True)
     
     def is_bestseller(self, num):
+        if num == -1:
+            return self.filter(is_bestseller=True)
         return self.filter(is_bestseller=True)[:num]
     
     def is_discounted(self):
@@ -257,7 +261,7 @@ class BrandMETA(models.Model):
 class TrouserQuerySet(BrandQuerySet):
 
     def active(self):
-        return self.filter(available=True).prefetch_related('variants', 'variants__metas', 'images')
+        return self.filter(available=True).prefetch_related('variants', 'variants__metas', 'variants__images')
 
 class TrouserManager(BrandManager):
     
@@ -295,7 +299,7 @@ class TrouserMETA(BrandMETA):
 class WavecapQuerySet(BrandQuerySet):
 
     def active(self):
-        return self.filter(available=True).prefetch_related('variants', 'images')
+        return self.filter(available=True).prefetch_related('variants', 'variants__images')
 
 class WavecapManager(BrandManager):
     

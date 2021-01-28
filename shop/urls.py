@@ -6,7 +6,7 @@ from rest_framework import routers
 from shop.views import (HomeView, ProductDetail, ProductByCategory)
 
 from shop.api.views import (getColors, ProductDetailAPI, ProductListing, ProductViewSet, 
-                        TrouserViewSet, WavecapViewSet, TrouserSearchList)
+                        TrouserViewSet, WavecapViewSet,)
 app_name = 'shop'
 
 router = routers.DefaultRouter()
@@ -22,7 +22,7 @@ urlpatterns = [
     #api
     path('api/', include((router.urls, 'shop'))),
     path('api/colors/', getColors, name='colors'),
-    path('api/trouser/items/search/', TrouserSearchList.as_view(), name='api-search'),
+    # path('api/trouser/items/search/', TrouserSearchList.as_view(), name='api-search'),
 
     #others
     path('<str:product_slug>/<str:slug>/', ProductDetail.as_view(), name='detail'),
