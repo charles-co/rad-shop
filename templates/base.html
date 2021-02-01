@@ -137,21 +137,43 @@
         <script type="text/javascript">
             const store = new Vuex.Store({
                 state: {
-                    numItems: {{cart.get_length}},
-                    get_total_price: {{cart.get_total_price}},
+                    cart: {},
                     loading: true,
                 }, 
                 mutations: {
                     increment(state, quantity){
-                        state.numItems += quantity;
+                        state.cart.count += quantity;
+                    },
+                    updatecart(state, payload){
+                        state.cart = payload;
                     },
                     changeTotalPrice(state, newPrice){
                         total_price = state.get_total_price + newPrice
-                        state.get_total_price = _.round(total_price, 2);    
+                        state.cart.total_price = _.round(total_price, 2);    
                     },
-                    changeloading(){
+                    changeloading(state){
                         state.loading = !state.loading;
                     }
+
+                },
+                getters: {
+                    cartcount: state => {
+                        return state.cart.count;
+                    },
+                    carttotal: state => {
+                        return state.cart.total_price;
+                    },
+                    cartproducts: state => {
+                        return state.cart.cart;
+                    }
+                },
+                actions: {
+                    updatecart(context){
+                        fetch('/shop/cart/').then(res => res.ok && res.json() || Promise.reject(res))
+                        .then(response => {
+                            context.commit('updatecart', response)
+                        })
+                    },
 
                 }
             });
@@ -163,6 +185,7 @@
                     return {
                         loading: false,
                         empty: false,
+                        showcart: false,
                         trousers: [],
                         sortedTrousers: [],
                         query: "",
@@ -177,9 +200,12 @@
                     },
                 },
                 computed: {
-                    numItems: function(){
-                        return store.state.numItems
-                    },
+                    ...Vuex.mapGetters([
+                        'cartcount',
+                    ])
+                },
+                created(){
+                    this.updatecart();
                 },
                 mounted(){
                 },
@@ -240,6 +266,9 @@
                             el.classList.add("animate__animated", "animate__fadeInRight")    
                         }, delay)
                     },
+                    ...Vuex.mapActions([
+                        'updatecart',
+                    ]),
                 },
             });
         </script>

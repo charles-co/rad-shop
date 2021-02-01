@@ -25,7 +25,7 @@ class HomeView(TemplateView):
 
     def dispatch(self, request, *args, **kwargs):
         if request.method == "GET":
-            self.home = ShopIndex.objects.all().prefetch_related('features').first()
+            self.home = ShopIndex.objects.all().first()
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, *args, **kwargs):

@@ -101,7 +101,7 @@
                                     <label for="colors">Colors</label>
                                     <colors-dropdown
                                         v-bind:colors="colors"
-                                        v-on:sort="sortProducts"
+                                        v-on:sort="sortproductsbycolor"
                                     ></colors-dropdown>
                                 </div>    
                             </div>
@@ -135,7 +135,7 @@
             </div>
         </div>
 
-        <div class="container-fluid" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy">
+        <div class="container-fluid mt-3" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy">
             <transition-group appear tag="div" v-bind:css="false" v-on:before-enter="beforeEnter" v-on:enter="enter" class="row no-gutters justify-content-md-around">
                 <product-card
                     v-if="!loading"
@@ -148,13 +148,14 @@
                     v-bind:colors="product.colors"
                     v-bind:color="product.first_variant.color"
                     v-bind:slug="product.slug"
+                    v-bind:url="product.url"
                     v-bind:product="product.product"
                     v-bind:image="product.first_variant.first_image.file"
                     v-bind:data-index="index"
                 ></product-card>    
             </transition-group>
 
-            <div class="d-flex justify-content-center" style="display:none;" v-if="busy">
+            <div class="d-flex justify-content-center mt-3" v-if="busy">
                 <div class="m-1 animate__animated animate__rubberBand bg-danger animate__infinite rounded animate__fast" style="height:10px;width:8px;" role="status">
                     <span class="sr-only">Loading...</span>
                 </div>
@@ -219,12 +220,12 @@
                 "colors",
                 "size", 
                 "stock",
-                "product", 
+                "product",
+                "url",
             ],
         data: function(){
             return {
-                showMessage: false,
-                url: "{% if sub_category_slug %}{% url 'shop:sub-collection-detail' category_slug sub_category_slug 1 0 %}".replace(0, this.slug).replace(1, this.product.toLowerCase()) + "{% else %}{% url 'shop:collection-detail' category_slug 1 0 %}{% endif %}".replace(0, this.slug).replace(1, this.product.toLowerCase()),
+                {% comment %} urll: "{% if sub_category_slug %}{% url 'shop:sub-collection-detail' category_slug sub_category_slug 1 0 %}".replace(0, this.slug).replace(1, this.product.toLowerCase()) + "{% else %}{% url 'shop:collection-detail' category_slug 1 0 %}{% endif %}".replace(0, this.slug).replace(1, this.product.toLowerCase()), {% endcomment %}
             }            
         },
         computed: { 
@@ -244,7 +245,7 @@
                     <div id="" class="px-1 col-6 col-md-3 col-lg-2">
                         <a :href=url class="d-flex h-100 flex-column"> 
                             <div data-aos="zoom-in" class="card flex-grow-1 border-0 bg-transparent d-flex justify-content-center align-items-center lazy-container" style="min-height:210px;">
-                                <img :data-src="image" class="card-img-top img-fluid lazy-image">
+                                <img :data-src="image" class="card-img-top img-fluid lazy-image" />
                                 <div class="lds-ellipsis text-dark spinner">
                                     <div></div>
                                     <div></div>
@@ -274,14 +275,18 @@
         data (){
             return {
                 products: [],
-                sortedProducts: [],
                 colors: null,
-                previous: null,
-                counter: 0,
-                loading: true,
+                filters: {
+                    color: "all",
+                    order: "name",
+                },
+                page: {
+                    next: null,
+                    previous: null,
+                    counter: 0,
+                },
                 busy: false,
-                selectedColor: "all",
-                selectedOrder: "name",
+                loading: true,
                 has_content: true,
                 lazyLoading: true,
             }
@@ -289,7 +294,7 @@
         created(){
             AOS.init();
             this.getFilters();
-            this.getproducts()
+            this.getproducts();
         },
         updated(){
             AOS.refreshHard();
@@ -299,26 +304,20 @@
         mounted(){
         },
         computed: {
-            get_total_price: function(){
-                return store.state.get_total_price;
-            },
             has_next: function(){
-                if(this.next !== null){
+                if(this.page.next !== null){
                     return true
                 }else{
                     return false
                 }
             },
             has_previous: function(){
-                if(this.previous !== null){
+                if(this.page.previous !== null){
                     return true
                 }else{
                     return false
                 }
             }, 
-            has_contjent: function(){
-                return this.products.length > 0
-            },
             endpoint: function(){
                 var x = window.location.href.split("/")
                 var y = x.slice(5, (x.length - 1))
@@ -343,18 +342,17 @@
             }
         },
         methods: {
-            sortProducts(e){
-                this.selectedColor = e.target.value
+            sortproductsbycolor(e){
+                this.filters.color = e.target.value
                 this.getproducts()
-
             },
             order(e){
-                this.selectedOrder = e.target.value
+                this.filters.order = e.target.value
                 this.getproducts()
             },
             getproducts(){
                 this.loading = true
-                let url = this.endpoint + "?color=" + this.selectedColor + "&order_by=" + this.selectedOrder
+                let url = this.endpoint + "?color=" + this.filters.color + "&order_by=" + this.filters.order
                 fetch(url, {
                     method: 'GET',
                     headers: {
@@ -368,12 +366,12 @@
                 .then(jsonData => {
                     if (jsonData["detail"] === undefined){
                         this.products = jsonData.results
-                        this.next = jsonData.next
-                        this.counter += jsonData.count
+                        this.page.next = jsonData.next
+                        this.page.counter = jsonData.count
                         setTimeout( function(){
                             this.loading = false
-                            window.addEventListener("scroll", _.debounce(this.lazyLoad, 200));
                         }.bind(this), 2000)
+                        window.addEventListener("scroll", _.debounce(this.lazyLoad, 200));
                     }
                     else{
                         this.has_content = false
@@ -384,9 +382,9 @@
                 })
             },
             loadMore(){
-                if (this.has_next === true && false){
+                if (this.has_next === true && this.products.length > 0 && this.products.length < this.page.counter){
                     this.busy = true;
-                    fetch(this.next, {
+                    fetch(this.page.next, {
                         method: 'GET',
                         headers: {
                             'X-Requested-With': 'XMLHttpRequest',
@@ -397,27 +395,11 @@
                         return response.json();
                     })
                     .then((jsonData) => {
-                        if (jsonData["detail"] != "Not found."){
-                            this.products = this.products.concat(jsonData.results)
-                            temp = jsonData.results
-                            this.next = jsonData.next
-                            this.counter += jsonData.count
-                            setTimeout( function(){
-                                this.sortTemp(temp)
-                                this.orderTemp(temp)
-                                if (this.sortedShouldRender && this.sortedProducts.length === 0 && this.has_next){
-                                    this.loadMore()
-                                }else if (this.orderShouldRender && this.orderProducts.length === 0 && this.has_next){
-                                    this.loadMore()
-                                }
-                                this.loading = false
-                                this.busy = false
-                                window.addEventListener("scroll", _.debounce(this.lazyLoad, 200));
-                            }.bind(this), 2000)
-                        }
-                        else{
-                            this.has_content = false
-                        }
+                        setTimeout( function(){
+                            this.busy = false;
+                            this.products = this.products.concat(jsonData.results);
+                        }.bind(this), 1000)
+                        this.page.next = jsonData.next;
                     })
                     .catch((error) => {
                         console.log(error);
@@ -425,19 +407,15 @@
                 }
             },
             getFilters(){
-                fetch('/shop/api/colors/')
-                .then(res => {
-                    return res.json()
-                })
+                fetch('/shop/api/colors/').then(res => res.ok && res.json())
                 .then(response => {
                     this.colors = response
                 })
-                .catch(error => {
-                    console.log(error)
-                })
             },
             reset(){
-                this.sortProducts("all")
+                this.filters.color = "all",
+                this.filters.order = "name",
+                this.getproducts()
             },
             beforeEnter: function (el) {
                 el.style.opacity = 0
@@ -448,45 +426,33 @@
                 setTimeout(function(){
                     el.style.opacity = 1
                     el.classList.add("animate__animated", "animate__jackInTheBox")
-                    el.addEventListener('animationend', ()=> {
+                    el.addEventListener('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', ()=> {
                         el.classList.remove('animate__animated', 'animate__jackInTheBox');
                     })    
                 }, delay)
             },
             lazyLoad(){
-                let lazyImages = [].slice.call(document.querySelectorAll("div.lazy-container"));
+                var lazyImages = [].slice.call(document.querySelectorAll(".lazy-container"));
                 if (lazyImages.length > 0){
-                    let active = false;
-                    if (active === false){
-                        active = true;
-                        setTimeout( function() {
-                            lazyImages.forEach(function(lazyImageTemp, index){
-                                let lazyImage = lazyImageTemp.querySelector("img.lazy-image")
-                                if ((lazyImage.getBoundingClientRect().top <= window.innerHeight && lazyImage.getBoundingClientRect().bottom >= 0) && getComputedStyle(lazyImage).display !== "none"){
-                                    setTimeout( function(){
-                                        try {
-                                            lazyImageTemp.getElementsByClassName("spinner")[0].remove();
-                                        }
-                                        catch(err) {
-                                        }
-                                        lazyImage.src = lazyImage.dataset.src;
-                                    }, index * 100)
-                                    lazyImageTemp.classList.remove("lazy-container");
-                                    lazyImages = lazyImages.filter(function (image){
-                                        return image !== lazyImageTemp;
-                                    });
-                                    if (lazyImages.length == 0) {
-                                        window.removeEventListener("scroll", this.lazyLoad);
-                                    }
-                                }
+                    lazyImages.forEach(function(lazyImageContainer, index){
+                        var lazyImage = lazyImageContainer.querySelector(".lazy-image")
+                        if ((lazyImage.getBoundingClientRect().top <= window.innerHeight && lazyImage.getBoundingClientRect().bottom >= 0) && getComputedStyle(lazyImage).display !== "none"){
+                            lazyImageContainer.querySelector(".spinner").remove();
+                            lazyImageContainer.classList.remove("lazy-container");
+                            lazyImage.src = lazyImage.dataset.src;
+                            lazyImages = lazyImages.filter(function (image){
+                                return image !== lazyImageContainer;
                             });
-                            active = false;
-                        }.bind(this), 200);
-                    }
-                }else {
-                    window.removeEventListener("scroll", this.lazyLoad);
+                            if (lazyImages.length == 0) {
+                                window.removeEventListener("scroll", this.lazyLoad);
+                            }
+                        }
+                    });
                 }
             },
+            ...Vuex.mapActions([
+                'updatecart',
+            ]),
         },
         
     });

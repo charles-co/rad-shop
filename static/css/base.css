@@ -1,11 +1,28 @@
 @import url('https://fonts.googleapis.com/css?family=Quicksand:400,500,700');
 @import url('https://fonts.googleapis.com/css2?family=Faster+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap');
+
 html,
 body {
     box-sizing: border-box;
     font-family: "Quicksand", sans-serif;
     background-color: rgb(242, 242, 242);
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
 }
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+.fancy-font-1{
+    font-family: "Fugaz One", cursive !important;
+}
+
+.fancy-font-2{
+    font-family: "Faster One", cursive !important;
+}
+
 
 .home {
     width: 100%;
@@ -118,11 +135,6 @@ a:focus {
     border-bottom: 2px solid #007bff;
 }
 
-.list-group#login{
-    min-width:60vw !important;
-    max-width:60vw !important;
-    /* background-color: #17a2b8; */
-}
 .list-group#login li.active{
     background-color: #007bff !important;
 }
@@ -306,7 +318,12 @@ ul ul a {
     border: none;
 }
 
-#cart .badger:after {
+#cart{
+    width: 80vw;
+    left: 20vw;
+}
+
+#cart-icon .badger:after {
     content: attr(data-count);
     position: absolute;
     background: rgba(255, 0, 0, 1);
@@ -376,7 +393,7 @@ ul ul a {
     /* transparent black */
     background: rgba(0, 0, 0, 0.7);
     /* middle layer, i.e. appears below the sidebar */
-    z-index: 998;
+    z-index: 9998;
     opacity: 0;
     /* animate the transition */
     transition: all 0.5s ease-in-out;
@@ -428,6 +445,10 @@ ul ul a {
     MEDIAQUERIES
 ----------------------------------------------------- */
 @media (min-width: 650px) {
+    #cart{
+        width: 40vw;
+        left: 60vw;;
+    }
     #sidebar {
         min-width: 40vw;
         max-width: 40vw
@@ -437,11 +458,6 @@ ul ul a {
     }
     ul ul a {
         font-size: 12px !important;
-    }
-    .list-group#login{
-        min-width:40vw !important;
-        max-width:40vw !important;
-        /* background-color: #17a2b8; */
     }
     .form-control.search {
         line-height: 3rem;
@@ -455,6 +471,12 @@ ul ul a {
     }
     .search-help-text {
         font-size: 1rem;
+    }
+}
+@media (min-width: 1200px) {
+    #cart{
+        width: 25vw;
+        left: 75vw;
     }
 }
 @media (min-width: 1024px) {
@@ -519,7 +541,6 @@ ul ul a {
         top: 71px;
     }
 }
-
 /* Preloaders */
 
 .loader-wrapper {

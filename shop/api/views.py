@@ -1,5 +1,6 @@
 from django.db.models import QuerySet, Q
 from django.http import JsonResponse
+from django.templatetags.static import static
 
 from functools import wraps
 
@@ -8,6 +9,7 @@ from rest_framework.decorators import action
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 
+from contents.models import ShopIndex
 from shop.models import Product, Trouser, TrouserVariant, Wavecap, WavecapVariant
 
 from .pagination import StandardResultsSetPagination
@@ -54,7 +56,12 @@ class ProductViewSet(viewsets.ReadOnlyModelViewSet):
             products_obj = [list(x.values())[0] for x in serializer.data]
             return Response(products_obj)
         return inner
-    
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({"request": self.request})
+        return context
+
     def get_queryset(self):
         if self.action == 'list':
             color = self.request.GET.get('color', 'all')
@@ -63,6 +70,7 @@ class ProductViewSet(viewsets.ReadOnlyModelViewSet):
             if color == 'all':
                 queryList = Product.objects.order_by(order)
             else:
+                print('Here')
                 color_hex = webcolors.name_to_hex(color).upper()
                 queryList = Product.objects.filter(Q(trouser__variants__color=color_hex) | Q(wavecap__variants__color=color_hex)).order_by(order)
         else:
@@ -153,7 +161,6 @@ class ProductViewSet(viewsets.ReadOnlyModelViewSet):
         #     elif first_slug == all_products[1]:
         #         products = Product.objects.bestseller()
 
-
 class TrouserViewSet(viewsets.ReadOnlyModelViewSet):
     
     # queryset = Trouser.objects.all()
@@ -224,23 +231,6 @@ class WavecapViewSet(viewsets.ReadOnlyModelViewSet):
             return WavecapDetailSerializer
         return super().get_serializer_class()
 
-class ProductListing(ListAPIView):
-    pagination_class = StandardResultsSetPagination
-
-    def get_serializer_class(self):
-        if self.kwargs["first_slug"] == 'cargo-collections':
-            return TrouserSerializer
-        elif self.kwargs["first_slug"] == 'wave-cap-collections':
-            return WavecapSerializer
-        else:
-            return ProductSerializer
-        return super().get_serializer_class()
-
-    def list(self, request, *args, **kwargs):
-        response = super().list(request, args, kwargs)
-        response.data['page'] = self.kwargs["first_slug"]
-        return response
-
 class ProductDetailAPI(RetrieveAPIView):
     
     lookup_field = 'slug'
@@ -263,24 +253,30 @@ class ProductDetailAPI(RetrieveAPIView):
             queryList = Wavecap.objects.all()
         return queryList
 
-# class TrouserSearchList(ListAPIView):
-#     # pagination_class = StandardResultsSetPagination
-#     serializer_class = TrouserSearchSerializer
+class ProductSearchList(ListAPIView):
+    # pagination_class = StandardResultsSetPagination
+    # serializer_class = ProductSearchSerializer
 
-#     def get_queryset(self):
-#         request = self.request
-#         if request.is_ajax():
-#             query = request.GET.get("query", None)
-#             query = query.strip()
-#             if query is not None and query != "":
-#                 queryList = Trouser.objects.search(query)
-#             else:
-#                 queryList = Trouser.objects.featured().prefetch_related('variant')
-#             return queryList
+    def get_queryset(self):
+        request = self.request
+        if request.is_ajax():
+            query = request.GET.get("query", None)
+            query = query.strip()
+            if query is not None and query != "":
+                queryList = Trouser.objects.search(query)
+            else:
+                queryList = Trouser.objects.featured().prefetch_related('variant')
+            return queryList
 
 def getColors(request):
-        trousers = list(TrouserVariant.objects.all().values_list('color', flat=True).distinct())
-        wavecaps = list(WavecapVariant.objects.all().values_list('color', flat=True).distinct())
-        temp = set(trousers + wavecaps)
-        colors = [webcolors.hex_to_name(x).title() for x in temp]
-        return JsonResponse(colors, safe=False)
+    trousers = list(TrouserVariant.objects.all().values_list('color', flat=True).distinct())
+    wavecaps = list(WavecapVariant.objects.all().values_list('color', flat=True).distinct())
+    temp = set(trousers + wavecaps)
+    colors = [webcolors.hex_to_name(x).title() for x in temp]
+    return JsonResponse(colors, safe=False)
+
+def getIndexSlideshow(request):
+    images = list(ShopIndex.objects.values_list("image1", "image2", "image3"))[0]
+    x = [{"src" : "/media/" + x} for x in images]
+    result = {"images": x, "overlay": static("js/overlays/03.png")}
+    return JsonResponse(result, safe=False)

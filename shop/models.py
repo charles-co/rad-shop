@@ -69,17 +69,19 @@ class ProductQuerySet(models.query.QuerySet):
     def is_discounted(self):
         return self.filter(is_discounted=True)
 
-    
-
-    # def search(self, query):
-    #     lookups = (Q(name__icontains=query) | 
-    #               Q(description__icontains=query) |
-    #               Q(variant__price__icontains=query) |
-    #               Q(variant__color__icontains=query) |
-    #               Q(tags__name__icontains=query)
-    #               )
-    #     # tshirt, t-shirt, t shirt, red, green, blue,
-    #     return self.filter(lookups).prefetch_related('variant').distinct()
+    def search(self, query):
+        lookups =   (   Q(name__icontains=query) | 
+                        Q(trouser__description__icontains=query) |
+                        Q(wavecap__description__icontains=query) |
+                        Q(trouser__variant__price__icontains=query) |
+                        Q(wavecap__variant__price__icontains=query) |
+                        Q(trouser__variant__color__icontains=query) |
+                        Q(wavecap__variant__color__icontains=query) |
+                        Q(trouser__tags__name__icontains=query) |
+                        Q(wavecap__tags__name__icontains=query)
+                    )
+        # tshirt, t-shirt, t shirt, red, green, blue,
+        return self.filter(lookups).prefetch_related('wavecap', 'wavecap__variants', 'trouser__variants', 'wavecap').distinct()
 
 class ProductManager(models.Manager):
     def get_queryset(self):
@@ -109,8 +111,8 @@ class ProductManager(models.Manager):
     #         return qs.first()
     #     return None
 
-    # def search(self, query):
-    #     return self.get_queryset().active().search(query)
+    def search(self, query):
+        return self.get_queryset().active().search(query)
 
 class Product(models.Model):
 
@@ -285,6 +287,9 @@ class TrouserVariant(BrandVariant):
     def __str__(self):
         return self.trouser.__str__()
 
+    def get_absolute_url(self):
+        return self.trouser.get_absolute_url()
+
 class TrouserMETA(BrandMETA):
     trouser_variant = models.ForeignKey(TrouserVariant, on_delete=models.CASCADE, related_name="metas")
 
@@ -323,3 +328,6 @@ class WavecapVariant(BrandVariant):
 
     def __str__(self):
         return self.wavecap.__str__()
+    
+    def get_absolute_url(self):
+        return self.wavecap.get_absolute_url()

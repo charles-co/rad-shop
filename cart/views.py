@@ -1,6 +1,7 @@
 import json
 from decimal import Decimal
 
+from django.apps import AppConfig, apps
 from django.core.serializers import serialize
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
@@ -30,53 +31,83 @@ from cart.forms import PaymentForm
 def cart_add(request):
     data = json.loads(request.body)
     cart = Cart(request)  
-    id = data['trouser_id']
-    size = data['size']
+    _id = data['product_id']
+    size = data['size'] or None
     update = data['update']
     quantity = data['quantity']
-    trouser = get_object_or_404(TrouserVariant, id=id)
+    _type = data['type']
+    __type = data['type'] + "variant"
+    Klass = apps.get_model('shop', __type)
+    product = get_object_or_404(Klass, id=_id)
     if not update:
-        cart.add(trouser=trouser, size=size, quantity=1, update_quantity=False)
+        cart.add(product=product, _type=_type, size=size, quantity=1, update_quantity=False)
     else:
-        cart.add(trouser=trouser, size=size, quantity=quantity, update_quantity=True)
-    return JsonResponse({'status': 'Ok', 'total_items': str(cart.__len__())})
+        cart.add(product=product, _type=_type, size=size, quantity=quantity, update_quantity=True)
+    return JsonResponse({'status': 'Ok', 'total_items': cart.get_length()})
 
 @require_POST
 def cart_remove(request):
     data = json.loads(request.body) 
-    id = data['trouser_id']
-    size = data['size']
     cart = Cart(request)
-    trouser = get_object_or_404(TrouserVariant, id=id)
-    cart.remove(trouser, size)
-    return JsonResponse({'status': 'Ok', 'total_items': str(cart.__len__())})
+    _id = data['product_id']
+    size = data['size']
+    _type = data['type']
+    __type = data['type'] + "variant"
+    Klass = apps.get_model('shop', __type)
+    product = get_object_or_404(Klass, id=_id)
+    cart.remove(product, _type, size)
+    return JsonResponse({'status': 'Ok', 'total_items': cart.get_length()})
 
 @require_POST
 def cart_remove_all(request):
     cart = Cart(request)
     cart.clear()
-    return JsonResponse({'status': 'Ok', 'total_items': str(cart.__len__())})
+    return JsonResponse({'status': 'Ok', 'total_items': cart.get_length()})
 
 @require_GET
 def cart_detail(request):
-    cart = Cart(request)
-    trousersString = ''
-    carttmp = request.session.get('cart')
-    trouser_ids = carttmp.keys()
-    trousers = TrouserVariant.objects.filter(id__in=trouser_ids).prefetch_related('trouser_variant_meta', 'trouser_variant_images')
-    for trouser in trousers:
-        carttmp[str(trouser.id)]['trouser'] = trouser
-    for item in cart:
-        trouser=item['trouser']
-        for i, size in enumerate(item['size']):
-            im = get_thumbnail(trouser.trouser_variant_images.first().file, '120x160', quality=99)
-            stock = trouser.trouser_variant_meta.get(size=size).stock
-            quantity = item['quantity'][i]
-            total_price = item['total_price'][i]
-            key = str(trouser.id) + str(size)
-            b = "{'id': '%s','name': '%s', 'price': '%s', 'size': '%s', 'quantity': '%s', 'total_price': '%s', 'url': '%s','image_url': '%s','stock': '%s', 'key': '%s'}," % (trouser.id, trouser.trouser.name, trouser.price, size, quantity, total_price, trouser.trouser.get_absolute_url(), im.url, stock, key)
-            trousersString = trousersString + b
-    return render(request, 'cart/detail.html', {'cart': cart, 'trousersString': trousersString})
+    cart_obj = Cart(request)
+    products_string = []
+    cart = {}
+    for item in cart_obj:
+        for key in item.keys():
+            try:
+                cart[key] = {**cart[key], **item[key]}
+            except KeyError:
+                cart[key] = item[key]
+    products = cart.keys()
+    for product in products:
+        __type = product + "variant"
+        product_ids = cart[product].keys()
+        Klass = apps.get_model('shop', __type)
+        product_obj = Klass.objects.filter(id__in=product_ids).prefetch_related('images')
+        for item in product_obj:
+            cart[product][str(item.id)]['obj'] = item
+        for item in cart[product]:
+            obj = cart[product][item]['obj']
+            for i, size in enumerate(cart[product][item]['size']):
+                im = get_thumbnail(obj.images.first().file, '120x160', quality=99)
+                try:
+                    stock = obj.metas.get(size=size).stock
+                except:
+                    stock = obj.stock
+                quantity = cart[product][item]['quantity'][i]
+                time = cart[product][item]['time']
+                total_price = cart[product][item]['total_price'][i]
+                unique_key = str(product) + str(obj.id) + str(size)
+                result = {'id': obj.id,
+                        'name': obj.__str__(), 
+                        'price': obj.price, 
+                        'size': size, 
+                        'quantity': quantity, 
+                        'total_price': total_price, 
+                        'url': obj.get_absolute_url(),
+                        'image_url': im.url,
+                        'stock': stock, 
+                        'key': unique_key, 
+                        'time': time}
+                products_string.append(result)
+    return JsonResponse({'cart': products_string, 'count': cart_obj.get_length(), 'total_price': cart_obj.get_total_price()})
 
 
 def checkout_home(request):

@@ -32,9 +32,11 @@ class ShopIndex(models.Model):
         if self.__class__.objects.count() < 1:
             super().save(*args, **kwargs)
 
+    @property
     def get_markdown_top(self):
         return mark_safe(self.top_text)
     
+    @property
     def get_markdown_info(self):
         return mark_safe(self.info_text)
 

@@ -1,21 +1,21 @@
 {% load static %}
 {% load extras %}
 <div id="navigation">
-    <nav id="sidebar" class="d-lg-none overflow-hidden">
-        <div id="dismiss">
-            <button type="button" id="sidebarCollapsev" class="navbar-btn">
+    <nav id="sidebar" class="d-lg-none d-flex flex-column overflow-hidden">
+        <div id="dismisss">
+            <button type="button" id="sidebarCollapsev" class="navbar-btn float-right">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
         </div>
-        <ul class="list-unstyled list-group font-weight-bold mobile p-2 list-group-flush mt-5" id="mobile">
+        <ul class="list-unstyled flex-grow-1 overflow-auto list-group font-weight-bold mobile p-2 list-group-flush my-2" id="mobile">
             <li class="{% if 'categories/' not in request.path and 'account/' not in request.path and 'cart/' not in request.path %}active {% endif %}d-flex align-items-center list-group-item d-flex menu-list bg-transparent">
                 <i class="fas fa-home text-white-50"></i>&nbsp;<a href="/">HOME</a>
             </li>
             {% menu "mobile" %}
         </ul>
-        <ul class="list-unstyled list-group font-weight-bold fixed-bottom list-group-horizontal" id="login">
+        <ul class="list-unstyled list-group font-weight-bold list-group-horizontal" id="login">
             {% if not request.user.is_authenticated %}
             <li class="{% if 'login/' in request.path  %}active {% endif %}align-items-center justify-content-center d-flex list-group-item flex-fill rounded-0" style="background-color:#6b8872;">
                 <a href="{% url 'accounts:login' %}" class="text-center">LOGIN</a>
@@ -44,13 +44,13 @@
                 <div class="logo-logo animate__slow">
                     <a href="/"><img src="{% static 'image/favicon.ico' %}" class="logo-image" /></a>
                 </div>
-                <div id="cartnav-mobile" class="animate__animated animate__slideInRight"> 
-                    <button class="bg-transparent remove-outline btn text-decoration-none text-dark p-0 font-weight-bold" data-toggle="modal" data-target="#searchModal">
+                <div id="left-buttons-mobile" class="animate__animated animate__slideInRight"> 
+                    <button id="search-button-mobile" class="bg-transparent remove-outline btn text-decoration-none text-dark p-0 font-weight-bold" data-toggle="modal" data-target="#searchModal">
                         <i class="fas fa-search"></i>
                     </button>
-                    <a id="cart" href="{% url 'cart:cart-detail' %}" class="btn btn-link text-decoration-none text-dark bg-transparent d-inline-block d-lg-none" role="button">
-                        <i class="fas fa-box-open position-relative align-middle text-center" :class="{'badger': numItems > 0}" :data-count="numItems"></i>
-                    </a>
+                    <button id="cart-icon" type="button" @click="showcart=true" class="btn btn-link text-decoration-none text-dark bg-transparent d-inline-block d-lg-none" role="button">
+                        <i class="fas fa-box-open position-relative align-middle text-center" :class="{'badger': cartcount > 0}" :data-count="cartcount"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -82,21 +82,10 @@
                     <li class="list-group-item bg-transparent d-flex align-items-center py-0 border-0 px-2">
                         <a href="javascript:void(0);" role="button" class="px-0 text-decoration-none d-flex text-center align-items-center font-weight-bold remove-outline" data-toggle="modal" data-target="#searchModal"style="font-size: 1.5em;">{% include "../svg/search.svg" %}</a>
                     </li>
-                    <li id="cartnav" class="px-2 py-0 d-flex align-items-center list-group-item border-0 bg-transparent d-flex"> 
-                        <a id="" href="{% url 'cart:cart-detail' %}" class="{% if 'cart/' in request.path %}active {% endif %}d-flex text-center align-items-center cart my-auto" style="font-size: 1.5em;">{% include "../svg/bag.svg" %}
+                    <li class="px-2 py-0 d-flex align-items-center list-group-item border-0 bg-transparent d-flex"> 
+                        <a id="" href="javascript:void(0);" role="button" @click="showcart=true" class="{% if 'cart/' in request.path %}active {% endif %}d-flex text-center align-items-center cart my-auto" style="font-size: 1.5em;">{% include "../svg/bag.svg" %}
                         </a>
                     </li>
-                    
-                    
-                    {% comment %} {% if not request.user.is_authenticated %}
-                    <li class="px-0 d-flex align-items-center border-0 list-group-item bg-transparent" style="">
-                        <a href="{% url 'accounts:login' %}" class="{% if 'login/' in request.path %}active {% endif %}text-center align-text-bottom my-auto">LOGIN</a>&nbsp;<span class="text-warning">|</span>&nbsp;<a href="{% url 'accounts:signup' %}" class="{% if 'signup/' in request.path %}active {% endif %}text-center my-auto">SIGN UP</a>
-                    </li>
-                    {% else %}
-                    <li class="d-flex align-items-center px-0 border-0 list-group-item bg-transparent" style="">
-                        <a href="{% url 'accounts:account-home' %}" class="{% if 'account/dashboard/' in request.path %}active {% endif %}text-center my-auto">MY ACCOUNT</a>&nbsp;<span class="text-warning">|</span>&nbsp;<a href="{% url 'accounts:logout' %}" class="text-center my-auto">LOGOUT</a>
-                    </li>
-                    {% endif %} {% endcomment %}
                 </ul>
             </div>
         </div>
@@ -150,4 +139,21 @@
             </div>
         </div>
     </div>
+    <div @click="showcart=false" class="fixed-top vh-100 vw-100 bg-dark overflow-hidden" style="opacity: .4;" v-if="showcart" style=""></div>
+    <transition appear leave-active-class="animate__animated animate__slideOutRight animate__faster" enter-active-class="animate__animated animate__slideInRight animate__faster">
+        <div id="cart" class="fixed-top vh-100 bg-light" v-if="showcart" style="">
+            <div class="d-flex h-100 flex-column">
+                <button type="button" @click="showcart=false" class="btn remove-outline align-self-end">
+                    <i class="fas fa-2x fa-times"></i>
+                </button>
+                <div class="flex-grow-1 my-2 overflow-auto">
+                </div>
+                <div class="">
+                    <a type="button" href="#" class="btn text-decoration-none font-weight-bold remove-outline btn-block p-2 text-white bg-success rounded-0">
+                        <p class="mb-0">CHECKOUT</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </transition>
 </div>

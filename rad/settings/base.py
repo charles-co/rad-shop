@@ -81,6 +81,7 @@ INSTALLED_APPS = [
     'django_celery_beat',
     'sorl_thumbnail_serializer',
     'tinymce',
+    'django_extensions',
     'phonenumber_field',
     'nested_admin',
 ]

@@ -1,3 +1,4 @@
+import datetime
 import json
 from collections import OrderedDict
 from decimal import Decimal
@@ -20,68 +21,92 @@ class Cart(object):
         Iterate over the items in the cart and get the products
         from the database.
         """
-        # product_ids = self.cart.keys()
-        # # get the product objects and add them to the cart
-        # products = TrouserVariant.objects.filter(id__in=product_ids).prefetch_related('product_variant_meta', 'product_variant_images')
-        # for product in products:
-        #     self.cart[str(product.id)]['product'] = product
-        for item in self.cart.values():
-            item['price'] = float(item['price'])
-            item['total_price'] = []
-            for i, x  in enumerate(item['size']):
-                item['total_price'].append(item['price'] * item['quantity'][i])
-            yield item
+        keys = list(self.cart.keys())
+        for key in keys:
+            for item in self.cart[key]:
+                temp = {}
+                obj = {}
+                self.cart[key][item]['price'] = float(self.cart[key][item]['price'])
+                self.cart[key][item]['total_price'] = []
+                for i, x  in enumerate(self.cart[key][item]['size']):
+                    self.cart[key][item]['total_price'].append(self.cart[key][item]['price'] * self.cart[key][item]['quantity'][i])
+                temp[item] = self.cart[key][item]
+                obj[key] = temp
+                yield obj
     
     def __len__(self):
         """
         Count all items in the cart.
         """
-        return sum(sum(item['quantity']) for item in self.cart.values())
+        total = 0
+        keys = list(self.cart.keys())
+        for key in keys:
+            total += sum([sum(x['quantity']) for x in self.cart[key].values()])
+        return total
     
-    def add(self, product, size=None, quantity=1, update_quantity=False):
+    def add(self, product, _type, size=None, quantity=1, update_quantity=False):
         """
         Add a product to the cart or update its quantity.
         """
-        product_id = str(product.id)      
+        product_id = str(product.id)    
         size = str(size)
-        if product_id not in self.cart:
-            temp = {product_id: {'size': [str(size)], 'quantity': [0], 'price': str(product.price)}}
-            temp.update(self.cart)
-            self.cart = temp
-        elif product_id in self.cart and str(size) not in self.cart[product_id]["size"]:
-            self.cart[product_id]['size'].append(str(size))
-            self.cart[product_id]['quantity'].append(0)
-            
-        index = self.cart[product_id]['size'].index(size)
+        if _type not in self.cart:
+            product_obj = {_type:{product_id: {
+                                'size': [str(size)], 
+                                'quantity': [0], 
+                                'price': str(product.price),
+                                'time': datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+                            },
+                        },
+                    }
+            self.cart.update(product_obj)
+        elif _type in self.cart and product_id not in self.cart[_type].keys():
+            self.cart[_type][product_id] = {'size': [str(size)], 
+                                            'quantity': [0], 
+                                            'price': str(product.price),
+                                            'time': datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+                                        }
+        elif _type in self.cart and product_id in self.cart[_type].keys() and size not in self.cart[_type][product_id]['size']:
+            self.cart[_type][product_id]['size'].append(str(size))
+            self.cart[_type][product_id]['quantity'].append(0)
+        else:
+            print("bad ! badder !! baddest !!!")
+
+        index = self.cart[_type][product_id]['size'].index(size)
    
         if update_quantity:
-            self.cart[product_id]['quantity'][index] = quantity
+            self.cart[_type][product_id]['quantity'][index] = quantity
         else:
-            self.cart[product_id]['quantity'][index] += quantity
+            self.cart[_type][product_id]['quantity'][index] += quantity
         self.save()
     
-    def remove(self, product, size):
+    def remove(self, product, _type, size=None):
         """
         Remove a product from the cart.
         """
         size = str(size)
         product_id = str(product.id)
-        if product_id in self.cart and size in self.cart[product_id]["size"]:
-            if len(self.cart[product_id]["size"]) > 1:
-                index = self.cart[product_id]['size'].index(size)
-                quantity = self.cart[product_id]['quantity'][index]
-                self.cart[product_id]['size'].remove(size) 
-                self.cart[product_id]['quantity'].remove(quantity)
+        if _type in self.cart and product_id in self.cart[_type].keys() and size in self.cart[_type][product_id]["size"]:
+            if len(self.cart[_type][product_id]["size"]) > 1:
+                index = self.cart[_type][product_id]['size'].index(size)
+                quantity = self.cart[_type][product_id]['quantity'][index]
+                self.cart[_type][product_id]['size'].remove(size) 
+                self.cart[_type][product_id]['quantity'].remove(quantity)
                 self.save()
             else:
-                del self.cart[product_id]
+                del self.cart[_type][product_id]
                 self.save()
     
     def get_total_price(self):
-        return sum(Decimal(item['price']) * sum(item['quantity']) for item in self.cart.values())
+        
+        total = 0
+        keys = list(self.cart.keys())
+        for key in keys:
+            total += sum(Decimal(x['price']) * sum(x['quantity']) for x in self.cart[key].values())
+        return total
     
     def get_length(self):
-        return self.__len__()
+        return str(self.__len__())
 
     def clear(self):
         # remove cart from session

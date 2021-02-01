@@ -46,6 +46,7 @@
 </style>
 {% endblock style %}
 {% block content %}
+{{ request.session.cart }}
 <div id="productappdetail" class="container">
     <div v-if="has_content" class="mb-4">
         <div class="row no-gutters justify-content-between">
@@ -66,40 +67,44 @@
                             </div>
                         </div>
                     </div>
-                    <div class="swiper-pagination main-detail swiper-pagination-bullets" v-show="selected_product_images_count > 1"></div>
+                    <div class="swiper-pagination main-detail swiper-pagination-bullets" v-show="product.variant.selected_product_images_count > 1"></div>
                 </div>
             </div>
             <div class="jumbotron py-0 mb-0 px-3 col-12 order-2 order-md-1 col-md-6 mt-3 overflow-auto" data-aos="fade" style="max-height:400px;">
-                <div class="d-inline-block"><span v-html="description"></span></div>
+                <div class="d-inline-block"><span v-html="product.description"></span></div>
             </div>
             <div class="col-12 col-md-5 px-0 my-2 order-1 m-md-0 order-md-2 overflow-hidden">
-                <div class="d-flex flex-wrap animate__fadeInLeftBig" :class="{ 'animate__animated' : !blur }" v-if="products.length > 1">
-                    <div class="mr-2 p-1" v-for="(img, index) in products" style="cursor:pointer;" :class="{ 'border border-dark' : selectedVariant === index, opaque : selectedVariant !== index }" :key="index">
-                        <img :src="img.images[0].thumbnail" @click="change_selected_product(index)">
+                <transition appear enter-active-class="animate__animated animate__fadeInLeftBig">
+                    <div class="d-flex flex-wrap" v-if="products.length > 1">
+                        <div class="mr-2 p-1" v-for="(img, index) in products" style="cursor:pointer;" :class="{ 'border border-dark' : product.selectedVariant === index, opaque : product.selectedVariant !== index }" :key="index">
+                            <img :src="img.images[0].thumbnail" @click="change_selected_product(index)">
+                        </div>
                     </div>
-                </div>
+                </transition>
                 <div class="mb-4 font-weight-bold d-block" style="min-height:174px;">
                     <transition enter-active-class="animate__animated animate__fadeIn">
                         <div v-if="!changeText" class="text-monospace">
                             <p> [[ selected_product.color ]]</p>
-                            <p class=""> [[ name ]]</p>
+                            <p class=""> [[ product.name ]]</p>
                             <p class="mb-0"> [[ selected_product.price|currency ]]</p>
                             <small class="text-muted"> VAT not included </small> 
-                            <div class="d-flex flex-wrap my-2" v-if="product_name !== 'wavecap'">
-                                <button v-for="(size, index) in selected_product.metas" class="btn btn-transparent btn-outline-dark rounded-0 mr-2" :class="{active : currentSize == size.size}" @click="changeSize(index)">
+                            <div class="d-flex flex-wrap my-2" v-if="product.variant.currentSize !== 'None'">
+                                <button v-for="(size, index) in selected_product.metas" class="btn btn-transparent btn-outline-dark rounded-0 mr-2" :class="{active : product.variant.currentSize == size.size}" @click="changeSize(index)">
                                     [[ size.size ]]
                                 </button>
                             </div>
                         </div>
                     </transition>
                 </div>
-                <button class="btn btn-lg col-12 rounded-0" v-if="!inCart" :class="{'btn-warning': outofstock, 'btn-success': !inCart}" :style="{cursor:cssCursor}" :disabled="outofstock || disabled" v-html="message" @click="addToCart(selected_product.id)">
-                </button>
-                <button class="btn btn-lg col-12 btn-danger rounded-0" v-if="inCart" :disabled="disabled" @click="removeFromCart(selected_product.id)">
-                    Remove from cart <i class="fas fa-trash-alt text-white"></i> ([[ quantity ]])
-                </button>
+                <transition appear mode="out-in" leave-active-class="animate__animated animate__fadeOut" enter-active-class="animate__animated animate__fadeIn">
+                    <button class="btn btn-lg btn-block rounded-0" v-if="!product.variant.inCart" :class="{'btn-warning': outofstock, 'btn-success': !product.variant.inCart}" :style="{cursor:cssCursor}" :disabled="outofstock || disabled" v-html="message" @click="addToCart(selected_product.id)">
+                    </button>
+                    <button class="btn btn-lg btn-block btn-danger rounded-0" v-else :disabled="disabled" @click="removeFromCart(selected_product.id)">
+                        Remove from cart <i class="fas fa-trash-alt text-white"></i> ([[ product.variant.quantity ]])
+                    </button>
+                </transition>
             </div>
-            <div class="my-3 my-md-auto mx-0 col-md-6 order-3 order-md-3">
+            <div class="my-3 mx-0 col-md-6 order-3 order-md-3">
                 <h5 class="text-uppercase font-weight-bold">you might also like</h5>
                 <div
                     class="swiper pb-4 px-lg-4 h-100"
@@ -123,13 +128,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="d-none d-lg-flex justify-content-start align-items-center remove-outline swiper-button-prev">
+                    <div class="d-none justify-content-start align-items-center remove-outline swiper-button-prev" :class="{'d-lg-flex' : similiar_products.length > 3}" v-show="similiar_products.length > 1">
                         <i class="fas text-black-50 fa-2x fa-angle-left"></i>
                     </div>
-                    <div class="d-none d-lg-flex justify-content-end align-items-center remove-outline swiper-button-next">
+                    <div class="d-none justify-content-end align-items-center remove-outline swiper-button-next" :class="{'d-lg-flex' : similiar_products.length > 3}" v-show="similiar_products.length > 1">
                         <i class="fas text-black-50 fa-2x fa-angle-right"></i>
                     </div>
-                    <div class="swiper-pagination swiper-pagination-bullets"></div>
+                    <div class="swiper-pagination swiper-pagination-bullets" v-show="similiar_products.length > 2"></div>
                 </div>
             </div>
         </div>
@@ -156,25 +161,29 @@
         store: store,
         data (){
             return {
-                change: true,
-                changeText: false,
-                selectedThumbnail: 0,
-                selectedVariant: 0,
-                name: "",
-                blur: false,
-                has_content: true,
-                product_name: "",
+                product: {
+                    name: "",
+                    type: "",
+                    description: "",
+                    selectedVariant: 0,
+                    variant: {
+                        currentSize: "",
+                        quantity: undefined,
+                        selectedThumbnail: 0,
+                        selected_product_images_count: 0,
+                        inCart: undefined,
+
+                    },
+                },
                 products: [],
                 selected_product: [],
                 similiar_products: [],
+                
+                change: true,
+                changeText: false,
                 cssCursor: "pointer",
                 disabled: false,
-                inCart: undefined,
-                selected_product_images_count: 0,
-                description: "",
-                cartItems: {{ request.session.cart|jsonify }},
-                currentSize: "",
-                quantity: undefined,
+                has_content: true,
                 swiperOptions: {
                     grabCursor: true,
                     lazy: true,
@@ -221,15 +230,12 @@
                         el: '.swiper-pagination',
                         clickable: true,
                     },
-                    navigation: {
-                        nextEl: '.swiper-button-next',
-                        prevEl: '.swiper-button-prev'
-                    },
                 }
             }
         },
         created(){
             AOS.init();
+            this.getProduct();
         },
         filters: {
             currency: function(value){
@@ -239,67 +245,30 @@
             },
         },
         mounted(){
-            fetch(this.endpoint)
-            .then((response) => {
-                return response.json();
-            })
-            .then(jsonData => {
-                if (jsonData["detail"] != "Not found."){
-                    this.name = jsonData.name
-                    this.product_name = jsonData.product.toLowerCase()
-                    this.products = jsonData.variants
-                    this.selected_product = this.products[0]
-                    this.similiar_products = jsonData.similiar_products
-                    this.description = jsonData.description
-                    this.selected_product_images_count = this.selected_product.images.length
-                    if (this.product_name !== 'wavecap'){
-                        this.currentSize = this.selected_product.metas[0].size
-                    }
-                    setTimeout( function(){
-                        this.productimages.lazy.load();
-                        this.swiper.lazy.load();
-                        this.blur = true;
-                    }.bind(this), 1000);
-                }
-                else{
-                    this.has_content = false
-                }
-            })
-            .catch(function (error){
-                console.log(error);
-            })
         },
         updated(){
-            console.log("updated")
             AOS.refreshHard();
         },
         beforeMount(){
-            console.log("omo")
-
         },
         watch: {
-            currentSize: function(){
-                this.inCartMethod()
-            },
-            selectedVariant: function(){
-                this.inCartMethod()
-            }
         },
         computed: {
             outofstock: function(){
                 if(this.selected_product.length !== 0){
-                    if (this.product_name !== 'wavecap'){
+                    if (this.product.variant.currentSize !== 'None'){
                         for(let i=0; i < this.selected_product.metas.length; i++){
-                            if (this.selected_product.metas[i]['size'] === this.currentSize){
+                            if (this.selected_product.metas[i]['size'] === this.product.variant.currentSize){
                                 if(this.selected_product.metas[i].stock <= 0){
                                     return true
                                 }    
                             }
                         }
-                    }else{
+                    }
+                    else{
                         if(this.selected_product.stock <= 0){
-                                return true
-                            }
+                            return true
+                        }
                     }
                     return false
                 }
@@ -317,18 +286,54 @@
                     return "Add to cart <i class='fas fa-cart-plus'></i>"
                 }
             },
-            endpoint: function(){
-                var x = window.location.href.split("/").splice(-3, 2)
-                return "/shop/api/" + x[0] + "s/" + x[1]
-            }
+            ...Vuex.mapGetters([
+                'cartproducts',
+            ]),
         },
         methods: {
+            getProduct(){
+                var x = window.location.href.split("/").splice(-3, 2)
+                endpoint = "/shop/api/" + x[0] + "s/" + x[1]
+                fetch(endpoint)
+                .then(response => {
+                    return response.json();
+                })
+                .then(jsonData => {
+                    if (jsonData["detail"] === undefined){
+                        this.product.name = jsonData.name
+                        this.product.type = jsonData.product.toLowerCase()
+                        this.product.description = jsonData.description
+                        this.products = jsonData.variants
+                        this.selected_product = this.products[0]
+                        this.similiar_products = jsonData.similiar_products
+                        this.product.variant.selected_product_images_count = this.selected_product.images.length
+                        try {
+                            this.product.variant.currentSize = this.selected_product.metas[0].size
+                        }
+                        catch(e){
+                            this.product.variant.currentSize = "None"
+                        }
+                        this.inCartMethod()
+                        setTimeout( function(){
+                            this.productimages.lazy.load();
+                            this.swiper.lazy.load();
+                        }.bind(this), 1000);
+                    }
+                    else{
+                        this.has_content = false
+                    }
+                })
+                .catch(function (error){
+                    console.log(error);
+                })
+            },
             addToCart(product_id){
                 this.disabled = true
                 let data = {'product_id': product_id,
-                            'size': this.currentSize,
+                            'size': this.product.variant.currentSize,
                             'update': false,
-                            'quantity': 1
+                            'quantity': 1,
+                            'type': this.product.type
                         };
                 fetch("{% url 'cart:cart-add' %}", {
                     method: 'POST',
@@ -341,14 +346,7 @@
                 })
                 .then((response) => {
                     store.commit('increment', 1)
-                    if (this.selected_product.id in this.cartItems) {
-                        this.cartItems[this.selected_product.id]["size"].push(this.currentSize)
-                        this.cartItems[this.selected_product.id]["quantity"].push(1)
-                    }else{
-                        this.cartItems[this.selected_product.id] = {"size": [this.currentSize], "quantity": [1], "price": this.selected_product.price}
-                    }
                     setTimeout( function(){
-                        this.inCartMethod()
                         this.disabled = false
                     }.bind(this), 2000)
                 })
@@ -359,10 +357,12 @@
             removeFromCart(product_id){
                 this.disabled = true
                 let data = {'product_id': product_id,
-                            'size': this.currentSize, 
-                            'quantity': parseInt(this.quantity),
+                            'size': this.product.variant.currentSize, 
+                            'quantity': parseInt(this.product.variant.quantity),
+                            'type': this.product.type
+
                 };
-                store.commit('increment', -parseInt(this.quantity));
+                store.commit('increment', -parseInt(this.product.variant.quantity));
                 fetch("{% url 'cart:cart-remove' %}", {
                     method: 'POST',
                     headers: {
@@ -373,10 +373,9 @@
                     body: JSON.stringify(data)
                 })
                 .then((response) => {
-                    index = this.cartItems[product_id]['size'].indexOf(this.currentSize)
-                    this.cartItems[product_id]['size'].splice(index, 1)
-                    this.cartItems[product_id]['quantity'].splice(index, 1)
-                    console.log("removed!")
+                    index = this.cartItems[this.product.type][product_id]['size'].indexOf(this.product.variant.currentSize)
+                    this.cartItems[this.product.type][product_id]['size'].splice(index, 1)
+                    this.cartItems[this.product.type][product_id]['quantity'].splice(index, 1)
                     setTimeout( function(){
                         this.inCartMethod()
                         this.disabled = false
@@ -387,31 +386,35 @@
                 })
             },
             changeSize(index){
-                if (this.selected_product.metas[index].size !== this.currentSize){
-                    this.currentSize = this.selected_product.metas[index].size
+                if (this.selected_product.metas[index].size !== this.product.variant.currentSize){
+                    this.product.variant.currentSize = this.selected_product.metas[index].size
+                    this.inCartMethod()
                 }
             },
-            inCartMethod(){
-                if(this.selected_product.id in this.cartItems){
-                    size = (_.get(this.cartItems, this.selected_product.id))['size']
-                    if (size.includes(this.currentSize)){
-                        this.quantity = (_.get(this.cartItems, this.selected_product.id))['quantity'][size.indexOf(this.currentSize)]
-                        this.inCart = true
+            {% comment %} inCartMethod(){
+                if(this.selected_product.id in this.cartItems[this.product.type]){
+                    size = (_.get(this.cartItems[this.product.type], this.selected_product.id))['size']
+                    if (size.includes(this.product.variant.currentSize)){
+                        this.product.variant.quantity = (_.get(this.cartItems[this.product.type], this.selected_product.id))['quantity'][size.indexOf(this.product.variant.currentSize)]
+                        this.product.variant.inCart = true
                     }else{
-                        this.inCart = false
+                        this.product.variant.inCart = false
                     }
                 }else{
-                    this.inCart = false
+                    this.product.variant.inCart = false
                 }
-            },
+                console.log("pass")
+            }, {% endcomment %}
+
             change_selected_product(index){
                if (this.products[index] !== this.selected_product){
                     this.change = false
                     this.changeText = true
                     this.selected_product = this.products[index]
-                    this.currentSize = this.selected_product.metas[0].size
-                    this.selected_product_images_count = this.selected_product.images.length
-                    this.selectedVariant = index
+                    this.product.variant.currentSize = this.selected_product.metas[0].size
+                    this.product.variant.selected_product_images_count = this.selected_product.images.length
+                    this.product.selectedVariant = index
+                    this.inCartMethod()
                     setTimeout( function(){
                         this.changeText = false
                         this.change = true
