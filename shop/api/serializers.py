@@ -96,7 +96,7 @@ class ProductSerializer(serializers.ModelSerializer):
 # DETAIL SERIALIZERS
 
 class ImageDetailSerializer(serializers.HyperlinkedModelSerializer):
-    file = HyperlinkedSorlImageField('300x400', options={"quality": 9, "format": "PNG"}, read_only=True)
+    file = HyperlinkedSorlImageField('300x400', options={"quality": 99, "format": "PNG"}, read_only=True)
     thumbnail = HyperlinkedSorlImageField('60x60', options={"quality": 99, "format": "PNG"}, source='file', read_only=True)
     
     class Meta:

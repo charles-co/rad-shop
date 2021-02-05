@@ -16,7 +16,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from accounts.tokens import default_token_generator
 
-# Create your models here.
+# Create your models here.
 DEFAULT_ACTIVATION_DAYS = getattr(settings, 'PASSWORD_RESET_TIMEOUT_DAYS', 3)
 
 class UserManager(BaseUserManager):

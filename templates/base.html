@@ -165,6 +165,9 @@
                     },
                     cartproducts: state => {
                         return state.cart.cart;
+                    },
+                    incart: (state) => (key) => {
+                        console.log("pass")
                     }
                 },
                 actions: {

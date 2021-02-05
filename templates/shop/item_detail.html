@@ -46,7 +46,6 @@
 </style>
 {% endblock style %}
 {% block content %}
-{{ request.session.cart }}
 <div id="productappdetail" class="container">
     <div v-if="has_content" class="mb-4">
         <div class="row no-gutters justify-content-between">
@@ -391,8 +390,8 @@
                     this.inCartMethod()
                 }
             },
-            {% comment %} inCartMethod(){
-                if(this.selected_product.id in this.cartItems[this.product.type]){
+            inCartMethod(){
+                {% comment %} if(this.selected_product.id in this.cartItems[this.product.type]){
                     size = (_.get(this.cartItems[this.product.type], this.selected_product.id))['size']
                     if (size.includes(this.product.variant.currentSize)){
                         this.product.variant.quantity = (_.get(this.cartItems[this.product.type], this.selected_product.id))['quantity'][size.indexOf(this.product.variant.currentSize)]
@@ -402,9 +401,9 @@
                     }
                 }else{
                     this.product.variant.inCart = false
-                }
+                } {% endcomment %}
                 console.log("pass")
-            }, {% endcomment %}
+            },
 
             change_selected_product(index){
                if (this.products[index] !== this.selected_product){
