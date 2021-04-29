@@ -31,11 +31,8 @@ urlpatterns = [
     path('account/', include('accounts.urls', namespace='accounts')),
     path('account/', include("accounts.passwords.urls")),
     path('tinymce/', include('tinymce.urls')),
-
-
-
-
 ]
+
 handler404 = 'shop.views.handler404'
 handler500 = 'shop.views.handler500'
 
