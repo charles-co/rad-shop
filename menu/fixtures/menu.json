@@ -6,12 +6,13 @@
     "name": "NEW ARRIVALS",
     "slug": "new-arrivals",
     "app": "SH",
-    "parent": null,
+    "parent": 10,
     "is_active": true,
-    "lft": 1,
-    "rght": 2,
-    "tree_id": 1,
-    "level": 0
+    "show_all": true,
+    "lft": 2,
+    "rght": 3,
+    "tree_id": 3,
+    "level": 1
   }
 },
 {
@@ -21,26 +22,28 @@
     "name": "BEST SELLERS",
     "slug": "best-sellers",
     "app": "SH",
-    "parent": null,
+    "parent": 10,
     "is_active": true,
-    "lft": 1,
-    "rght": 2,
-    "tree_id": 4,
-    "level": 0
+    "show_all": true,
+    "lft": 4,
+    "rght": 5,
+    "tree_id": 3,
+    "level": 1
   }
 },
 {
   "model": "menu.menu",
   "pk": 3,
   "fields": {
-    "name": "COLLECTIONS",
-    "slug": "collections",
+    "name": "CARGO COLLECTIONS",
+    "slug": "cargo-collections",
     "app": "SH",
     "parent": null,
     "is_active": true,
+    "show_all": false,
     "lft": 1,
     "rght": 8,
-    "tree_id": 2,
+    "tree_id": 4,
     "level": 0
   }
 },
@@ -53,9 +56,10 @@
     "app": "SH",
     "parent": 3,
     "is_active": true,
+    "show_all": false,
     "lft": 2,
     "rght": 3,
-    "tree_id": 2,
+    "tree_id": 4,
     "level": 1
   }
 },
@@ -68,9 +72,10 @@
     "app": "SH",
     "parent": 3,
     "is_active": true,
+    "show_all": false,
     "lft": 4,
     "rght": 5,
-    "tree_id": 2,
+    "tree_id": 4,
     "level": 1
   }
 },
@@ -83,9 +88,10 @@
     "app": "SH",
     "parent": 3,
     "is_active": true,
+    "show_all": false,
     "lft": 6,
     "rght": 7,
-    "tree_id": 2,
+    "tree_id": 4,
     "level": 1
   }
 },
@@ -96,8 +102,25 @@
     "name": "BACK IN STOCK",
     "slug": "back-in-stock",
     "app": "SH",
+    "parent": 10,
+    "is_active": true,
+    "show_all": true,
+    "lft": 6,
+    "rght": 7,
+    "tree_id": 3,
+    "level": 1
+  }
+},
+{
+  "model": "menu.menu",
+  "pk": 9,
+  "fields": {
+    "name": "WAVE CAP COLLECTIONS",
+    "slug": "wave-cap-collections",
+    "app": "SH",
     "parent": null,
     "is_active": true,
+    "show_all": false,
     "lft": 1,
     "rght": 2,
     "tree_id": 5,
@@ -106,15 +129,16 @@
 },
 {
   "model": "menu.menu",
-  "pk": 9,
+  "pk": 10,
   "fields": {
-    "name": "WAVECAP COLLECTIONS",
-    "slug": "wavecap-collections",
+    "name": "SHOP ALL",
+    "slug": "all-products",
     "app": "SH",
     "parent": null,
     "is_active": true,
+    "show_all": false,
     "lft": 1,
-    "rght": 2,
+    "rght": 8,
     "tree_id": 3,
     "level": 0
   }

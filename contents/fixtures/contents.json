@@ -1,82 +1,53 @@
 [
 {
-  "model": "contents.image",
+  "model": "contents.shopindex",
   "pk": 1,
   "fields": {
-    "created": "2020-10-25T20:26:48.149Z",
-    "updated": "2020-10-25T20:26:48.149Z",
-    "trouser_variant": 1,
-    "file": "trouser_images/C2 CARGO/95cd2961a91443018dce96ce4af4d848.png"
+    "top_text": "<p><span style=\"font-family: 'comic sans ms', sans-serif; color: #ffffff;\"><strong><span style=\"font-size: 10pt;\">CARGO WEARS ESSENTIALS&nbsp;</span></strong></span></p>\r\n<p><span style=\"font-family: 'comic sans ms', sans-serif; color: #ffffff;\"><strong><span style=\"font-size: 14pt;\">GIFT FOR SOMEONE YOU LOVE&nbsp;</span></strong></span></p>",
+    "info_text": "<p style=\"text-align: center; line-height: 1;\"><span style=\"font-family: 'andale mono', monospace;\"><strong><span style=\"font-size: 10pt;\"><span style=\"color: #222222; white-space: pre-wrap;\">ORDERS ARE SHIPPED AS USUAL</span></span></strong></span></p>\r\n<p style=\"text-align: center; line-height: 1;\"><span style=\"color: #222222; font-family: 'andale mono', monospace; font-size: 10pt; white-space: pre-wrap;\">Despite challenges presented by COVID-19, our online store is still open, with orders shipped everyday. </span><span style=\"color: #222222; font-family: 'andale mono', monospace; font-size: 10pt; white-space: pre-wrap;\">Our logistics team is taking extraordinary precaution with each order to ensure the safety of our customers and employees.</span></p>\r\n<p style=\"text-align: center; line-height: 1;\"><span style=\"font-family: 'andale mono', monospace; font-size: 10pt;\">Thank you for your support of all small businesses like ours. Stay safe, stay healthy.</span></p>",
+    "image1": "ShopIndex/images/5e3a1748b2c54e81ab088191422d0aad.png",
+    "image2": "ShopIndex/images/c193e169c6724b639c532ffac07efcd6.png",
+    "image3": "ShopIndex/images/2743c6adb3da457bbd2f2598a1f5bb00.png"
   }
 },
 {
-  "model": "contents.image",
+  "model": "contents.shopindexfeature",
+  "pk": 1,
+  "fields": {
+    "shop_index": 1,
+    "text": "<p style=\"line-height: 1;\"><span style=\"font-size: 10pt; font-family: 'comic sans ms', sans-serif;\"><strong>BEST SELLERS</strong></span></p>\r\n<p style=\"line-height: 1;\"><span style=\"font-size: 10pt; font-family: 'comic sans ms', sans-serif;\"><strong>C25 CARGO</strong></span></p>",
+    "url": "http://127.0.0.1/shop/c25-cargo",
+    "image": "shopindexfeature/images/b29056adee914c639197477ad27eb2dd.png"
+  }
+},
+{
+  "model": "contents.shopindexfeature",
   "pk": 2,
   "fields": {
-    "created": "2020-10-25T20:26:48.156Z",
-    "updated": "2020-10-25T20:26:48.156Z",
-    "trouser_variant": 1,
-    "file": "trouser_images/C2 CARGO/04855396501341bd97411dfc336516ea.png"
+    "shop_index": 1,
+    "text": "<p style=\"line-height: 1;\"><span style=\"font-size: 10pt; font-family: 'comic sans ms', sans-serif;\"><strong>ONLY FEW LEFT</strong></span></p>\r\n<p style=\"line-height: 1;\"><span style=\"font-size: 10pt; font-family: 'comic sans ms', sans-serif;\"><strong>C5 CARGO</strong></span></p>",
+    "url": "http://127.0.0.1/shop/c5-cargo",
+    "image": "shopindexfeature/images/4e060a7466a64828aa8f3c51a781037f.png"
   }
 },
 {
-  "model": "contents.image",
+  "model": "contents.shopindexfeature",
   "pk": 3,
   "fields": {
-    "created": "2020-10-25T20:26:48.161Z",
-    "updated": "2020-10-25T20:26:48.162Z",
-    "trouser_variant": 1,
-    "file": "trouser_images/C2 CARGO/8234b6b9ff554b84a4032d3a8dd9fc85.png"
+    "shop_index": 1,
+    "text": "<p style=\"line-height: 1;\"><span style=\"font-size: 10pt; font-family: 'comic sans ms', sans-serif;\"><strong>MUST HAVE</strong></span></p>\r\n<p style=\"line-height: 1;\"><span style=\"font-size: 10pt; font-family: 'comic sans ms', sans-serif;\"><strong>SPANDEX WAVE CAP</strong></span></p>",
+    "url": "http://127.0.0.1/shop/spandex-wave-cap",
+    "image": "shopindexfeature/images/970b5b010d0447da93c6fe47a6fd65dd.png"
   }
 },
 {
-  "model": "contents.image",
+  "model": "contents.shopindexfeature",
   "pk": 4,
   "fields": {
-    "created": "2020-10-25T20:26:48.188Z",
-    "updated": "2020-10-25T20:26:48.188Z",
-    "trouser_variant": 2,
-    "file": "trouser_images/C2 CARGO/8de610ff8b774d9c9196c2e443303bba.png"
-  }
-},
-{
-  "model": "contents.image",
-  "pk": 5,
-  "fields": {
-    "created": "2020-10-25T20:26:48.193Z",
-    "updated": "2020-10-25T20:26:48.193Z",
-    "trouser_variant": 2,
-    "file": "trouser_images/C2 CARGO/24eed35cdc8248fc9236532bc9c97336.png"
-  }
-},
-{
-  "model": "contents.image",
-  "pk": 6,
-  "fields": {
-    "created": "2020-10-25T20:26:48.198Z",
-    "updated": "2020-10-25T20:26:48.198Z",
-    "trouser_variant": 2,
-    "file": "trouser_images/C2 CARGO/72cf50c7a0fe43f48042b627dd0acbb2.png"
-  }
-},
-{
-  "model": "contents.image",
-  "pk": 7,
-  "fields": {
-    "created": "2020-10-26T00:06:38.298Z",
-    "updated": "2020-10-26T00:06:38.298Z",
-    "trouser_variant": 3,
-    "file": "trouser_images/C5 CARGO/463138e130744474842b53f463d5003e.png"
-  }
-},
-{
-  "model": "contents.image",
-  "pk": 8,
-  "fields": {
-    "created": "2020-10-31T16:15:53.459Z",
-    "updated": "2020-10-31T16:15:53.459Z",
-    "trouser_variant": 4,
-    "file": "trouser_images/C2 CARGO/84ca46980a97455eb3067e9f5be67b10.png"
+    "shop_index": 1,
+    "text": "<p style=\"line-height: 1;\"><span style=\"font-size: 10pt; font-family: 'comic sans ms', sans-serif;\"><strong>CHECK OUT</strong></span></p>\r\n<p style=\"line-height: 1;\"><span style=\"font-size: 10pt; font-family: 'comic sans ms', sans-serif;\"><strong>C25 CARGO LTD</strong></span></p>",
+    "url": "http://127.0.0.1/shop/spandex-wave-cap",
+    "image": "shopindexfeature/images/4f721edeed1a4b61884458306b48ab83.png"
   }
 }
 ]
