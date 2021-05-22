@@ -1,0 +1,65 @@
+[
+{
+  "model": "shop.trousermeta",
+  "pk": 1,
+  "fields": {
+    "size": "30",
+    "stock": 3,
+    "trouser_variant": 1
+  }
+},
+{
+  "model": "shop.trousermeta",
+  "pk": 2,
+  "fields": {
+    "size": "32",
+    "stock": 1,
+    "trouser_variant": 1
+  }
+},
+{
+  "model": "shop.trousermeta",
+  "pk": 3,
+  "fields": {
+    "size": "40",
+    "stock": 6,
+    "trouser_variant": 1
+  }
+},
+{
+  "model": "shop.trousermeta",
+  "pk": 4,
+  "fields": {
+    "size": "32",
+    "stock": 1,
+    "trouser_variant": 2
+  }
+},
+{
+  "model": "shop.trousermeta",
+  "pk": 5,
+  "fields": {
+    "size": "38",
+    "stock": 2,
+    "trouser_variant": 2
+  }
+},
+{
+  "model": "shop.trousermeta",
+  "pk": 6,
+  "fields": {
+    "size": "30",
+    "stock": 1,
+    "trouser_variant": 3
+  }
+},
+{
+  "model": "shop.trousermeta",
+  "pk": 7,
+  "fields": {
+    "size": "34",
+    "stock": 3,
+    "trouser_variant": 3
+  }
+}
+]

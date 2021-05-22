@@ -1,0 +1,12 @@
+[
+{
+  "model": "shop.trouser",
+  "pk": 1,
+  "fields": {}
+},
+{
+  "model": "shop.trouser",
+  "pk": 2,
+  "fields": {}
+}
+]

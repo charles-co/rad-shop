@@ -1,0 +1,32 @@
+[
+{
+  "model": "shop.trouservariant",
+  "pk": 1,
+  "fields": {
+    "color": "#FFA500",
+    "price": "4000.00",
+    "old_price": "3500.00",
+    "trouser": 1
+  }
+},
+{
+  "model": "shop.trouservariant",
+  "pk": 2,
+  "fields": {
+    "color": "#000000",
+    "price": "5000.00",
+    "old_price": "0.00",
+    "trouser": 1
+  }
+},
+{
+  "model": "shop.trouservariant",
+  "pk": 3,
+  "fields": {
+    "color": "#FFFF00",
+    "price": "5000.00",
+    "old_price": "0.00",
+    "trouser": 2
+  }
+}
+]

@@ -1,0 +1,17 @@
+[
+{
+  "model": "shop.wavecap",
+  "pk": 4,
+  "fields": {}
+},
+{
+  "model": "shop.wavecap",
+  "pk": 3,
+  "fields": {}
+},
+{
+  "model": "shop.wavecap",
+  "pk": 5,
+  "fields": {}
+}
+]
