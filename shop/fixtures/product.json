@@ -1,0 +1,87 @@
+[
+{
+  "model": "shop.product",
+  "pk": 1,
+  "fields": {
+    "name": "C2 CARGO",
+    "price": "4000.00",
+    "is_bestseller": true,
+    "is_back": true,
+    "is_featured": true,
+    "is_discounted": false,
+    "available": true,
+    "created_at": "2021-01-09T10:21:06.582Z",
+    "updated_at": "2021-01-26T20:11:41.265Z",
+    "content_type": 11,
+    "object_id": 1
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 2,
+  "fields": {
+    "name": "C5 CARGO",
+    "price": "5000.00",
+    "is_bestseller": true,
+    "is_back": false,
+    "is_featured": false,
+    "is_discounted": false,
+    "available": true,
+    "created_at": "2021-01-09T10:23:56.206Z",
+    "updated_at": "2021-01-26T20:11:53.127Z",
+    "content_type": 11,
+    "object_id": 2
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 3,
+  "fields": {
+    "name": "SPANDEX WAVE CAP",
+    "price": "2000.00",
+    "is_bestseller": true,
+    "is_back": false,
+    "is_featured": true,
+    "is_discounted": false,
+    "available": true,
+    "created_at": "2021-01-09T10:33:52.660Z",
+    "updated_at": "2021-01-26T20:22:00.310Z",
+    "content_type": 12,
+    "object_id": 3
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 4,
+  "fields": {
+    "name": "SPANDEX DURAG",
+    "price": "1500.00",
+    "is_bestseller": true,
+    "is_back": false,
+    "is_featured": true,
+    "is_discounted": false,
+    "available": true,
+    "created_at": "2021-01-09T18:26:58.491Z",
+    "updated_at": "2021-01-26T20:21:51.086Z",
+    "content_type": 12,
+    "object_id": 4
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 5,
+  "fields": {
+    "name": "SPANDEX WAVE CAP LTD",
+    "price": "6000.00",
+    "is_bestseller": true,
+    "is_back": false,
+    "is_featured": false,
+    "is_discounted": false,
+    "available": true,
+    "created_at": "2021-01-23T16:17:04.143Z",
+    "updated_at": "2021-01-26T20:23:38.856Z",
+    "content_type": 12,
+    "object_id": 5
+  }
+}
+]
