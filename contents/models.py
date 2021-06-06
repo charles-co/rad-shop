@@ -55,7 +55,7 @@ class ShopIndexFeature(models.Model):
         return self.shop_index.__str__() + " Feature " + str(self.id)
 
     def save(self, *args, **kwargs):
-        if self.__class__.objects.count() < 4:
+        if self.__class__.objects.count() <= 4:
             super().save(*args, **kwargs)
 
     def get_markdown(self):
