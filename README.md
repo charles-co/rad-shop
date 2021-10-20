@@ -26,4 +26,4 @@
 
         python manage.py runserver
 
-Check out live implementation [here](#https://rad.pythonanywhere.com/)
+Check out live implementation [here](https://rad.pythonanywhere.com/)
